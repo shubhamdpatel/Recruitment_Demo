@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "28675151971",
+    "project_id": "recruitment-agency-e0465",
+    "storage_bucket": "recruitment-agency-e0465.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28675151971:android:bef8c66223eb8db1c68056",
+        "android_client_info": {
+          "package_name": "com.recruitment_agency"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28675151971-jd4rf04v3stuumqd87i83ohvmtovhovj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCR-Wziekywf8xXMJvVuuvM95PhubN-SC0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "28675151971-jd4rf04v3stuumqd87i83ohvmtovhovj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "28675151971-ht4gl4ld6mv64u0t2ab32d7iurblq0vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Recuitment-Agency"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
