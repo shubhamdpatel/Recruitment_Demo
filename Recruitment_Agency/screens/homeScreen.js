@@ -1,18 +1,20 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, Text, View} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import * as authAction from '../redux/actions/auth';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
+  const user = useSelector(state => state.user);
+  console.log('user->', user);
   const dispatch = useDispatch();
-
+  // user.length === 0 && navigation.navigate('Login');
   const logoutHandeler = async () => {
     await dispatch(authAction.logout());
   };
 
   return (
-    <View>
-      <Text>Home</Text>
+    <View style={{flex: 1}}>
+      <Text>Welcome,</Text>
       <Button
         title="Logout"
         onPress={() => {

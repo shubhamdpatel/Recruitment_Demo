@@ -1,9 +1,8 @@
 import React from 'react';
-import {Text, View, Button, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import FormInput from '../../components/FormInput';
 import FormButton from '../../components/FormButton';
 import {useDispatch} from 'react-redux';
-// import auth from '@react-native-firebase/auth';
 
 import * as authAction from '../../redux/actions/auth';
 
@@ -14,28 +13,6 @@ const RegisterScreen = ({navigation, route}) => {
 
   const {userType} = route.params;
   const dispatch = useDispatch();
-  // Using Firebase
-  const submitHandler = async () => {
-    try {
-      await auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          console.log('User account created & signed in!');
-        })
-        .catch(error => {
-          if (error.code === 'auth/email-already-in-use') {
-            console.log('That email address is already in use!');
-          }
-
-          if (error.code === 'auth/invalid-email') {
-            console.log('That email address is invalid!');
-          }
-          console.log(error);
-        });
-    } catch (error) {
-      console.log('Somwthing went wrong with signup', error);
-    }
-  };
 
   const registerUser = async () => {
     await dispatch(authAction.signUp(email, password, userType));

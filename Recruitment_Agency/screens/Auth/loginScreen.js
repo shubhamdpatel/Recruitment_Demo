@@ -1,23 +1,21 @@
 import React from 'react';
-import {Text, View, Button, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import FormInput from '../../components/FormInput';
 import FormButton from '../../components/FormButton';
-import auth from '@react-native-firebase/auth';
+import {useSelector, useDispatch} from 'react-redux';
+import * as authAction from '../../redux/actions/auth';
 
 const LoginScreen = ({navigation, route}) => {
   const [email, setEmail] = React.useState(null);
   const [password, setPassword] = React.useState(null);
   const {userType} = route.params;
+  const dispach = useDispatch();
+  
+  const user = useSelector(state => state.user.user);
 
-  const loginHandler = () => {
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log('SignIn');
-      })
-      .catch(e => {
-        console.log('Login Error', e);
-      });
+  user.length !==0 && navigation.navigate('Home')
+  const loginHandler = async () => {
+    await dispach(authAction.signIn(email, password));
   };
 
   return (

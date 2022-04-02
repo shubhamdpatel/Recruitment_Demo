@@ -24,6 +24,7 @@ const AuthStack = () => {
       <Auth.Screen name="User" component={UserSelectScreen} />
       <Auth.Screen name="Login" component={LoginScreen} />
       <Auth.Screen name="Register" component={RegisterScreen} />
+      <Auth.Screen name="Home" component={HomeScreen} />
     </Auth.Navigator>
   );
 };
@@ -61,12 +62,18 @@ const CompanyStack = () => {
 
 const Navigator = () => {
   const [token, setToken] = React.useState('');
-
+  const fetchToken = async () => {
+    try {
+      await AsyncStorage.getItem('user').then(res => {
+        setToken(JSON.parse(res).token);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   React.useEffect(() => {
-    AsyncStorage.getItem('user').then(res => {
-      setToken(JSON.parse(res).token);
-    });
-  });
+    fetchToken();
+  }, []);
 
   // const token = jsonValue.token;
   // console.log(token, jsonValue);
