@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minlength: 7,
+      // minlength: 7,
       trim: true,
     },
     userType: {
@@ -30,6 +30,17 @@ const userSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+
+//Hiding Data
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const usereObject = user.toObject();
+
+  delete usereObject.password;
+  // delete usereObject.tokens;
+
+  return usereObject;
+};
 
 //Generate & save token
 userSchema.methods.generateAuthToken = async function () {

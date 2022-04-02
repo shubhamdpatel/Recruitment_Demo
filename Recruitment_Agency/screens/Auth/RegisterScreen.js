@@ -2,8 +2,10 @@ import React from 'react';
 import {Text, View, Button, StyleSheet, TouchableOpacity} from 'react-native';
 import FormInput from '../../components/FormInput';
 import FormButton from '../../components/FormButton';
-import * as authAction from '../../redux/actions/auth';
+import {useDispatch} from 'react-redux';
 // import auth from '@react-native-firebase/auth';
+
+import * as authAction from '../../redux/actions/auth';
 
 const RegisterScreen = ({navigation, route}) => {
   const [email, setEmail] = React.useState(null);
@@ -11,7 +13,7 @@ const RegisterScreen = ({navigation, route}) => {
   const [confirmPassword, setconfirmPassword] = React.useState(null);
 
   const {userType} = route.params;
-
+  const dispatch = useDispatch();
   // Using Firebase
   const submitHandler = async () => {
     try {
@@ -36,7 +38,7 @@ const RegisterScreen = ({navigation, route}) => {
   };
 
   const registerUser = async () => {
-    await authAction.signUp(email, password, userType);
+    await dispatch(authAction.signUp(email, password, userType));
   };
 
   return (

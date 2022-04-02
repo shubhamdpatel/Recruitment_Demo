@@ -7,14 +7,13 @@ const router = new express.Router();
 
 //Registration
 router.post("/register", async (req, res) => {
+  console.log("Backend api call");
   const user = new User(req.body);
   // const userType = req.query.UserType;
-  console.log(user);
-
   // return res.send("register Succefully");
+
   try {
     if (user.userType === "Company") {
-      console.log("company");
       const company = new Company({
         email: user.email,
         createdBy: user._id,
@@ -23,27 +22,23 @@ router.post("/register", async (req, res) => {
       await user.save();
       await company.save();
       const token = await user.generateAuthToken();
-      res.status(201).send({ UserData: user, CompanyDetails: company, token });
+      res.status(201).send({ user, token });
     }
 
-    if (userType === "Jober") {
+    if (user.userType === "Jober") {
       const jober = new Jober({
         email: user.email,
         createdBy: user._id,
       });
-      console.log(jober);
       await user.save();
       await jober.save();
       const token = await user.generateAuthToken();
-      res.status(201).send({ UserData: user, token, JoberDetails: jober });
+      res.status(201).send({ user, token });
     }
-
-    //   // else {
-    //   //   //   res.status(400).send('Company Not Register');
-    //   // }
-  } catch (e) {
-    res.status(400).send(e);
-    console.log(e);
+  } catch (error) {
+    if (error.code === 11000) {
+      res.send({ error: "EMAIL_EXISTS" });
+    }
   }
 });
 

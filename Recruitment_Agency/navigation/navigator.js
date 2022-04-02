@@ -1,17 +1,18 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
 
+import {NavigationContainer} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserSelectScreen from '../screens/userSelectScreen';
-import LoginScreen from '../screens/Auth/loginScreen';
-import RegisterScreen from '../screens/Auth/RegisterScreen';
+import LoginScreen from '../screens/auth/loginScreen';
+import RegisterScreen from '../screens/auth/RegisterScreen';
 
 import HomeScreen from '../screens/homeScreen';
 import JobPostFormScreen from '../screens/company/jobPostFormScreen';
 import JobListScreen from '../screens/company/jobListScreen';
 import {Button} from 'react-native';
 
-import auth from '@react-native-firebase/auth';
+// import auth from '@react-native-firebase/auth';
 
 const Stack = createNativeStackNavigator();
 const Company = createNativeStackNavigator();
@@ -59,34 +60,31 @@ const CompanyStack = () => {
 };
 
 const Navigator = () => {
-  // Set an initializing state whilst Firebase connects
-  const [initializing, setInitializing] = React.useState(true);
-  const [user, setUser] = React.useState();
-
-  // Handle user state changes
-  function onAuthStateChanged(user) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  }
+  const [token, setToken] = React.useState('');
 
   React.useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+    AsyncStorage.getItem('user').then(res => {
+      setToken(JSON.parse(res).token);
+    });
+  });
 
-  if (initializing) return null;
+  // const token = jsonValue.token;
+  // console.log(token, jsonValue);
+  // if (token !== '' || token !== null) {
+  //   setUser(jsonValue.user);
+  // }
 
-  if (!user) {
-    return (
-      <NavigationContainer>
-        <AuthStack />
-      </NavigationContainer>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <NavigationContainer>
+  //       <AuthStack />
+  //     </NavigationContainer>
+  //   );
+  // }
 
   return (
     <NavigationContainer>
-      <CompanyStack />
+      {token ? <CompanyStack /> : <AuthStack />}
     </NavigationContainer>
   );
 };
