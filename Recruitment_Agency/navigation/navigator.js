@@ -1,97 +1,97 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Button, Alert} from 'react-native';
 
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import SplashScreen from '../screens/splashScreen';
 import UserSelectScreen from '../screens/userSelectScreen';
 import LoginScreen from '../screens/auth/loginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
-
-import HomeScreen from '../screens/homeScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import JobPostFormScreen from '../screens/company/jobPostFormScreen';
 import JobListScreen from '../screens/company/jobListScreen';
-import {Button} from 'react-native';
-
-// import auth from '@react-native-firebase/auth';
+import JobDetailsScreen from '../screens/company/jobDetailsScreen';
+import {useDispatch, useSelector} from 'react-redux';
+import {Init} from '../redux/actions/auth';
 
 const Stack = createNativeStackNavigator();
-const Company = createNativeStackNavigator();
-const Auth = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const AuthStack = () => {
   return (
-    <Auth.Navigator>
-      <Auth.Screen name="User" component={UserSelectScreen} />
-      <Auth.Screen name="Login" component={LoginScreen} />
-      <Auth.Screen name="Register" component={RegisterScreen} />
-      <Auth.Screen name="Home" component={HomeScreen} />
-    </Auth.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen name="User" component={UserSelectScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+    </Stack.Navigator>
   );
 };
 
-const CompanyStack = () => {
+const CompanyTab = ({navigation}) => {
   return (
-    <Company.Navigator>
-      <Company.Screen name="Home" component={HomeScreen} />
-
-      <Company.Screen
-        name="JobList"
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Jobs List"
         component={JobListScreen}
-        options={({navigation}) => ({
-          title: '',
+        options={{
           headerRight: () => (
             <Button
-              onPress={() => navigation.navigate('JobForm')}
-              title="+"
-              color="#2e64e5"
+              title="Add Job"
+              onPress={() => navigation.navigate('Job Post')}
             />
           ),
-        })}
+        }}
       />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+};
 
-      <Company.Screen
-        name="JobForm"
-        component={JobPostFormScreen}
-        options={() => ({
-          title: '',
-        })}
+const MyStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={CompanyTab}
+        options={{headerShown: false}}
       />
-    </Company.Navigator>
+      <Stack.Screen name="Job Post" component={JobPostFormScreen} />
+      <Stack.Screen name="Job Details" component={JobDetailsScreen} />
+    </Stack.Navigator>
   );
 };
 
 const Navigator = () => {
-  const [token, setToken] = React.useState('');
-  const fetchToken = async () => {
-    try {
-      await AsyncStorage.getItem('user').then(res => {
-        setToken(JSON.parse(res).token);
-      });
-    } catch (e) {
-      console.log(e);
-    }
+  const [isLoading, setIsLoding] = React.useState(true);
+  debugger;
+  const token = useSelector(state => state.user.token);
+  const user = useSelector(state => state.user.user);
+  console.log('token =', token);
+  console.log(user.userType);
+  const dispatch = useDispatch();
+  const init = async () => {
+    debugger;
+    await dispatch(Init());
+    setIsLoding(false);
   };
+
   React.useEffect(() => {
-    fetchToken();
+    debugger;
+    setTimeout(() => {
+      setIsLoding(false);
+    }, 1000);
+    init();
   }, []);
 
-  // const token = jsonValue.token;
-  // console.log(token, jsonValue);
-  // if (token !== '' || token !== null) {
-  //   setUser(jsonValue.user);
-  // }
-
-  // if (!user) {
-  //   return (
-  //     <NavigationContainer>
-  //       <AuthStack />
-  //     </NavigationContainer>
-  //   );
-  // }
+  if (isLoading) {
+    return <SplashScreen />;
+  }
 
   return (
     <NavigationContainer>
-      {token ? <CompanyStack /> : <AuthStack />}
+      {token === null ? <AuthStack /> : <MyStack />}
     </NavigationContainer>
   );
 };

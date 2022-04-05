@@ -5,10 +5,27 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const AUTHENTICATION = 'AUTHENTICATION';
 export const LOGOUT = 'LOGOUT';
 
-export const authentication = user => {
+export const authentication = (token, user) => {
   return {
     type: AUTHENTICATION,
+    token,
     user,
+  };
+};
+
+export const Init = () => {
+  debugger;
+  return async dispatch => {
+    const loginUser = await AsyncStorage.getItem('user');
+    if (loginUser !== null) {
+      const objectValue = JSON.parse(loginUser);
+      const token = objectValue.user.token;
+      const user = objectValue.user.user;
+      if (token !== null) {
+        console.log('token fetched');
+        dispatch(authentication(token, user));
+      }
+    }
   };
 };
 
@@ -29,10 +46,11 @@ export const signUp = (email, password, userType) => {
 
       try {
         const jsonValue = JSON.stringify({
-          token: resData.token,
+          user: resData,
         });
+
         await AsyncStorage.setItem('user', jsonValue);
-        dispatch(authentication(resData.user));
+        dispatch(authentication(resData.token, resData.user));
       } catch (error) {
         console.log('Data Not Save In Async-Storage', error);
       }
@@ -41,6 +59,7 @@ export const signUp = (email, password, userType) => {
     }
   };
 };
+
 export const signIn = (email, password) => {
   return async dispatch => {
     try {
@@ -53,10 +72,11 @@ export const signIn = (email, password) => {
 
       try {
         const jsonValue = JSON.stringify({
-          token: resData.token,
+          user: resData,
         });
+
         await AsyncStorage.setItem('user', jsonValue);
-        dispatch(authentication(resData.user));
+        dispatch(authentication(resData.token, resData.user));
       } catch (error) {
         console.log('Data Not Save In Async-Storage', error);
       }
@@ -71,7 +91,7 @@ export const signIn = (email, password) => {
 
 export const logout = () => {
   return async dispatch => {
-    await AsyncStorage.removeItem('user');
+    await AsyncStorage.clear();
     dispatch({type: LOGOUT});
   };
 };

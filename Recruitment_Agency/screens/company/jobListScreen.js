@@ -1,61 +1,25 @@
 import React from 'react';
-import {StyleSheet, Text, View, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Button,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import * as JobsAction from '../../redux/actions/jobs';
 
-import firestore from '@react-native-firebase/firestore';
-
-const JobListScreen = () => {
-  const [jobs, setJobs] = React.useState(null);
+const JobListScreen = ({navigation}) => {
   const [loading, setLoading] = React.useState(true);
+
+  const jobs = useSelector(state => state.jobs.userPostedJobs);
+  const dispatch = useDispatch();
 
   // Fetch Data
   const fetchPost = async () => {
-    try {
-      const JobsList = [];
-      await firestore()
-        .collection('Jobs')
-        .doc('LaNet')
-        .collection('JobPost')
-        .get()
-        .then(querySnapshort => {
-          querySnapshort.forEach(doc => {
-            // console.log('Jobs : ', doc.data());
-            const {
-              companyId,
-              title,
-              type,
-              gender,
-              salary,
-              education,
-              exprerience,
-              description,
-              postTime,
-              // status
-            } = doc.data();
-            JobsList.push({
-              id: doc.id,
-              companyId,
-              title,
-              type,
-              gender,
-              salary,
-              education,
-              exprerience,
-              description,
-              postTime,
-              // status
-            });
-          });
-        });
-
-      setJobs(JobsList);
-
-      if (loading) {
-        setLoading(false);
-      }
-      // console.log('Jobs: ', jobs);
-    } catch (e) {
-      console.log(e);
-    }
+    await dispatch(JobsAction.fetchJobsDetailsByCompany());
   };
 
   // Call Fetch Data on Screen Load
@@ -63,25 +27,25 @@ const JobListScreen = () => {
     fetchPost();
   }, []);
 
+  const selectJobHandeler = async id => {
+    await navigation.navigate('Job Details', {jobId: id});
+  };
   return (
-    <View>
-      <Text style={styles.text}>Your Opening Jobs</Text>
+    <View style={styles.container}>
+      {/* <Text style={styles.text}>Opening Jobs</Text> */}
       <FlatList
         data={jobs}
-        keyExtractor={(index, item) => index.id}
+        keyExtractor={(index, item) => index._id}
         renderItem={({item}) => (
-          <View style={styles.container}>
-            <Text>Id : {item.id}</Text>
-            <Text>Company : {item.companyId}</Text>
-            <Text>Title : {item.title}</Text>
-            <Text>Type : {item.type}</Text>
-            <Text>Salary : {item.salary}</Text>
-            <Text>Gender : {item.gender}</Text>
-            <Text>Description : {item.description}</Text>
-            <Text>Education : {item.education}</Text>
-            <Text>Experience : {item.exprerience}</Text>
-            {/* <Text>{item.postTime}</Text> */}
-          </View>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => selectJobHandeler(item._id)}>
+            <Text style={styles.text}>Title: {item.title}</Text>
+            <Text style={styles.text}>
+              Salary : {item.maxSalary} - {item.maxSalary}
+            </Text>
+            <Text style={styles.text}>Experience : {item.experience} Year</Text>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -91,17 +55,29 @@ const JobListScreen = () => {
 export default JobListScreen;
 
 const styles = StyleSheet.create({
+  card: {
+    shadowColor: 'black',
+    shadowOpacity: 0.26,
+    shadowOffset: {width: 0, height: 2},
+    shadowRadius: 8,
+    elevation: 5,
+    borderRadius: 10,
+    backgroundColor: 'white',
+    padding: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10,
+  },
   container: {
     backgroundColor: '#f9fafd',
     flex: 1,
     justifyContent: 'center',
     // alignItems: 'center',
-    padding: 20,
+    // padding: 10,
   },
   text: {
-    textAlign: 'center',
-    fontSize: 28,
-    marginBottom: 30,
+    fontSize: 16,
+    marginBottom: 5,
     color: '#051d5f',
   },
 });

@@ -2,21 +2,38 @@ import React from 'react';
 import {Alert, StyleSheet, Text, View} from 'react-native';
 import FormButton from '../../components/FormButton';
 import FormInput from '../../components/FormInput';
+import {useDispatch} from 'react-redux';
+import * as JobsAction from '../../redux/actions/jobs';
 
 const JobPostFormScreen = ({navigation}) => {
   const [title, setTitle] = React.useState(null);
   const [type, setType] = React.useState(null);
   const [gender, setGender] = React.useState(null);
   const [education, setEducation] = React.useState(null);
-  const [salary, setSalary] = React.useState(null);
-  const [exprerience, setExprerience] = React.useState(null);
+  const [minSalary, setMinSalary] = React.useState(null);
+  const [maxSalary, setMaxSalary] = React.useState(null);
+  const [experience, setExperience] = React.useState(null);
+  const [description, setDescription] = React.useState(null);
 
   // const [address, setAddress] = React.useState(null);
   // const [city, setCity] = React.useState(null);
   // const [state, setState] = React.useState(null);
-  const [description, setDescription] = React.useState(null);
 
-  const postSubmit = () => {};
+  const dispatch = useDispatch();
+
+  const postSubmit = async () => {
+    const data = {
+      title,
+      type,
+      gender,
+      education,
+      minSalary,
+      maxSalary,
+      experience,
+      description,
+    };
+    await dispatch(JobsAction.createJob(data));
+  };
 
   return (
     <View style={styles.container}>
@@ -51,15 +68,22 @@ const JobPostFormScreen = ({navigation}) => {
         autoCorrect={false}
       />
       <FormInput
-        labelValue={salary}
-        onChangeText={Salary => setSalary(Salary)}
-        placeholderText="Salary "
+        labelValue={minSalary}
+        onChangeText={Salary => setMinSalary(Salary)}
+        placeholderText="Min Salary "
         autoCapitalize="none"
         autoCorrect={false}
       />
       <FormInput
-        labelValue={exprerience}
-        onChangeText={Exprerience => setExprerience(Exprerience)}
+        labelValue={maxSalary}
+        onChangeText={Salary => setMaxSalary(Salary)}
+        placeholderText="Max Salary "
+        autoCapitalize="none"
+        autoCorrect={false}
+      />
+      <FormInput
+        labelValue={experience}
+        onChangeText={Experience => setExperience(Experience)}
         placeholderText="Exprerience "
         autoCapitalize="none"
         autoCorrect={false}

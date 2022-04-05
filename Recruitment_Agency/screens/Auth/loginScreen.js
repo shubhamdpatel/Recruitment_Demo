@@ -10,11 +10,8 @@ const LoginScreen = ({navigation, route}) => {
   const [password, setPassword] = React.useState(null);
   const {userType} = route.params;
   const dispach = useDispatch();
-  
-  const user = useSelector(state => state.user.user);
 
-  user.length !==0 && navigation.navigate('Home')
-  const loginHandler = async () => {
+  const loginHandler = async props => {
     await dispach(authAction.signIn(email, password));
   };
 

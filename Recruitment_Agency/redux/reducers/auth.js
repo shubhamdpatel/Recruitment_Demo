@@ -1,14 +1,16 @@
 import {AUTHENTICATION, LOGOUT} from '../actions/auth';
 
 const initialState = {
-  user: [],
+  token: null,
+  user: {},
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case AUTHENTICATION:
-      console.log('my data ', action);
       return {
+        ...state,
+        token: action.token,
         user: action.user,
       };
     case LOGOUT:
