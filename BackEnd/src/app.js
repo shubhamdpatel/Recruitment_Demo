@@ -3,7 +3,7 @@ require("./db/mongooes");
 
 const userRouter = require("./routers/user");
 const companyRouter = require("./routers/company");
-const jobRouter = require("./routers/job");
+const jobRouter = require("./routers/jobs");
 const joberRouter = require("./routers/jober");
 
 const app = express();
