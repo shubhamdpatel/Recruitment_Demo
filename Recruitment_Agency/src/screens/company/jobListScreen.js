@@ -12,14 +12,36 @@ import {useSelector, useDispatch} from 'react-redux';
 import * as JobsAction from '../../redux/actions/jobs';
 
 const JobListScreen = ({navigation}) => {
-  const [loading, setLoading] = React.useState(true);
+  const user = useSelector(state => state.auth.user);
 
-  const jobs = useSelector(state => state.jobs.userPostedJobs);
+  // Get data from Store by user type
+  let jobs;
+  if (user.userType === 'Company')
+    jobs = useSelector(state => state.jobs.userPostedJobs);
+  else jobs = useSelector(state => state.jobs.availableJobs);
+
   const dispatch = useDispatch();
+
+  React.useLayoutEffect(() => {
+    {
+      user.userType === 'Company'
+        ? navigation.setOptions({
+            headerRight: () => (
+              <Button
+                title="Add Job"
+                onPress={() => navigation.navigate('Job Post')}
+              />
+            ),
+          })
+        : navigation.setOptions({
+            headerRight: '',
+          });
+    }
+  }, [navigation]);
 
   // Fetch Data
   const fetchPost = async () => {
-    await dispatch(JobsAction.fetchJobsDetailsByCompany());
+    await dispatch(JobsAction.fetchJobs());
   };
 
   // Call Fetch Data on Screen Load
@@ -27,9 +49,11 @@ const JobListScreen = ({navigation}) => {
     fetchPost();
   }, []);
 
+  // Pass jobId for show single job Data
   const selectJobHandeler = async id => {
     await navigation.navigate('Job Details', {jobId: id});
   };
+
   return (
     <View style={styles.container}>
       {/* <Text style={styles.text}>Opening Jobs</Text> */}
@@ -39,12 +63,14 @@ const JobListScreen = ({navigation}) => {
         renderItem={({item}) => (
           <TouchableOpacity
             style={styles.card}
-            onPress={() => selectJobHandeler(item._id)}>
-            <Text style={styles.text}>Title: {item.title}</Text>
+            onPress={() => selectJobHandeler(item?._id)}>
+            <Text style={styles.text}>Title: {item?.title}</Text>
             <Text style={styles.text}>
-              Salary : {item.maxSalary} - {item.maxSalary}
+              Salary : {item?.maxSalary} - {item?.maxSalary}
             </Text>
-            <Text style={styles.text}>Experience : {item.experience} Year</Text>
+            <Text style={styles.text}>
+              Experience : {item?.experience} Year
+            </Text>
           </TouchableOpacity>
         )}
       />

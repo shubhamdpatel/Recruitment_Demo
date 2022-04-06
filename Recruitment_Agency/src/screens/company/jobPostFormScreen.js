@@ -2,10 +2,10 @@ import React from 'react';
 import {Alert, StyleSheet, Text, View} from 'react-native';
 import FormButton from '../../components/FormButton';
 import FormInput from '../../components/FormInput';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import * as JobsAction from '../../redux/actions/jobs';
 
-const JobPostFormScreen = ({navigation}) => {
+const JobPostFormScreen = ({navigation, route}) => {
   const [title, setTitle] = React.useState(null);
   const [type, setType] = React.useState(null);
   const [gender, setGender] = React.useState(null);
@@ -20,6 +20,11 @@ const JobPostFormScreen = ({navigation}) => {
   // const [state, setState] = React.useState(null);
 
   const dispatch = useDispatch();
+
+  // const {jobId} = route.params;
+  // const selectedJob = useSelector(state =>
+  //   state.jobs.userPostedJobs.find(job => job?._id === jobId),
+  // );
 
   const postSubmit = async () => {
     const data = {
@@ -40,6 +45,7 @@ const JobPostFormScreen = ({navigation}) => {
       <Text style={styles.text}>Post Your Job</Text>
 
       <FormInput
+        // labelValue={selectedJob ? selectedJob.title : title}
         labelValue={title}
         onChangeText={Title => setTitle(Title)}
         placeholderText="Title"
@@ -47,6 +53,7 @@ const JobPostFormScreen = ({navigation}) => {
         autoCorrect={false}
       />
       <FormInput
+        // labelValue={selectedJob ? selectedJob.type : type}
         labelValue={type}
         onChangeText={Type => setType(Type)}
         placeholderText="Type"
@@ -54,6 +61,7 @@ const JobPostFormScreen = ({navigation}) => {
         autoCorrect={false}
       />
       <FormInput
+        // labelValue={selectedJob ? selectedJob.gender : gender}
         labelValue={gender}
         onChangeText={Gender => setGender(Gender)}
         placeholderText="Gender"
@@ -61,6 +69,7 @@ const JobPostFormScreen = ({navigation}) => {
         autoCorrect={false}
       />
       <FormInput
+        // labelValue={selectedJob ? selectedJob.education : education}
         labelValue={education}
         onChangeText={Education => setEducation(Education)}
         placeholderText="Education"
@@ -68,6 +77,7 @@ const JobPostFormScreen = ({navigation}) => {
         autoCorrect={false}
       />
       <FormInput
+        // labelValue={selectedJob ? selectedJob.minSalary : minSalary}
         labelValue={minSalary}
         onChangeText={Salary => setMinSalary(Salary)}
         placeholderText="Min Salary "
@@ -75,6 +85,7 @@ const JobPostFormScreen = ({navigation}) => {
         autoCorrect={false}
       />
       <FormInput
+        // labelValue={selectedJob ? selectedJob.maxSalary : maxSalary}
         labelValue={maxSalary}
         onChangeText={Salary => setMaxSalary(Salary)}
         placeholderText="Max Salary "
@@ -82,6 +93,7 @@ const JobPostFormScreen = ({navigation}) => {
         autoCorrect={false}
       />
       <FormInput
+        // labelValue={selectedJob ? selectedJob.experience : experience}
         labelValue={experience}
         onChangeText={Experience => setExperience(Experience)}
         placeholderText="Exprerience "
@@ -103,6 +115,7 @@ const JobPostFormScreen = ({navigation}) => {
         autoCorrect={false}
       /> */}
       <FormInput
+        // labelValue={selectedJob ? selectedJob.description : description}
         labelValue={description}
         onChangeText={Description => setDescription(Description)}
         placeholderText="Description"

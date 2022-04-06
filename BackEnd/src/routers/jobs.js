@@ -15,7 +15,7 @@ const router = new express.Router();
 router.post("/postJob", auth, CreateJobController);
 
 // Get All Jobs
-router.get("/getJobs", auth, GetAllJobsController);
+router.get("/getAllJobs", auth, GetAllJobsController);
 
 // Get Job by Company
 router.get("/postedJob", auth, GetJobsByCompanyController);

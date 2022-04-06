@@ -9,14 +9,14 @@ export default (state = initialstate, action) => {
   switch (action.type) {
     case GET_JOBS_DETAILS:
       return {
-        ...state,
-        userPostedJobs: action.postedJobs,
+        availableJobs: action.allJobs,
+        userPostedJobs: action.userPostedJobs,
       };
-    case CREATE_JOBS:
-      return {
-        ...state,
-        userPostedJobs: state.userPostedJobs.concat(action.newPostJob),
-      };
+    // case CREATE_JOBS:
+    //   return {
+    //     ...state,
+    //     userPostedJobs: state.userPostedJobs.concat(action.newPostJob),
+    //   };
   }
   return state;
 };

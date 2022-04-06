@@ -6,15 +6,20 @@ export const CREATE_JOBS = 'CREATE_JOBS';
 export const DELETE_JOB = 'DELETE_JOB';
 export const UPDATE_JOBS_DETAILS = 'UPDATE_JOBS_DETAILS';
 
-export const fetchJobsDetailsByCompany = () => {
+export const fetchJobs = () => {
   return async (dispatch, getState) => {
-    const userToken = getState().user.token;
+    const userToken = getState().auth.token;
+    const userId = getState().auth.user._id;
     try {
-      const response = await recruit.get('/job/postedJob', {
+      const response = await recruit.get('/job/getAllJobs', {
         headers: {Authorization: `Bearer ${userToken}`},
       });
       const resData = response.data;
-      dispatch({type: GET_JOBS_DETAILS, postedJobs: resData});
+      dispatch({
+        type: GET_JOBS_DETAILS,
+        allJobs: resData,
+        userPostedJobs: resData.filter(job => job.createdBy === userId),
+      });
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;
@@ -47,7 +52,7 @@ export const createJob = data => {
 
 export const deleteJob = id => {
   return async (dispatch, getState) => {
-    const userToken = getState().user.token;
+    const userToken = getState().auth.token;
     try {
       await recruit
         .delete(`/job/delete/${id}`, {

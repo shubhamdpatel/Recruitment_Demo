@@ -2,7 +2,6 @@ const User = require("../models/user");
 const Company = require("../models/company");
 const Jober = require("../models/jober");
 
-//Registration
 const registerController = async (req, res) => {
   console.log("Register api call...!");
   const user = new User(req.body);
@@ -39,7 +38,6 @@ const registerController = async (req, res) => {
   }
 };
 
-// Login
 const loginController = async (req, res) => {
   console.log("Login api call...!");
   try {
@@ -56,7 +54,6 @@ const loginController = async (req, res) => {
   }
 };
 
-//Logut
 const logoutController = async (req, res) => {
   try {
     req.user.token = req.user.token.filter((token) => {
