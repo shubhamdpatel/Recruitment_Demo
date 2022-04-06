@@ -1,9 +1,9 @@
 import React from 'react';
-import Navigator from './navigation/navigator';
+import Navigator from './src/navigation/navigator';
 
 //Redux
 import {createStore, applyMiddleware} from 'redux';
-import {rootReducer} from './redux/rootReducer';
+import {rootReducer} from './src/redux/rootReducer';
 import {Provider} from 'react-redux';
 import ReduxThunk from 'redux-thunk';
 
