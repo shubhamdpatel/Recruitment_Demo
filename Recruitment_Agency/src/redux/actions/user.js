@@ -48,8 +48,8 @@ export const updateProfile = data => {
         });
       }
       const resData = response.data;
-      console.log(resData);
       dispatch({type: UPDATE_USER, userData: resData});
+      return resData;
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;

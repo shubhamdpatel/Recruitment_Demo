@@ -1,22 +1,17 @@
 import React from 'react';
 import {Alert, StyleSheet, Text, View} from 'react-native';
-import FormButton from '../../components/FormButton';
+import FormButton from '../../components/AppButton';
 import FormInput from '../../components/FormInput';
 import {useDispatch, useSelector} from 'react-redux';
-import * as JobsAction from '../../redux/actions/jobs';
 import * as userAction from '../../redux/actions/user';
 
 const EditProfileScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
+  const EditUser = useSelector(state => state.user.userProfile[0]);
 
-  const {userId} = route.params;
-  const EditUser = useSelector(state =>
-    state.user.userProfile.find(user => user?._id === userId),
-  );
-
-  const [firstName, setFirstName] = React.useState(EditUser.firstName);
-  const [lastName, setLastName] = React.useState(EditUser.lastName);
-  const [mobile, setMobile] = React.useState(EditUser.mobile);
+  const [firstName, setFirstName] = React.useState(EditUser?.firstName);
+  const [lastName, setLastName] = React.useState(EditUser?.lastName);
+  const [mobile, setMobile] = React.useState(EditUser?.mobile);
 
   const updateHandler = async () => {
     const data = {
@@ -24,7 +19,10 @@ const EditProfileScreen = ({navigation, route}) => {
       lastName,
       mobile,
     };
-    await dispatch(userAction.updateProfile(data));
+    // const res = await dispatch(userAction.updateProfile(data));
+    // if (res.success) {
+    //   navigation.navigate('Profile');
+    // }
   };
 
   return (

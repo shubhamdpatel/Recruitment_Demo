@@ -1,6 +1,6 @@
 import React from 'react';
 import {Alert, StyleSheet, Text, View} from 'react-native';
-import FormButton from '../../components/FormButton';
+import FormButton from '../../components/AppButton';
 import FormInput from '../../components/FormInput';
 import {useDispatch, useSelector} from 'react-redux';
 import * as JobsAction from '../../redux/actions/jobs';

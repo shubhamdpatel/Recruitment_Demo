@@ -1,27 +1,55 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Avatar, Button} from 'react-native-paper';
+import Color from '../constant/Color';
 import {windowWidth, windowHeight} from '../utils/Dimentions';
+import AppButton from '../components/AppButton';
 
 const UserSelectScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
+      <View style={styles.avatarContainer}>
+        <Avatar.Image
+          style={styles.avatar}
+          size={150}
+          source={require('../assets/boy.png')}
+        />
+        <Avatar.Image
+          style={styles.avatar}
+          size={150}
+          source={require('../assets/boy.png')}
+        />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <AppButton
+          style={{...styles.button, backgroundColor: Color.accent}}
+          buttonTitle="Get Job"
+          onPress={() => {
+            navigation.navigate('Login', {
+              userType: 'Jober',
+            });
+          }}
+        />
+
+        <AppButton
+          style={{...styles.button, fontSize: 30}}
+          buttonTitle="Hire Staff"
+          onPress={() => {
+            navigation.navigate('Login', {
+              userType: 'Company',
+            });
+          }}
+        />
+      </View>
+
       <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={() => {
+        onPress={() =>
           navigation.navigate('Login', {
-            userType: 'Jober',
-          });
-        }}>
-        <Text style={styles.button}>Jober</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={() => {
-          navigation.navigate('Login', {
-            userType: 'Company',
-          });
-        }}>
-        <Text style={styles.button}>Company</Text>
+            userType: '',
+          })
+        }>
+        <Text style={styles.text}>Existing User? Login</Text>
       </TouchableOpacity>
     </View>
   );
@@ -29,25 +57,35 @@ const UserSelectScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
-    justifyContent: 'center',
+    flex: 1,
+    justifyContent: 'space-evenly',
     alignItems: 'center',
   },
+  avatar: {
+    // flex: 1z,
+    backgroundColor: Color.white,
+    // justifyContent:'center',
+    paddingVertical: '20%',
+    marginHorizontal: '5%',
+  },
+  avatarContainer: {
+    flexDirection: 'row',
+  },
+
   buttonContainer: {
-    marginTop: 5,
-    marginBottom: 10,
-    width: '100%',
-    height: windowHeight / 15,
-    backgroundColor: '#2e64e5',
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 3,
+    flexDirection: 'row',
   },
   button: {
+    width: '35%',
+    height: '35%',
+    justifyContent: 'center',
+    marginHorizontal: '5%',
+  },
+  text: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#ffffff',
+    // fontWeight: 'bold',
+    color: Color.primary,
+    textDecorationLine: 'underline',
   },
 });
 export default UserSelectScreen;

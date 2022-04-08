@@ -1,9 +1,10 @@
 import React from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import FormInput from '../../components/FormInput';
-import FormButton from '../../components/FormButton';
+import AppButton from '../../components/AppButton';
 import {useSelector, useDispatch} from 'react-redux';
 import * as authAction from '../../redux/actions/auth';
+import Color from '../../constant/Color';
 
 const LoginScreen = ({navigation, route}) => {
   const [email, setEmail] = React.useState(null);
@@ -17,34 +18,49 @@ const LoginScreen = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Login Here</Text>
-
-      <FormInput
-        labelValue={email}
-        onChangeText={emailId => setEmail(emailId)}
-        placeholderText="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        autoCorrect={false}
+      <Image
+        style={styles.tinyLogo}
+        source={require('../../assets/menOnDesk.png')}
       />
-      <FormInput
-        labelValue={password}
-        onChangeText={userPassword => setPassword(userPassword)}
-        placeholderText="Password"
-        secureTextEntry={true}
+      <Text style={styles.text}>Login</Text>
+      <View>
+        <FormInput
+          labelText="Email"
+          labelValue={email}
+          onChangeText={emailId => setEmail(emailId)}
+          placeholderText="Enter the email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+        <FormInput
+          labelText="Password"
+          labelValue={password}
+          onChangeText={userPassword => setPassword(userPassword)}
+          placeholderText="Enter the password"
+          secureTextEntry={true}
+        />
+      </View>
+
+      <AppButton
+        style={styles.loginbtn}
+        buttonTitle="Login"
+        onPress={() => loginHandler()}
       />
 
-      <FormButton buttonTitle="Login" onPress={() => loginHandler()} />
-
-      <Text>You Don't Have An Account ?</Text>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('Register', {
-            userType,
-          })
-        }>
-        <Text style={{color: 'blue'}}>Create Account</Text>
-      </TouchableOpacity>
+      <View style={styles.createAC}>
+        <Text>You Don't Have An Account ?</Text>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('Register', {
+              userType,
+            })
+          }>
+          <Text style={{color: Color.primary, textDecorationLine: 'underline'}}>
+            Create Account
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -52,14 +68,31 @@ const LoginScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: '5%',
+  },
+  tinyLogo: {
+    width: '70%',
+    height: '40%',
   },
   text: {
     fontSize: 28,
-    marginBottom: 10,
-    color: '#051d5f',
+    color: Color.primary,
+    marginRight: '80%',
+    marginBottom: '5%',
+  },
+  loginbtn: {
+    width: '30%',
+    height: '5%',
+    justifyContent: 'center',
+    marginLeft: '70%',
+    marginTop: '8%',
+  },
+  createAC: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginBottom: '10%',
   },
 });
 export default LoginScreen;

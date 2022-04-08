@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import FormInput from '../../components/FormInput';
-import FormButton from '../../components/FormButton';
+import FormButton from '../../components/AppButton';
 import {useDispatch} from 'react-redux';
 
 import * as authAction from '../../redux/actions/auth';

@@ -1,18 +1,30 @@
 import React from 'react';
-import {StyleSheet, View, TextInput} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {windowWidth, windowHeight} from '../utils/Dimentions';
+import {TextInput} from 'react-native-paper';
+import Color from '../constant/Color';
 
-const FormInput = ({labelValue, placeholderText, ...props}) => {
+const FormInput = ({labelText, labelValue, placeholderText, ...props}) => {
   return (
     <View style={styles.inputContainer}>
       <TextInput
+        // mode="outlined"
+        label={labelText}
+        underlineColor={Color.primary}
+        value={labelValue}
+        numberOfLines={1}
+        {...props}
+        theme={{colors: {text: Color.primary}}}
+        style={styles.input}
+      />
+      {/* <TextInput
         value={labelValue}
         numberOfLines={1}
         placeholder={placeholderText}
         placeholderTextColor="#666"
         {...props}
         style={styles.input}
-      />
+      /> */}
     </View>
   );
 };
@@ -21,23 +33,12 @@ export default FormInput;
 
 const styles = StyleSheet.create({
   inputContainer: {
-    marginTop: 5,
     marginBottom: 10,
-    width: '100%',
-    height: windowHeight / 18,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 3,
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
   },
   input: {
-    padding: 10,
-    flex: 1,
-    fontSize: 16,
-    color: '#333',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: '100%',
+    backgroundColor: 'white',
+    fontSize: 18,
   },
 });
