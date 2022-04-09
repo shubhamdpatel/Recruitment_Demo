@@ -1,15 +1,18 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   FlatList,
   Button,
   Alert,
   TouchableOpacity,
+  TouchableNativeFeedback,
+  Platform,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import {Card, Title, Paragraph, Text} from 'react-native-paper';
 import * as JobsAction from '../../redux/actions/jobs';
+import Color from '../../constant/Color';
 
 const JobListScreen = ({navigation}) => {
   const user = useSelector(state => state.auth.user);
@@ -29,6 +32,7 @@ const JobListScreen = ({navigation}) => {
             headerRight: () => (
               <Button
                 title="Add Job"
+                color="white"
                 onPress={() => navigation.navigate('Job Post')}
               />
             ),
@@ -54,6 +58,11 @@ const JobListScreen = ({navigation}) => {
     await navigation.navigate('Job Details', {jobId: id});
   };
 
+  let TouchableCmp = TouchableOpacity;
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchableCmp = TouchableNativeFeedback;
+  }
+
   return (
     <View style={styles.container}>
       {/* <Text style={styles.text}>Opening Jobs</Text> */}
@@ -61,17 +70,27 @@ const JobListScreen = ({navigation}) => {
         data={jobs}
         keyExtractor={(index, item) => index._id}
         renderItem={({item}) => (
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => selectJobHandeler(item?._id)}>
-            <Text style={styles.text}>Title: {item?.title}</Text>
-            <Text style={styles.text}>
-              Salary : {item?.maxSalary} - {item?.maxSalary}
-            </Text>
-            <Text style={styles.text}>
-              Experience : {item?.experience} Year
-            </Text>
-          </TouchableOpacity>
+          <TouchableCmp onPress={() => selectJobHandeler(item?._id)}>
+            <Card style={styles.card}>
+              <Card.Content>
+                <View style={styles.card1stView}>
+                  <Title>{item?.title}</Title>
+                  <Title style={{color: '#0080ff', fontSize: 18}}>
+                    Rs 3 - 4 LPA
+                    {/* {item?.maxSalary} - {item?.maxSalary} */}
+                  </Title>
+                </View>
+
+                <View style={styles.card2ndView}>
+                  {/* <Text style={styles.text}>{item?.experience}</Text> */}
+                  <Text style={styles.text}>0-6 Month</Text>
+                  <Text style={styles.text}>{item?.education}</Text>
+                </View>
+
+                <Paragraph>{item?.description}</Paragraph>
+              </Card.Content>
+            </Card>
+          </TouchableCmp>
         )}
       />
     </View>
@@ -83,13 +102,13 @@ export default JobListScreen;
 const styles = StyleSheet.create({
   card: {
     shadowColor: 'black',
-    shadowOpacity: 0.26,
-    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowOffset: {width: 8, height: 5},
     shadowRadius: 8,
     elevation: 5,
     borderRadius: 10,
     backgroundColor: 'white',
-    padding: 20,
+    // padding: 10,
     marginLeft: 10,
     marginRight: 10,
     marginBottom: 10,
@@ -98,12 +117,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9fafd',
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
-    // padding: 10,
+  },
+  card1stView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  card2ndView: {
+    flex: 1,
+    flexDirection: 'row',
   },
   text: {
-    fontSize: 16,
-    marginBottom: 5,
-    color: '#051d5f',
+    padding: 4,
+    backgroundColor: '#e0e0e0',
+    justifyContent: 'center',
+    marginEnd: 10,
+    borderRadius: 3,
+    elevation: 0,
+    color: '#787878',
   },
 });

@@ -1,8 +1,16 @@
 import React from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from 'react-native';
 import FormInput from '../../components/FormInput';
-import FormButton from '../../components/AppButton';
+import AppButton from '../../components/AppButton';
 import {useDispatch} from 'react-redux';
+import Color from '../../constant/Color';
 
 import * as authAction from '../../redux/actions/auth';
 
@@ -12,6 +20,13 @@ const RegisterScreen = ({navigation, route}) => {
   const [confirmPassword, setconfirmPassword] = React.useState(null);
 
   const {userType} = route.params;
+  console.log(userType);
+  let utype;
+  if (userType === 'Jober') {
+    utype = 'Job Seeker';
+  } else if (userType === 'Company') {
+    utype = 'Employer';
+  }
   const dispatch = useDispatch();
 
   const registerUser = async () => {
@@ -20,39 +35,58 @@ const RegisterScreen = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{userType} Register Here</Text>
-
-      <FormInput
-        labelValue={email}
-        onChangeText={emailId => setEmail(emailId)}
-        placeholderText="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        autoCorrect={false}
+      <Image
+        style={styles.image}
+        source={require('../../assets/menOnDesk.png')}
       />
+      <Text style={{...styles.text, fontWeight: 'bold'}}>Register</Text>
+      <Text style={{...styles.text, fontSize: 22}}>For {utype} Only</Text>
 
-      <FormInput
-        labelValue={password}
-        onChangeText={userPassword => setPassword(userPassword)}
-        placeholderText="Password"
-        secureTextEntry={true}
-      />
+      <ScrollView>
+        <View style={styles.input}>
+          <FormInput
+            labelText="Email"
+            labelValue={email}
+            onChangeText={emailId => setEmail(emailId)}
+            placeholderText="Email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
 
-      <FormInput
-        labelValue={confirmPassword}
-        onChangeText={confirmPassword => setconfirmPassword(confirmPassword)}
-        placeholderText="Confirm Password"
-        secureTextEntry={true}
-      />
+          <FormInput
+            labelText="Password"
+            labelValue={password}
+            onChangeText={userPassword => setPassword(userPassword)}
+            placeholderText="Password"
+            secureTextEntry={true}
+          />
 
-      <FormButton buttonTitle="Register" onPress={() => registerUser()} />
+          <FormInput
+            labelText="Confirm Password"
+            labelValue={confirmPassword}
+            onChangeText={confirmPassword =>
+              setconfirmPassword(confirmPassword)
+            }
+            placeholderText="Confirm Password"
+            secureTextEntry={true}
+          />
+        </View>
+
+        <AppButton
+          style={styles.regbtn}
+          buttonTitle="Register"
+          onPress={() => registerUser()}
+        />
+      </ScrollView>
+
       <TouchableOpacity
         onPress={() =>
           navigation.navigate('Login', {
             userType,
           })
         }>
-        <Text style={{color: 'blue'}}>Login</Text>
+        {/* <Text style={{color: 'blue'}}>Login</Text> */}
       </TouchableOpacity>
     </View>
   );
@@ -61,14 +95,30 @@ const RegisterScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
   },
+  image: {
+    width: '70%',
+    height: '40%',
+  },
+  input: {
+    marginTop: '5%',
+  },
   text: {
     fontSize: 28,
-    marginBottom: 10,
-    color: '#051d5f',
+    color: Color.primary,
+    width: '100%',
+    // marginRight: '70%',
+    marginBottom: '2%',
+  },
+  regbtn: {
+    flex: 1,
+    width: '30%',
+    height: Platform.OS === 'ios' ? '5%' : '6%',
+    // justifyContent: 'center',
+    marginLeft: '70%',
+    marginTop: '8%',
   },
 });
 export default RegisterScreen;

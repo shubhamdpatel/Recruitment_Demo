@@ -24,7 +24,7 @@ const UserSelectScreen = ({navigation}) => {
       <View style={styles.buttonContainer}>
         <AppButton
           style={{...styles.button, backgroundColor: Color.accent}}
-          buttonTitle="Get Job"
+          buttonTitle="Job Seeker"
           onPress={() => {
             navigation.navigate('Login', {
               userType: 'Jober',
@@ -34,7 +34,7 @@ const UserSelectScreen = ({navigation}) => {
 
         <AppButton
           style={{...styles.button, fontSize: 30}}
-          buttonTitle="Hire Staff"
+          buttonTitle="Employer"
           onPress={() => {
             navigation.navigate('Login', {
               userType: 'Company',
@@ -76,10 +76,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   button: {
+    // flex:1,
     width: '35%',
-    height: '35%',
+    height: '30%',
     justifyContent: 'center',
     marginHorizontal: '5%',
+    marginTop: '10%',
   },
   text: {
     fontSize: 18,

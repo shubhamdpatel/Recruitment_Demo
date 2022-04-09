@@ -8,6 +8,7 @@ const FormInput = ({labelText, labelValue, placeholderText, ...props}) => {
   return (
     <View style={styles.inputContainer}>
       <TextInput
+      error
         // mode="outlined"
         label={labelText}
         underlineColor={Color.primary}

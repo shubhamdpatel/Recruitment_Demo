@@ -16,6 +16,7 @@ import JobListScreen from '../screens/company/jobListScreen';
 import JobDetailsScreen from '../screens/company/jobDetailsScreen';
 import {useDispatch, useSelector} from 'react-redux';
 import {Init} from '../redux/actions/auth';
+import Color from '../constant/Color';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -26,25 +27,31 @@ const AuthStack = () => {
       <Stack.Screen
         name="User"
         component={UserSelectScreen}
-        options={{
-          headerShown: false,
-        }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Login"
         component={LoginScreen}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen
+        name="Register"
+        component={RegisterScreen}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };
 
-const CompanyTab = () => {
+const HomeTab = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Jobs List" component={JobListScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{headerShown: false}}
+      />
     </Tab.Navigator>
   );
 };
@@ -54,8 +61,14 @@ const MyStack = () => {
     <Stack.Navigator>
       <Stack.Screen
         name="Home"
-        component={CompanyTab}
-        options={{headerShown: false}}
+        component={HomeTab}
+        // options={{
+        //   title: '',
+        //   headerStyle: {
+        //     backgroundColor: Color.primary,
+        //   },
+        // }}
+        // options={{headerShown: false}}
       />
       <Stack.Screen name="Job Post" component={JobPostFormScreen} />
       <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
@@ -64,7 +77,7 @@ const MyStack = () => {
   );
 };
 
-const Navigator = () => {
+const Navigator = ({navigation}) => {
   const [isLoading, setIsLoding] = React.useState(true);
   debugger;
   const token = useSelector(state => state.auth.token);
