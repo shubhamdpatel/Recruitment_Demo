@@ -8,7 +8,7 @@ const ProfileScreen = ({navigation}) => {
   debugger;
   const userType = useSelector(state => state.auth.user.userType);
   const user = useSelector(state => state.user.userProfile[0]);
-  console.log('-=====', user);
+  console.log('User --->', user);
   debugger;
   const dispatch = useDispatch();
   // Fetch Job

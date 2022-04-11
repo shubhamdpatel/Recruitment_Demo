@@ -54,8 +54,14 @@ const JobListScreen = ({navigation}) => {
   }, []);
 
   // Pass jobId for show single job Data
-  const selectJobHandeler = async id => {
-    await navigation.navigate('Job Details', {jobId: id});
+  const selectJobHandeler = async (id, cid) => {
+    {
+      user.userType === 'Jober'
+        ? await navigation.navigate('JC Details', {
+            params: {jobId: id, cid},
+          })
+        : await navigation.navigate('Job Details', {params: {jobId: id, cid}});
+    }
   };
 
   let TouchableCmp = TouchableOpacity;
@@ -70,7 +76,7 @@ const JobListScreen = ({navigation}) => {
         data={jobs}
         keyExtractor={(index, item) => index._id}
         renderItem={({item}) => (
-          <TouchableCmp onPress={() => selectJobHandeler(item?._id)}>
+          <TouchableCmp onPress={() => selectJobHandeler(item?._id, item?.cid)}>
             <Card style={styles.card}>
               <Card.Content>
                 <View style={styles.card1stView}>

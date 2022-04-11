@@ -14,6 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		88A1213227F5C63200EBE838 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 88A1213127F5C63200EBE838 /* GoogleService-Info.plist */; };
+		88A5800528044870008717AC /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 88A5800428044870008717AC /* fonts */; };
 		A5A96352C0F3837B09379A6E /* libPods-Recruitment_Agency-Recruitment_AgencyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6DF20865F3050A68C1DF46E /* libPods-Recruitment_Agency-Recruitment_AgencyTests.a */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 		6BA07284652C4939D5217F46 /* Pods-Recruitment_Agency.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recruitment_Agency.debug.xcconfig"; path = "Target Support Files/Pods-Recruitment_Agency/Pods-Recruitment_Agency.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Recruitment_Agency/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		88A1213127F5C63200EBE838 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		88A5800428044870008717AC /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		929BCF2DE80C26E05C55933F /* Pods-Recruitment_Agency.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recruitment_Agency.release.xcconfig"; path = "Target Support Files/Pods-Recruitment_Agency/Pods-Recruitment_Agency.release.xcconfig"; sourceTree = "<group>"; };
 		9570B54C00DBE62AE1ADB566 /* Pods-Recruitment_Agency-Recruitment_AgencyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recruitment_Agency-Recruitment_AgencyTests.release.xcconfig"; path = "Target Support Files/Pods-Recruitment_Agency-Recruitment_AgencyTests/Pods-Recruitment_Agency-Recruitment_AgencyTests.release.xcconfig"; sourceTree = "<group>"; };
 		C6DF20865F3050A68C1DF46E /* libPods-Recruitment_Agency-Recruitment_AgencyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Recruitment_Agency-Recruitment_AgencyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +90,7 @@
 		13B07FAE1A68108700A75B9A /* Recruitment_Agency */ = {
 			isa = PBXGroup;
 			children = (
+				88A5800428044870008717AC /* fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -125,6 +128,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				EFFFBE15A240DFB3C682549E /* Pods */,
+				C5E06C7C36B340EE8988D87E /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -138,6 +142,13 @@
 				00E356EE1AD99517003FC87E /* Recruitment_AgencyTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C5E06C7C36B340EE8988D87E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		EFFFBE15A240DFB3C682549E /* Pods */ = {
@@ -249,6 +260,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				88A1213227F5C63200EBE838 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				88A5800528044870008717AC /* fonts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

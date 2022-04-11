@@ -4,6 +4,7 @@ const router = new express.Router();
 const {
   registerController,
   companyDetailsController,
+  companyDetailsByIdController,
   allCompanyDetailsController,
   updateController,
 } = require("../controller/company");
@@ -12,6 +13,8 @@ const {
 router.post("/register", auth, registerController);
 // Get Company Detial
 router.get("/getCompanyDetails", auth, companyDetailsController);
+// Get Company Detials By Id
+router.get("/getCompanyDetails/:id", auth, companyDetailsByIdController);
 // Get Company Detials
 router.get("/getAllCompanyDetails", auth, allCompanyDetailsController);
 // Update

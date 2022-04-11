@@ -20,7 +20,18 @@ const companyDetailsController = async (req, res) => {
     const company = await Company.find({ createdBy: req.user._id });
     res.status(200).send(company);
   } catch (error) {
-    res.status(500).send({ Erorr: error });
+    res.status(500).send({ erorr: error });
+  }
+};
+
+const companyDetailsByIdController = async (req, res) => {
+  console.log("Company Details By Id Api Call ");
+  try {
+    const company = await Company.findById({ _id: req.params.id });
+    res.status(200).send(company);
+  } catch (error) {
+    res.status(500).send({ erorr: error });
+    console.log(error);
   }
 };
 
@@ -79,6 +90,7 @@ const updateController = async (req, res) => {
 module.exports = {
   registerController,
   companyDetailsController,
+  companyDetailsByIdController,
   allCompanyDetailsController,
   updateController,
 };
