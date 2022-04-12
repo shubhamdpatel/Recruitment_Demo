@@ -2,8 +2,13 @@ import React from 'react';
 import {View, Text, ScrollView, StyleSheet, Button} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as JobsAction from '../../redux/actions/jobs';
+import Color from '../../constant/Color';
+import AppButton from '../../components/AppButton';
+import {Divider} from 'react-native-paper';
+//Icons
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -24,96 +29,223 @@ const JobDetailsScreen = ({route, navigation}) => {
     );
   }
 
+  React.useLayoutEffect(() => {
+    {
+      user.userType === 'Company'
+        ? navigation.setOptions({
+            headerRight: () => (
+              <View style={{flexDirection: 'row'}}>
+                <Button
+                  title="Edit"
+                  color="white"
+                  onPress={() =>
+                    navigation.navigate('Job Post', {jobId: selectedJob._id})
+                  }
+                />
+                <Button
+                  title="Delete"
+                  color="white"
+                  onPress={() =>
+                    dispatch(JobsAction.deleteJob(selectedJob?._id))
+                  }
+                />
+              </View>
+            ),
+          })
+        : navigation.setOptions({
+            headerRight: '',
+          });
+    }
+  }, [navigation]);
+
   return (
-    <View style={styles.card}>
-      <ScrollView>
+    // <ScrollView style={{padding: 20}}>
+    <View style={{padding: 10}}>
+      <View style={styles.container}>
         <Text style={styles.Jobtitle}>{selectedJob?.title}</Text>
 
-        <View style={{flexDirection: 'row'}}>
-          <Text style={styles.text}>
+        <View style={styles.view2nd}>
+          <Text style={styles.salary}>
             Rs. {selectedJob?.minSalary} - {selectedJob?.maxSalary}
           </Text>
 
-          <Text style={styles.text}>1 Openings</Text>
-          <Text style={styles.text}>
-            <Ionicons name="heart-outline" size={20} color="#4F8EF7" />
-          </Text>
+          <Text style={styles.openings}>1 Openings</Text>
+          <View style={styles.favourite}>
+            <Ionicons name="heart-outline" size={35} color="#4F8EF7" />
+            <Text>Favourite</Text>
+          </View>
+        </View>
+      </View>
+
+      <ScrollView style={{paddingLeft: 10}}>
+        <View style={{marginVertical: '10%'}}>
+          <View style={styles.element}>
+            <View style={{flexDirection: 'row'}}>
+              <Ionicons name="location-outline" size={30} color="#4F8EF7" />
+              <View style={{marginHorizontal: 10}}>
+                <Text style={styles.textHeading}>Location</Text>
+                <Text style={styles.text}>Ahemdabad</Text>
+              </View>
+            </View>
+
+            <View style={{...styles.element, marginHorizontal: '20%'}}>
+              <Ionicons name="briefcase-outline" size={30} color="#4F8EF7" />
+              <View style={{marginHorizontal: 10}}>
+                <Text style={styles.textHeading}>Job Type</Text>
+                <Text style={styles.text}>{selectedJob?.type}</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={{...styles.element, marginVertical: '5%'}}>
+            <View style={{flexDirection: 'row'}}>
+              <FontAwesome name="transgender" size={30} color="#4F8EF7" />
+              <View style={{marginHorizontal: 10}}>
+                <Text style={styles.textHeading}>Gender</Text>
+                <Text style={styles.text}>{selectedJob?.gender}</Text>
+              </View>
+            </View>
+
+            <View style={{...styles.element, marginHorizontal: '20%'}}>
+              <Ionicons name="star-outline" size={30} color="#4F8EF7" />
+              <View style={{marginHorizontal: 10}}>
+                <Text style={styles.textHeading}>Experience</Text>
+                <Text style={styles.text}>{selectedJob?.experience}</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={{...styles.element}}>
+            <View style={{flexDirection: 'row'}}>
+              <FontAwesome name="graduation-cap" size={20} color="#4F8EF7" />
+              <View style={{marginHorizontal: 10}}>
+                <Text style={styles.textHeading}>Education</Text>
+                <Text style={styles.text}>{selectedJob?.education}</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={{...styles.element}}>
+            <View style={{flexDirection: 'row', marginVertical: '5%'}}>
+              <Ionicons name="reader-outline" size={30} color="#4F8EF7" />
+              <View style={{marginHorizontal: 10}}>
+                <Text style={styles.textHeading}>Job Info</Text>
+                <Text style={{...styles.text}}>{selectedJob?.description}</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={{...styles.element}}>
+            <View style={{flexDirection: 'row'}}>
+              <Ionicons name="calendar-outline" size={30} color="#4F8EF7" />
+              <View style={{marginHorizontal: 10}}>
+                <Text style={styles.textHeading}>Job Timing</Text>
+                <Text style={styles.text}>
+                  09:30 To 6:30 | Monday to Friday
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
 
-        <Text style={styles.text}>
-          <Ionicons name="location-outline" size={20} color="#4F8EF7" />
-          Location
-        </Text>
+        <Text style={{fontSize: 19}}>INTERVIEW DETAILS</Text>
+        <Divider />
+        <Divider />
+        <Divider />
+        <Divider />
+        <Divider />
+        <Divider />
+        <Divider />
+        <Divider />
+        <Divider />
 
-        <Text style={styles.text}>
-          <Ionicons name="briefcase-outline" size={25} color="#4F8EF7" />
-          {selectedJob?.type}
-        </Text>
-
-        <Text style={styles.text}>
-          <FontAwesome name="transgender" size={20} color="#4F8EF7" />
-          {selectedJob?.gender}
-        </Text>
-
-        <Text style={styles.text}>
-          <Ionicons name="star-outline" size={25} color="#4F8EF7" />
-          Experience : {selectedJob?.experience}{' '}
-        </Text>
-
-        <Text style={styles.text}>
-          <Entypo name="graduation-cap" size={25} color="#4F8EF7" />
-          Education : {selectedJob?.education}
-        </Text>
-
-        <Text style={styles.text}>
-          <Ionicons name="reader-outline" size={20} color="#4F8EF7" />
-          Description : {selectedJob?.description}
-        </Text>
-
-        <Text>
-          <Ionicons name="calendar-outline" size={20} color="#4F8EF7" />
-          09:30 To 6:30 | Monday to Friday
-        </Text>
-
-        <Text>InterView Details</Text>
-
-        <Text>
-          <MCI name="clock-time-ten-outline" size={20} color="#4F8EF7" />
-          InterviewTime
-        </Text>
-
-        {user.userType === 'Company' ? (
-          <View>
-            <Button
-              title="Edit"
-              onPress={() =>
-                navigation.navigate('Job Post', {jobId: selectedJob._id})
-              }
-            />
-            <Button
-              title="Delete"
-              onPress={() => dispatch(JobsAction.deleteJob(selectedJob?._id))}
-            />
+        <View style={{...styles.element, marginVertical: 15}}>
+          <View style={{flexDirection: 'row'}}>
+            <MCI name="clock-time-ten-outline" size={30} color="#4F8EF7" />
+            <View style={{marginHorizontal: 10}}>
+              <Text style={styles.textHeading}>Interview Time</Text>
+              <Text style={styles.text}>09:30 To 6:30 | Monday to Friday</Text>
+            </View>
           </View>
-        ) : (
-          <Text />
-        )}
+        </View>
+
+        <View style={{...styles.element}}>
+          <View style={{flexDirection: 'row'}}>
+            <Feather name="phone" size={30} color="#4F8EF7" />
+            <View style={{marginHorizontal: 10}}>
+              <Text style={styles.textHeading}>Contact Person</Text>
+              <Text style={styles.text}>Mr. Shubham Patel</Text>
+            </View>
+          </View>
+        </View>
+
+        <View
+          style={{
+            justifyContent: 'center',
+            marginHorizontal: '8%',
+            marginVertical: '15%',
+          }}>
+          <View style={{flexDirection: 'row'}}>
+            <MCI name="message-reply-text" size={30} color="#4F8EF7" />
+            <View style={{marginHorizontal: 10}}>
+              <Text style={{fontSize: 14}}>
+                Don't pay any money to HR if not mentioned in job details
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        <AppButton buttonTitle="Apply For Job" />
       </ScrollView>
     </View>
+    // </ScrollView>
   );
 };
 const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    padding: 20,
+  container: {
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    shadowOffset: {width: 0, height: 0},
+    shadowRadius: 8,
+    elevation: 5,
+    borderRadius: 10,
+    backgroundColor: 'white',
+    padding: 10,
+    marginTop: 15,
+    // marginLeft: 10,
+    // marginRight: 10,
+    // marginBottom: 10,
   },
   Jobtitle: {
-    fontSize: 26,
+    fontSize: 28,
+    fontWeight: '500',
+  },
+  view2nd: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  salary: {
+    fontSize: 17,
+    marginVertical: '5%',
+  },
+  openings: {
+    fontSize: 16,
+    marginVertical: '5%',
+    marginRight: '15%',
+  },
+  favourite: {
+    alignItems: 'center',
+  },
+  element: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  textHeading: {
+    fontSize: 16,
+    fontWeight: '700',
   },
   text: {
-    margin: 5,
     fontSize: 16,
-    color: '#051d5f',
   },
 });
 export default JobDetailsScreen;

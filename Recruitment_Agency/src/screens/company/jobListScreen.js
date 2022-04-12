@@ -13,7 +13,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Card, Title, Paragraph, Text} from 'react-native-paper';
 import * as JobsAction from '../../redux/actions/jobs';
 import Color from '../../constant/Color';
-
+import {Icon} from 'react-native-paper/lib/typescript/components/Avatar/Avatar';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const JobListScreen = ({navigation}) => {
   const user = useSelector(state => state.auth.user);
 
@@ -29,13 +30,7 @@ const JobListScreen = ({navigation}) => {
     {
       user.userType === 'Company'
         ? navigation.setOptions({
-            headerRight: () => (
-              <Button
-                title="Add Job"
-                color="white"
-                onPress={() => navigation.navigate('Job Post')}
-              />
-            ),
+            headerRight: <Ionicons name="home" size={20} color="white" />,
           })
         : navigation.setOptions({
             headerRight: '',

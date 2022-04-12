@@ -20,6 +20,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Init} from '../redux/actions/auth';
 import Color from '../constant/Color';
 
+import Icon from 'react-native-vector-icons/Ionicons';
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
@@ -52,12 +53,48 @@ const HomeTab = () => {
       <BottomTab.Screen
         name="Jobs List"
         component={JobListScreen}
-        options={{headerShown: false}}
+        // options={{headerShown: false}}
+        options={{
+          headerShown: false,
+          tabBarActiveTintColor: Color.primary,
+          tabBarLabel: 'Home',
+          tabBarLabelStyle: {
+            flex: 1,
+            fontSize: 14,
+          },
+          // tabBarLabelPosition: 'beside-icon',
+          tabBarIcon: tabInfo => {
+            return (
+              <Icon
+                name="home"
+                size={24}
+                color={tabInfo.focused ? Color.primary : '#8e8e93'}
+              />
+            );
+          },
+        }}
       />
       <BottomTab.Screen
         name="Profile"
         component={ProfileScreen}
-        options={{headerShown: false}}
+        options={{
+          headerShown: false,
+          tabBarActiveTintColor: Color.primary,
+          tabBarLabel: 'Profile',
+          tabBarLabelStyle: {
+            fontSize: 14,
+          },
+          // tabBarLabelPosition: 'beside-icon',
+          tabBarIcon: tabInfo => {
+            return (
+              <Icon
+                name="person"
+                size={24}
+                color={tabInfo.focused ? Color.primary : '#8e8e93'}
+              />
+            );
+          },
+        }}
       />
     </BottomTab.Navigator>
   );
@@ -71,11 +108,37 @@ const JobCompanyDetailsTab = props => {
         name="Job Details"
         component={JobDetailsScreen}
         initialParams={params}
+        options={{
+          tabBarInactiveTintColor: Color.white,
+          tabBarActiveTintColor: Color.white,
+          tabBarStyle: {
+            backgroundColor: Color.primary,
+          },
+          tabBarLabelStyle: {
+            fontWeight: 'bold',
+          },
+          tabBarIndicatorStyle: {
+            backgroundColor: Color.white,
+          },
+        }}
       />
       <TopTab.Screen
         name="Company Details"
         component={CompanyDetialsScreen}
         initialParams={params}
+        options={{
+          tabBarInactiveTintColor: Color.white,
+          tabBarActiveTintColor: Color.white,
+          tabBarStyle: {
+            backgroundColor: Color.primary,
+          },
+          tabBarLabelStyle: {
+            fontWeight: 'bold',
+          },
+          tabBarIndicatorStyle: {
+            backgroundColor: Color.white,
+          },
+        }}
       />
     </TopTab.Navigator>
   );
@@ -90,22 +153,25 @@ const Navigator = ({navigation}) => {
   console.log('User Type =', user.userType);
   const dispatch = useDispatch();
 
-  const MyStack = () => {
+  const MyStack = ({prop}) => {
     return (
       <Stack.Navigator>
         <Stack.Screen
           name="Home"
           component={HomeTab}
           options={{
-            title: '',
+            title: 'RECRUIT',
             headerStyle: {
               backgroundColor: Color.primary,
             },
+            headerTintColor: Color.white,
             headerRight: () => (
-              <Button
-                title="Add Job"
+              <Icon
+                name="add"
+                size={36}
                 color="white"
-                onPress={() => navigation.navigate('Job Post')}
+                onPress={() => Alert.alert('Not Work')}
+                // onPress={() => prop.navigation.navigate('Job Post')}
               />
             ),
           }}
@@ -114,9 +180,31 @@ const Navigator = ({navigation}) => {
         <Stack.Screen name="Job Post" component={JobPostFormScreen} />
         <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
         {user.userType === 'Jober' ? (
-          <Stack.Screen name="JC Details" component={JobCompanyDetailsTab} />
+          <Stack.Screen
+            name="JC Details"
+            component={JobCompanyDetailsTab}
+            options={{
+              title: 'RECRUIT',
+              headerStyle: {
+                backgroundColor: Color.primary,
+              },
+              headerTintColor: Color.white,
+              headerBackTitleVisible: false,
+            }}
+          />
         ) : (
-          <Stack.Screen name="Job Details" component={JobDetailsScreen} />
+          <Stack.Screen
+            name="Job Details"
+            component={JobDetailsScreen}
+            options={{
+              title: 'RECRUIT',
+              headerStyle: {
+                backgroundColor: Color.primary,
+              },
+              headerTintColor: Color.white,
+              headerBackTitleVisible: false,
+            }}
+          />
         )}
       </Stack.Navigator>
     );
