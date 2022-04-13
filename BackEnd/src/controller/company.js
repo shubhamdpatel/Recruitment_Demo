@@ -55,6 +55,7 @@ const updateController = async (req, res) => {
     "state",
     "country",
     "companyLogo",
+    "website",
   ];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)

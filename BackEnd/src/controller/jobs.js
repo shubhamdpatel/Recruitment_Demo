@@ -70,6 +70,12 @@ const updateController = async (req, res) => {
     "minSalary",
     "maxSalary",
     "experience",
+    "jobTime",
+    "jobDays",
+    "interviewTime",
+    "interviewDays",
+    "contactPersonName",
+    "contactPersonMobile",
     "status",
   ];
   const isValidOperation = updates.every((update) =>

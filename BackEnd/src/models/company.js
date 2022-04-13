@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const companySchema = mongoose.Schema(
   {
     companyName: {
       type: String,
-      default: '',
+      default: "",
     },
     email: {
       type: String,
@@ -14,39 +14,43 @@ const companySchema = mongoose.Schema(
     },
     mobile: {
       type: String,
-      default: '',
+      default: "",
     },
     about: {
       type: String,
-      default: '',
+      default: "",
     },
     address: {
       type: String,
-      default: '',
+      default: "",
     },
     city: {
       type: String,
-      default: '',
+      default: "",
     },
     state: {
       type: String,
-      default: '',
+      default: "",
     },
     country: {
       type: String,
-      default: '',
+      default: "",
     },
     companyLogo: {
       type: String,
-      default: '',
+      default: "",
+    },
+    website: {
+      type: String,
+      default: "",
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
   },
-  {timestamps: true},
+  { timestamps: true }
 );
 
-const Company = mongoose.model('Company', companySchema);
+const Company = mongoose.model("Company", companySchema);
 module.exports = Company;
