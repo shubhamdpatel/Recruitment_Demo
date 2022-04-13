@@ -29,11 +29,15 @@ const CompanyDetialsScreen = ({route}) => {
     <View style={{flex: 1}}>
       <View style={styles.imageCard}>
         {company?.companyLogo ? (
-          <Avatar.Image size={180} source={require('../../assets/boy.png')} />
+          <Avatar.Image
+            size={180}
+            source={require('../../assets/bosleo.png')}
+          />
         ) : (
           <Avatar.Image
             backgroundColor="#e3e3e3"
             size={180}
+            // source={{uri: `../../assets/${company?.companyLogo}`}}
             source={require('../../assets/company.png')}
           />
         )}
@@ -78,7 +82,7 @@ const CompanyDetialsScreen = ({route}) => {
               <View style={{marginHorizontal: 10}}>
                 <Text style={styles.textHeading}>Interview Address </Text>
                 <Text style={styles.text}>
-                  {company?.address}, {company?.city}
+                  {company?.address} {company?.city}
                 </Text>
               </View>
             </View>
@@ -117,16 +121,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-  logo: {
-    height: 100,
-    width: 100,
-  },
   companyName: {
     fontSize: 24,
     fontFamily: 'Cochin',
     textAlign: 'center',
   },
-
   details: {
     flex: 1,
     padding: '5%',

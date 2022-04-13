@@ -15,6 +15,9 @@ import * as JobsAction from '../../redux/actions/jobs';
 import Color from '../../constant/Color';
 import {Icon} from 'react-native-paper/lib/typescript/components/Avatar/Avatar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import ActionButton from 'react-native-action-button';
+import {FAB} from 'react-native-paper';
+
 const JobListScreen = ({navigation}) => {
   const user = useSelector(state => state.auth.user);
 
@@ -67,6 +70,7 @@ const JobListScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       {/* <Text style={styles.text}>Opening Jobs</Text> */}
+
       <FlatList
         data={jobs}
         keyExtractor={(index, item) => index._id}
@@ -94,6 +98,19 @@ const JobListScreen = ({navigation}) => {
           </TouchableCmp>
         )}
       />
+
+      {user.userType === 'Company' && (
+        // <ActionButton
+        //   Icon=''
+        //   buttonColor={Color.accent}
+        //   onPress={() => navigation.navigate('Job Post')}
+        // />
+        <FAB
+          style={styles.fab}
+          icon="plus"
+          onPress={() => navigation.navigate('Job Post')}
+        />
+      )}
     </View>
   );
 };
@@ -136,5 +153,12 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     elevation: 0,
     color: '#787878',
+  },
+  fab: {
+    position: 'absolute',
+    backgroundColor: Color.accent,
+    margin: 20,
+    right: 5,
+    bottom: 20,
   },
 });
