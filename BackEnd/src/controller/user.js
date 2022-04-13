@@ -1,41 +1,63 @@
 const User = require("../models/user");
 const Company = require("../models/company");
 const Jober = require("../models/jober");
+const Otp = require("../models/otp");
+
+const generateOTP = () => {
+  var digits = "0123456789";
+  let OTP = "";
+  for (let i = 0; i < 4; i++) {
+    OTP += digits[Math.floor(Math.random() * 10)];
+  }
+  return OTP;
+};
 
 const registerController = async (req, res) => {
   console.log("Register api call...!");
-  const user = new User(req.body);
+  // const user = new User(req.body);
   // const userType = req.query.UserType;
   // return res.send("register Succefully");
-
+  const otp = await generateOTP();
   try {
-    if (user.userType === "Company") {
-      const company = new Company({
-        email: user.email,
-        createdBy: user._id,
-      });
-
-      await user.save();
-      await company.save();
-      const token = await user.generateAuthToken();
-      res.status(201).send({ user, token });
-    }
-
-    if (user.userType === "Jober") {
-      const jober = new Jober({
-        email: user.email,
-        createdBy: user._id,
-      });
-      await user.save();
-      await jober.save();
-      const token = await user.generateAuthToken();
-      res.status(201).send({ user, token });
-    }
-  } catch (error) {
-    if (error.code === 11000) {
-      res.send({ error: "EMAIL_EXISTS" });
-    }
+    const OTP = new Otp({
+      email: req.body.email,
+      otp: otp,
+    }); 
+    console.log(OTP);
+    await OTP.save();
+    res.status(201).send({ OTP });
+  } catch (e) {
+    console.log(e);
   }
+
+  // try {
+  //   if (user.userType === "Company") {
+  //     const company = new Company({
+  //       email: user.email,
+  //       createdBy: user._id,
+  //     });
+
+  //     await user.save();
+  //     await company.save();
+  //     const token = await user.generateAuthToken();
+  //     res.status(201).send({ user, token });
+  //   }
+
+  //   if (user.userType === "Jober") {
+  //     const jober = new Jober({
+  //       email: user.email,
+  //       createdBy: user._id,
+  //     });
+  //     await user.save();
+  //     await jober.save();
+  //     const token = await user.generateAuthToken();
+  //     res.status(201).send({ user, token });
+  //   }
+  // } catch (error) {
+  //   if (error.code === 11000) {
+  //     res.send({ error: "EMAIL_EXISTS" });
+  //   }
+  // }
 };
 
 const loginController = async (req, res) => {
