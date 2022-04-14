@@ -5,6 +5,7 @@ import * as JobsAction from '../../redux/actions/jobs';
 import Color from '../../constant/Color';
 import AppButton from '../../components/AppButton';
 import {Divider} from 'react-native-paper';
+
 //Icons
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

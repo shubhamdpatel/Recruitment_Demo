@@ -1,6 +1,15 @@
 import React from 'react';
-import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Button,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import * as userAction from '../../redux/actions/user';
+import * as authAction from '../../redux/actions/auth';
 import * as companyAction from '../../redux/actions/company';
 import {Avatar} from 'react-native-paper';
 import Color from '../../constant/Color';
@@ -13,18 +22,39 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CompanyDetialsScreen = ({route}) => {
-  const cid = route?.params.params.cid;
+  const user = useSelector(state => state.user.userProfile[0]);
+  // console.log('Company-->', user);
+  let cid = '';
+  if (user) {
+    cid = user._id;
+  } else {
+    cid = route?.params.params.cid;
+  }
   const dispatch = useDispatch();
 
   const company = useSelector(state => state.company.companyData);
+
+  const fetchUser = async () => {
+    await dispatch(userAction.fetchUser());
+  };
+
   const fetchCompany = async () => {
+    // await dispatch(userAction.fetchUser());
     await dispatch(companyAction.fetchCompanyData(cid));
   };
 
   React.useEffect(() => {
+    fetchUser();
+  }, [dispatch]);
+``
+  React.useEffect(() => {
     fetchCompany();
-  }, []);
+  }, [dispatch]);
 
+  // Logout
+  const logoutHandeler = async () => {
+    await dispatch(authAction.logout());
+  };
   return (
     <View style={{flex: 1}}>
       <View style={styles.imageCard}>
@@ -100,6 +130,18 @@ const CompanyDetialsScreen = ({route}) => {
             </View>
           </View>
         </View>
+        <Button
+          title="Edit"
+          onPress={() => {
+            navigation.navigate('Edit Profile');
+          }}
+        />
+        <Button
+          title="Logout"
+          onPress={() => {
+            logoutHandeler();
+          }}
+        />
       </ScrollView>
     </View>
   );

@@ -22,7 +22,7 @@ const registerController = async (req, res) => {
     const OTP = new Otp({
       email: req.body.email,
       otp: otp,
-    }); 
+    });
     console.log(OTP);
     await OTP.save();
     res.status(201).send({ OTP });

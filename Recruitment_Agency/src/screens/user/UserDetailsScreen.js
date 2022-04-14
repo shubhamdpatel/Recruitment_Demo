@@ -20,6 +20,7 @@ const UserDetailsScreen = ({navigation}) => {
   console.log('User --->', user);
   debugger;
   const dispatch = useDispatch();
+  
   // Fetch Job
   const fetchUser = async () => {
     await dispatch(userAction.fetchUser());

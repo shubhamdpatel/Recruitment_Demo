@@ -1,18 +1,20 @@
 // import 'react-native-gesture-handler';
 import React from 'react';
-import {Button, Alert, View, Text, Image} from 'react-native';
+import {Alert, View} from 'react-native';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+
 import SplashScreen from '../screens/splashScreen';
 import UserSelectScreen from '../screens/userSelectScreen';
 import LoginScreen from '../screens/auth/loginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
+import ProfileScreen from '../screens/profileScreen';
 import UserDetailsScreen from '../screens/user/UserDetailsScreen';
 import EditProfileScreen from '../screens/user/EditProfileScreen';
+
 import JobPostFormScreen from '../screens/company/jobPostFormScreen';
 import JobListScreen from '../screens/company/jobListScreen';
 import JobDetailsScreen from '../screens/company/jobDetailsScreen';
@@ -33,7 +35,6 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
-const Drawer = createDrawerNavigator();
 
 const AuthStack = () => {
   return (
@@ -63,7 +64,6 @@ const HomeTab = () => {
       <BottomTab.Screen
         name="Jobs List"
         component={JobListScreen}
-        // options={{headerShown: false}}
         options={{
           headerShown: false,
           tabBarActiveTintColor: Color.primary,
@@ -72,7 +72,6 @@ const HomeTab = () => {
             flex: 1,
             fontSize: 14,
           },
-          // tabBarLabelPosition: 'beside-icon',
           tabBarIcon: tabInfo => {
             return (
               <MI
@@ -139,7 +138,7 @@ const HomeTab = () => {
 
       <BottomTab.Screen
         name="Profile"
-        component={UserDetailsScreen}
+        component={ProfileScreen}
         options={{
           headerShown: false,
           tabBarActiveTintColor: Color.primary,
@@ -209,17 +208,8 @@ const JobCompanyDetailsTab = props => {
   );
 };
 
-const DraverBar = () => {
-  return (
-    <Drawer.Navigator>
-      <Drawer.Screen name={'Profile'} component={MyStack} />
-    </Drawer.Navigator>
-  );
-};
-
 const Navigator = ({navigation}) => {
   const [isLoading, setIsLoding] = React.useState(true);
-  debugger;
   const token = useSelector(state => state.auth.token);
   const user = useSelector(state => state.auth.user);
   console.log('token =', token);
@@ -239,19 +229,6 @@ const Navigator = ({navigation}) => {
               backgroundColor: Color.primary,
             },
             headerTintColor: Color.white,
-            headerLeft: () => (
-              <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity>
-                  {/*Donute Button Image */}
-                  <Image
-                    source={{
-                      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png',
-                    }}
-                    style={{width: 25, height: 25, marginLeft: 5}}
-                  />
-                </TouchableOpacity>
-              </View>
-            ),
             headerRight: () => (
               <View style={{flexDirection: 'row'}}>
                 <Icon
@@ -279,9 +256,7 @@ const Navigator = ({navigation}) => {
               </View>
             ),
           }}
-          // options={{headerShown: false}}
         />
-        <Stack.Screen name="Drawer" component={DraverBar} />
         <Stack.Screen name="Job Post" component={JobPostFormScreen} />
         <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
         {user.userType === 'Jober' ? (

@@ -7,12 +7,14 @@ import Color from '../constant/Color';
 const FormInput = ({labelText, labelValue, placeholderText, ...props}) => {
   return (
     <View style={styles.inputContainer}>
+     
       <TextInput
         // mode="outlined"
         label={labelText}
         underlineColor={Color.primary}
         value={labelValue}
         numberOfLines={1}
+        placeholder={placeholderText}
         {...props}
         // theme={{colors: {text: Color.primary}}}
         style={styles.input}
