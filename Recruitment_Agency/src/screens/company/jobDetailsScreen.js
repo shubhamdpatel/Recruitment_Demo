@@ -70,7 +70,9 @@ const JobDetailsScreen = ({route, navigation}) => {
             Rs. {selectedJob?.minSalary} - {selectedJob?.maxSalary}
           </Text>
 
-          <Text style={styles.openings}>1 Openings</Text>
+          <Text style={styles.openings}>
+            {selectedJob?.noOfOpenings} Openings
+          </Text>
           <View style={styles.favourite}>
             <Ionicons name="heart-outline" size={35} color="#4F8EF7" />
             <Text>Favourite</Text>
@@ -141,9 +143,7 @@ const JobDetailsScreen = ({route, navigation}) => {
               <Ionicons name="calendar-outline" size={30} color="#4F8EF7" />
               <View style={{marginHorizontal: 10}}>
                 <Text style={styles.textHeading}>Job Timing</Text>
-                <Text style={styles.text}>
-                  09:30 To 6:30 | Monday to Friday
-                </Text>
+                <Text style={styles.text}>{selectedJob?.workTime}</Text>
               </View>
             </View>
           </View>
@@ -165,7 +165,7 @@ const JobDetailsScreen = ({route, navigation}) => {
             <MCI name="clock-time-ten-outline" size={30} color="#4F8EF7" />
             <View style={{marginHorizontal: 10}}>
               <Text style={styles.textHeading}>Interview Time</Text>
-              <Text style={styles.text}>09:30 To 6:30 | Monday to Friday</Text>
+              <Text style={styles.text}>{selectedJob?.interviewTime}</Text>
             </View>
           </View>
         </View>

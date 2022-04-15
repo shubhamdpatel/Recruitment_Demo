@@ -5,9 +5,9 @@ import {TextInput} from 'react-native-paper';
 import Color from '../constant/Color';
 
 const FormInput = ({labelText, labelValue, placeholderText, ...props}) => {
+  const {} = props;
   return (
     <View style={styles.inputContainer}>
-     
       <TextInput
         // mode="outlined"
         label={labelText}
@@ -16,17 +16,8 @@ const FormInput = ({labelText, labelValue, placeholderText, ...props}) => {
         numberOfLines={1}
         placeholder={placeholderText}
         {...props}
-        // theme={{colors: {text: Color.primary}}}
         style={styles.input}
       />
-      {/* <TextInput
-        value={labelValue}
-        numberOfLines={1}
-        placeholder={placeholderText}
-        placeholderTextColor="#666"
-        {...props}
-        style={styles.input}
-      /> */}
     </View>
   );
 };
@@ -41,6 +32,6 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     backgroundColor: 'white',
-    fontSize: 18,
+    fontSize: 17,
   },
 });

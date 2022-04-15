@@ -23,7 +23,7 @@ export const fetchJobs = () => {
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;
-        // Alert.alert(`${errorMsg}`, 'Post the new job.');
+        Alert.alert('Jobs Data Not Fetched!', `${errorMsg}`);
       }
     }
   };
@@ -31,20 +31,20 @@ export const fetchJobs = () => {
 
 export const createJob = data => {
   return async (dispatch, getState) => {
-    const userToken = getState().user.token;
+    const userToken = getState().auth.token;
     try {
       await recruit
         .post('/job/postJob', data, {
           headers: {Authorization: `Bearer ${userToken}`},
         })
         .then(res => {
+          dispatch({type: CREATE_JOBS, newPostJob: res.data});
           Alert.alert('Success !', `${res.data.success}`);
-          // dispatch({type: CREATE_JOBS, newPostJob: res.data});
         });
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;
-        // Alert.alert(`${errorMsg}`, 'Post the new job.');
+        Alert.alert('Job Not Posted!', `${errorMsg}`);
       }
     }
   };

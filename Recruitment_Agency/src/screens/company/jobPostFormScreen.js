@@ -1,35 +1,53 @@
 import React from 'react';
-import {Alert, StyleSheet, Text, View} from 'react-native';
-import FormButton from '../../components/AppButton';
+import {Alert, Platform, StyleSheet, Text, View} from 'react-native';
+import AppButton from '../../components/AppButton';
 import FormInput from '../../components/FormInput';
 import {useDispatch, useSelector} from 'react-redux';
 import * as JobsAction from '../../redux/actions/jobs';
 import {ScrollView} from 'react-native-gesture-handler';
 import {RadioButton} from 'react-native-paper';
+import FabButton from '../../components/FabButton';
+import * as Progress from 'react-native-progress';
 
 const JobPostFormScreen = ({navigation, route}) => {
   const [Next, setNext] = React.useState(true);
   const [isError, setIsError] = React.useState(false);
-  const [title, setTitle] = React.useState(null);
-  const [type, setType] = React.useState(null);
-  const [checked, setChecked] = React.useState('first');
-  const [gender, setGender] = React.useState(null);
-  const [education, setEducation] = React.useState(null);
-  const [minSalary, setMinSalary] = React.useState(null);
-  const [maxSalary, setMaxSalary] = React.useState(null);
-  const [experience, setExperience] = React.useState(null);
-  const [description, setDescription] = React.useState(null);
 
-  // const [address, setAddress] = React.useState(null);
-  // const [city, setCity] = React.useState(null);
-  // const [state, setState] = React.useState(null);
+  const {jobId} = route.params;
+  const selectedJob = useSelector(state =>
+    state.jobs.userPostedJobs.find(job => job?._id === jobId),
+  );
+  console.log('Selected Job', selectedJob);
+
+  const [title, setTitle] = React.useState(selectedJob?.title ?? '');
+  const [type, setType] = React.useState(selectedJob?.type ?? '');
+  const [gender, setGender] = React.useState(selectedJob?.gender ?? '');
+  const [education, setEducation] = React.useState(
+    selectedJob?.education ?? '',
+  );
+  const [experience, setExperience] = React.useState(
+    selectedJob?.experience ?? '',
+  );
+  const [minSalary, setMinSalary] = React.useState(
+    selectedJob?.minSalary ?? '',
+  );
+  const [maxSalary, setMaxSalary] = React.useState(
+    selectedJob?.maxSalary ?? '',
+  );
+  const [openings, setOpenings] = React.useState(
+    selectedJob?.noOfOpenings ?? '',
+  );
+  const [description, setDescription] = React.useState(
+    selectedJob?.description ?? '',
+  );
+  const [workTiming, setWorkTiming] = React.useState(
+    selectedJob?.workTime ?? '',
+  );
+  const [interviewTiming, setInterviewTiming] = React.useState(
+    selectedJob?.interviewTime ?? '',
+  );
 
   const dispatch = useDispatch();
-
-  // const {jobId} = route.params;
-  // const selectedJob = useSelector(state =>
-  //   state.jobs.userPostedJobs.find(job => job?._id === jobId),
-  // );
 
   const onNext = () => {
     setNext(false);
@@ -45,140 +63,179 @@ const JobPostFormScreen = ({navigation, route}) => {
       education,
       minSalary,
       maxSalary,
+      noOfOpenings: openings,
       experience,
       description,
+      workTime: workTiming,
+      interviewTime: interviewTiming,
     };
     await dispatch(JobsAction.createJob(data));
   };
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {Next ? (
-          <View>
-            <Text>I Want To Hire A</Text>
+      {Next ? (
+        <View>
+          <View style={{marginBottom: 20}}>
+            <Progress.Bar
+              progress={0.5}
+              width={Platform.OS === 'ios' ? 390 : 350}
+            />
+          </View>
+          <ScrollView>
+            <Text style={styles.inputName}>I Want To Hire A</Text>
             <FormInput
-              // labelText="I Want To Hire A"
               labelValue={title}
               error={isError}
               onChangeText={Title => setTitle(Title)}
               mode="outlined"
-              // placeholderText="Title"
+              placeholderText="Ex. Company Manager"
               autoCapitalize="none"
               autoCorrect={false}
             />
-            <Text>Job Type</Text>
+            <Text style={styles.inputName}>Job Type</Text>
             <FormInput
-              // labelText="Job Type"
               labelValue={type}
               onChangeText={Type => setType(Type)}
               mode="outlined"
               error={isError}
-              // placeholderText="Type"
+              placeholderText="Ex. Full-Time | Part Time"
               autoCapitalize="none"
               autoCorrect={false}
             />
-            <Text>Gender Of The Staff should Be</Text>
+            <Text style={styles.inputName}>Gender Of The Staff should Be</Text>
             <FormInput
-              // labelText="Gender"
               labelValue={gender}
               onChangeText={Gender => setGender(Gender)}
               mode="outlined"
               error={isError}
-              // placeholderText="Gender"
+              placeholderText="Ex. Male | Female"
               autoCapitalize="none"
               autoCorrect={false}
             />
-            <Text>Education</Text>
+            <Text style={styles.inputName}>
+              Candidate's Minimum Qulification should Be
+            </Text>
             <FormInput
-              labelText="Education"
               labelValue={education}
               onChangeText={Education => setEducation(Education)}
               mode="outlined"
               error={isError}
-              // placeholderText="Education"
+              placeholderText="Ex. Bachlor"
               autoCapitalize="none"
               autoCorrect={false}
             />
-            <FormButton buttonTitle="Next" onPress={onNext} />
+            <Text style={styles.inputName}>
+              Candidate's Minimum Work Experience Must Be
+            </Text>
+            <FormInput
+              labelValue={experience}
+              onChangeText={Experience => setExperience(Experience)}
+              mode="outlined"
+              placeholderText="Ex. 0-6 Months | 1-2 Years"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </ScrollView>
+          <FabButton
+            style={styles.fab}
+            iconName="chevron-right"
+            onPress={onNext}
+          />
+        </View>
+      ) : (
+        <View>
+          <View style={{marginBottom: 20}}>
+            <Progress.Bar
+              progress={1}
+              width={Platform.OS === 'ios' ? 390 : 350}
+            />
           </View>
-        ) : (
-          <View>
+          <ScrollView>
+            <Text style={styles.inputName}>I Will Pay A Monthly Salary Of</Text>
             <View style={{flexDirection: 'row', width: '30%'}}>
               <FormInput
-                labelText="Min Salary"
                 labelValue={minSalary}
-                onChangeText={Salary => setMinSalary(Salary)}
+                onChangeText={MinSalary => setMinSalary(MinSalary)}
                 mode="outlined"
-                // placeholderText="Min Salary "
+                placeholderText="Ex. 10000"
                 autoCapitalize="none"
                 autoCorrect={false}
               />
-
-              <Text
-                style={{
-                  marginTop: '20%',
-                  marginLeft: '20%',
-                  marginRight: '20%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 22,
-                  color: 'gray',
-                }}>
-                to
-              </Text>
-
+              <Text style={styles.to}>to</Text>
               <FormInput
-                labelText="Max Salary"
                 labelValue={maxSalary}
-                onChangeText={Salary => setMaxSalary(Salary)}
+                onChangeText={MaxSalary => setMaxSalary(MaxSalary)}
                 mode="outlined"
-                // placeholderText="Max Salary "
+                placeholderText="Ex. 20000"
                 autoCapitalize="none"
                 autoCorrect={false}
               />
             </View>
+
+            <Text style={styles.inputName}>No Of Staff I Need</Text>
+            <View style={{width: '20%'}}>
+              <FormInput
+                labelValue={openings}
+                onChangeText={Openings => setOpenings(Openings)}
+                mode="outlined"
+                placeholderText="Ex. 5"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+            </View>
+
+            <Text style={styles.inputName}>
+              Describe The Job Role For The Staff
+            </Text>
             <FormInput
-              labelText="Experience"
-              labelValue={experience}
-              onChangeText={Experience => setExperience(Experience)}
+              labelValue={description}
+              onChangeText={Description => setDescription(Description)}
               mode="outlined"
-              // placeholderText="Exprerience "
+              placeholderText="Description"
+              multiline
               autoCapitalize="none"
               autoCorrect={false}
             />
-            <FormButton buttonTitle="Previous" onPress={onPrevious} />
-            <FormButton buttonTitle="Submit" onPress={postSubmit} />
+            <Text style={styles.inputName}>Work Timings</Text>
+            <FormInput
+              labelValue={workTiming}
+              onChangeText={WorkTiming => setWorkTiming(WorkTiming)}
+              mode="outlined"
+              placeholderText="09:30am - 06:30pm | Monday - Saturday"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+            <Text style={styles.inputName}>
+              Interview Would Be Done Between
+            </Text>
+            <FormInput
+              labelValue={interviewTiming}
+              onChangeText={InterviewTiming =>
+                setInterviewTiming(InterviewTiming)
+              }
+              mode="outlined"
+              placeholderText="11:00am - 04:00pm | Monday - Saturday"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </ScrollView>
+
+          <View style={styles.btnContainer}>
+            <FabButton
+              style={styles.onPrevious}
+              color="gray"
+              iconName="chevron-left"
+              onPress={onPrevious}
+            />
+            <AppButton
+              style={styles.submitBtn}
+              buttonTitle={jobId ? 'Update' : 'Submit'}
+              onPress={postSubmit}
+            />
           </View>
-        )}
-        {/* <FormInput
-          labelText="Describe The Job Role For The Staff "
-          labelValue={description}
-          onChangeText={Description => setDescription(Description)}
-          mode="outlined"
-          // placeholderText="Description"
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-        <FormInput
-          labelText="Work Timings"
-          labelValue={description}
-          onChangeText={Description => setDescription(Description)}
-          mode="outlined"
-          placeholderText="09:30am - 06:30pm | Monday - Saturday"
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-        <FormInput
-          labelText="Interview Would Be Done Between"
-          labelValue={description}
-          onChangeText={Description => setDescription(Description)}
-          mode="outlined"
-          placeholderText="11:00am - 04:00pm | Monday - Saturday"
-          autoCapitalize="none"
-          autoCorrect={false}
-        /> */}
-      </ScrollView>
+        </View>
+      )}
     </View>
   );
 };
@@ -190,12 +247,37 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  text: {
-    fontSize: 28,
+  inputName: {
+    fontSize: 18,
     marginBottom: 10,
-    color: '#051d5f',
+    marginTop: 10,
+    // color: '#051d5f',
   },
   input: {
     width: '50%',
+  },
+  to: {
+    marginTop: '20%',
+    marginLeft: '20%',
+    marginRight: '20%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 22,
+    color: 'gray',
+  },
+  fab: {
+    bottom: -70,
+  },
+  btnContainer: {
+    flexDirection: 'row-reverse',
+    marginVertical: 80,
+  },
+  onPrevious: {
+    backgroundColor: 'white',
+    borderWidth: 2,
+    borderColor: 'gray',
+  },
+  submitBtn: {
+    marginHorizontal: -110,
   },
 });

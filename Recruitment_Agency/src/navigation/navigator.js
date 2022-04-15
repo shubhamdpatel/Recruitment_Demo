@@ -257,7 +257,11 @@ const Navigator = ({navigation}) => {
             ),
           }}
         />
-        <Stack.Screen name="Job Post" component={JobPostFormScreen} />
+        <Stack.Screen
+          name="Job Post"
+          component={JobPostFormScreen}
+          options={{title: '', headerBackTitleVisible: false}}
+        />
         <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
         {user.userType === 'Jober' ? (
           <Stack.Screen

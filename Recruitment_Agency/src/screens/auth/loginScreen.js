@@ -25,7 +25,7 @@ const LoginScreen = ({navigation, route}) => {
   } else if (userType === 'Company') {
     utype = 'Employer';
   }
-  
+
   const dispach = useDispatch();
 
   const loginHandler = async props => {
@@ -62,12 +62,11 @@ const LoginScreen = ({navigation, route}) => {
           />
         </View>
 
-        <AppButton
-          style={styles.loginbtn}
-          buttonTitle="Login"
-          onPress={() => loginHandler()}
-        />
+        <View style={styles.loginbtn}>
+          <AppButton buttonTitle="Login" onPress={() => loginHandler()} />
+        </View>
       </ScrollView>
+
       <View style={styles.createAC}>
         <Text>You Don't Have An Account ?</Text>
         <TouchableOpacity
@@ -106,12 +105,14 @@ const styles = StyleSheet.create({
     marginTop: '5%',
   },
   loginbtn: {
-    flex: 1,
-    width: Platform.OS === 'ios' ? '30%' : '30%',
-    height: Platform.OS === 'ios' ? '5%' : '6%',
-    justifyContent: 'center',
-    marginLeft: '70%',
+    // flex: 1,
+    // width: Platform.OS === 'ios' ? '30%' : '30%',
+    // height: Platform.OS === 'ios' ? '2%' : '6%',
+    // justifyContent: 'center',
+    // marginLeft: '50%',
     marginTop: '8%',
+    // backgroundColor: 'red',
+    alignItems: 'flex-end',
   },
   createAC: {
     flex: 1,

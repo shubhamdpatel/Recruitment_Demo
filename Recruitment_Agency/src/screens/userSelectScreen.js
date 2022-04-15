@@ -4,7 +4,6 @@ import {Avatar, Button} from 'react-native-paper';
 import Color from '../constant/Color';
 import {windowWidth, windowHeight} from '../utils/Dimentions';
 import AppButton from '../components/AppButton';
-
 const UserSelectScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
@@ -23,7 +22,7 @@ const UserSelectScreen = ({navigation}) => {
 
       <View style={styles.buttonContainer}>
         <AppButton
-          style={{...styles.button, backgroundColor: Color.accent}}
+          style={{backgroundColor: Color.accent}}
           buttonTitle="Job Seeker"
           onPress={() => {
             navigation.navigate('Login', {
@@ -33,7 +32,6 @@ const UserSelectScreen = ({navigation}) => {
         />
 
         <AppButton
-          style={{...styles.button, fontSize: 30}}
           buttonTitle="Employer"
           onPress={() => {
             navigation.navigate('Login', {
@@ -43,14 +41,14 @@ const UserSelectScreen = ({navigation}) => {
         />
       </View>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() =>
           navigation.navigate('Login', {
             userType: '',
           })
         }>
         <Text style={styles.text}>Existing User? Login</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -58,34 +56,31 @@ const UserSelectScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-evenly',
+    // justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   avatar: {
-    // flex: 1z,
+    // flex: 1,
     backgroundColor: Color.white,
-    // justifyContent:'center',
-    paddingVertical: '20%',
+    justifyContent: 'center',
+    // paddingVertical: '20%',
     marginHorizontal: '5%',
   },
   avatarContainer: {
     flexDirection: 'row',
+    marginVertical: '10%',
   },
 
   buttonContainer: {
     flexDirection: 'row',
-  },
-  button: {
-    // flex:1,
-    width: '35%',
-    height: '30%',
-    justifyContent: 'center',
-    marginHorizontal: '5%',
-    marginTop: '10%',
+    marginVertical: '10%',
+    width: '80%',
+    justifyContent: 'space-between',
   },
   text: {
     fontSize: 18,
-    // fontWeight: 'bold',
+    fontWeight: 'bold',
     color: Color.primary,
     textDecorationLine: 'underline',
   },

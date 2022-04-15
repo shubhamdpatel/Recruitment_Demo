@@ -20,36 +20,44 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import AppButton from '../../components/AppButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CompanyDetialsScreen = ({route}) => {
-  const user = useSelector(state => state.user.userProfile[0]);
+  // const user = useSelector(state => state?.user?.userProfile[0]);
+  AsyncStorage.getItem('user').then(user => {
+    console.log(user.user.user._id);
+    debugger;
+  });
   // console.log('Company-->', user);
+  debugger;
   let cid = '';
   if (user) {
-    cid = user._id;
+    debugger;
+    cid = user?._id;
   } else {
-    cid = route?.params.params.cid;
+    debugger;
+    cid = route?.params?.params?.cid;
   }
   const dispatch = useDispatch();
 
   const company = useSelector(state => state.company.companyData);
-
-  const fetchUser = async () => {
-    await dispatch(userAction.fetchUser());
-  };
+  console.log('======', company);
+  debugger;
 
   const fetchCompany = async () => {
-    // await dispatch(userAction.fetchUser());
-    await dispatch(companyAction.fetchCompanyData(cid));
+    debugger;
+    await dispatch(userAction.fetchUser());
+    const data = await dispatch(companyAction.fetchCompanyData(cid));
+    console.log(data);
+    debugger;
   };
 
   React.useEffect(() => {
-    fetchUser();
-  }, [dispatch]);
-``
-  React.useEffect(() => {
+    debugger;
     fetchCompany();
-  }, [dispatch]);
+  }, []);
 
   // Logout
   const logoutHandeler = async () => {
@@ -72,6 +80,14 @@ const CompanyDetialsScreen = ({route}) => {
           />
         )}
         <Text style={styles.companyName}>{company?.companyName}</Text>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity>
+            <Text>Edit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text>Update</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView>
@@ -156,7 +172,7 @@ const styles = StyleSheet.create({
     // borderRadius: 10,
     backgroundColor: 'white',
     padding: 10,
-    marginBottom: 10,
+    // marginBottom: 10,
     borderBottomStartRadius: 30,
     borderBottomEndRadius: 30,
     height: Platform.OS === 'ios' ? '38%' : '50%',

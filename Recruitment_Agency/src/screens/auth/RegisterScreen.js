@@ -73,11 +73,9 @@ const RegisterScreen = ({navigation, route}) => {
           />
         </View>
 
-        <AppButton
-          style={styles.regbtn}
-          buttonTitle="Register"
-          onPress={() => registerUser()}
-        />
+        <View style={styles.regbtn}>
+          <AppButton buttonTitle="Register" onPress={() => registerUser()} />
+        </View>
       </ScrollView>
 
       <TouchableOpacity
@@ -113,12 +111,13 @@ const styles = StyleSheet.create({
     marginBottom: '2%',
   },
   regbtn: {
-    flex: 1,
-    width: '30%',
-    height: Platform.OS === 'ios' ? '5%' : '6%',
+    // flex: 1,
+    // width: '0%',
+    // height: Platform.OS === 'ios' ? '5%' : '6%',
     // justifyContent: 'center',
-    marginLeft: '70%',
+    // marginLeft: '70%',
     marginTop: '8%',
+    alignItems: 'flex-end',
   },
 });
 export default RegisterScreen;

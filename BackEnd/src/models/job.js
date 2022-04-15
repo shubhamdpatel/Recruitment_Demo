@@ -6,10 +6,6 @@ const jobSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    description: {
-      type: String,
-      required: true,
-    },
     type: {
       type: String,
       required: true,
@@ -22,6 +18,10 @@ const jobSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    experience: {
+      type: String,
+      required: true,
+    },
     minSalary: {
       type: String,
       required: true,
@@ -30,31 +30,19 @@ const jobSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    experience: {
+    noOfOpenings: {
       type: String,
       required: true,
     },
-    jobTime: {
+    description: {
       type: String,
       required: true,
     },
-    jobDays: {
+    workTime: {
       type: String,
       required: true,
     },
     interviewTime: {
-      type: String,
-      required: true,
-    },
-    interviewDays: {
-      type: String,
-      required: true,
-    },
-    contactPersonName: {
-      type: String,
-      required: true,
-    },
-    contactPersonMobile: {
       type: String,
       required: true,
     },

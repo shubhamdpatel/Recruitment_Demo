@@ -16,7 +16,7 @@ import Color from '../../constant/Color';
 import {Icon} from 'react-native-paper/lib/typescript/components/Avatar/Avatar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ActionButton from 'react-native-action-button';
-import {FAB} from 'react-native-paper';
+import FabButton from '../../components/FabButton';
 
 const JobListScreen = ({navigation}) => {
   const user = useSelector(state => state.auth.user);
@@ -69,8 +69,6 @@ const JobListScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.text}>Opening Jobs</Text> */}
-
       <FlatList
         data={jobs}
         keyExtractor={(index, item) => index._id}
@@ -92,7 +90,10 @@ const JobListScreen = ({navigation}) => {
                   <Text style={styles.text}>{item?.education}</Text>
                 </View>
 
-                <Paragraph>{item?.description}</Paragraph>
+                <Paragraph>
+                  {item?.description.slice(0, 50)}
+                  {item?.description.length > 50 ? <Text>...</Text> : ''}
+                </Paragraph>
               </Card.Content>
             </Card>
           </TouchableCmp>
@@ -105,11 +106,15 @@ const JobListScreen = ({navigation}) => {
         //   buttonColor={Color.accent}
         //   onPress={() => navigation.navigate('Job Post')}
         // />
-        <FAB
-          style={styles.fab}
-          icon="plus"
-          onPress={() => navigation.navigate('Job Post')}
+        <FabButton
+          iconName="plus"
+          onPress={() => navigation.navigate('Job Post', {params: {jobId: ''}})}
         />
+        // <FAB
+        //   style={styles.fab}
+        //   icon="plus"
+        //   onPress={() => navigation.navigate('Job Post')}
+        // />
       )}
     </View>
   );
@@ -154,11 +159,11 @@ const styles = StyleSheet.create({
     elevation: 0,
     color: '#787878',
   },
-  fab: {
-    position: 'absolute',
-    backgroundColor: Color.accent,
-    margin: 20,
-    right: 5,
-    bottom: 20,
-  },
+  // fab: {
+  //   position: 'absolute',
+  //   backgroundColor: Color.accent,
+  //   margin: 20,
+  //   right: 5,
+  //   bottom: 20,
+  // },
 });
