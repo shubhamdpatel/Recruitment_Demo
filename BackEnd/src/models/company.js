@@ -12,6 +12,10 @@ const companySchema = mongoose.Schema(
       trim: true,
       lowercase: true,
     },
+    contactPerson: {
+      type: String,
+      default: "",
+    },
     mobile: {
       type: String,
       default: "",
@@ -36,7 +40,7 @@ const companySchema = mongoose.Schema(
       type: String,
       default: "",
     },
-    companyLogo: {
+    companyLogo: {  
       type: String,
       default: "",
     },

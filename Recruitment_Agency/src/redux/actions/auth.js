@@ -14,7 +14,6 @@ export const authentication = (token, user) => {
 };
 
 export const Init = () => {
-  debugger;
   return async dispatch => {
     const loginUser = await AsyncStorage.getItem('user');
     if (loginUser !== null) {

@@ -1,26 +1,16 @@
 import React from 'react';
-import {Button, Text, View, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import * as authAction from '../../redux/actions/auth';
 import * as userAction from '../../redux/actions/user';
-import Color from '../../constant/Color';
+import * as authAction from '../../redux/actions/auth';
+
 import {Avatar} from 'react-native-paper';
+import ProfileCard from '../../components/profileCard';
 
-//Icons
-import MC from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
-
-const UserDetailsScreen = ({navigation}) => {
-  debugger;
-  const userType = useSelector(state => state.auth.user.userType);
+const ProfileScreen = ({navigation}) => {
   const user = useSelector(state => state.user.userProfile[0]);
-  console.log('User --->', user);
-  debugger;
   const dispatch = useDispatch();
-  
+
   // Fetch Job
   const fetchUser = async () => {
     await dispatch(userAction.fetchUser());
@@ -38,24 +28,26 @@ const UserDetailsScreen = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
       <View style={styles.imageCard}>
-        {user ? (
-          <Avatar.Image size={180} source={require('../../assets/boy.png')} />
-        ) : (
+        {user?.companyName ? (
           <Avatar.Image
-            backgroundColor="#e3e3e3"
             size={180}
-            // source={(uri = `../../assets/${}`)}
-            // source={require('../../assets/company.png')}
+            source={require('../../assets/bosleo.png')}
           />
+        ) : (
+          <Avatar.Image source={require('../../assets/boy.png')} size={180} />
         )}
-        <Text style={styles.companyName}>
-          {user?.firstName}
-          {user?.lastName}
-        </Text>
+
+        {user?.companyName ? (
+          <Text style={styles.name}>{user?.companyName}</Text>
+        ) : (
+          <Text style={styles.name}>
+            {user?.firstName} {user?.lastName}
+          </Text>
+        )}
       </View>
 
       <ScrollView>
-        <View style={styles.details}>
+        {/* <View style={styles.details}>
           <View style={{...styles.element}}>
             <View style={{flexDirection: 'row'}}>
               <Ionicons name="mail-outline" size={30} color="#4F8EF7" />
@@ -75,19 +67,30 @@ const UserDetailsScreen = ({navigation}) => {
               </View>
             </View>
           </View>
-        </View>
-        <Button
-          title="Edit"
-          onPress={() => {
-            navigation.navigate('Edit Profile');
-          }}
+        </View> */}
+        <Text style={styles.text}>Personal Info </Text>
+        <ProfileCard
+          title="My Profile"
+          iconName="chevron-right"
+          onPress={() => navigation.navigate('Company Form')}
         />
-        <Button
+        <ProfileCard title="My Resume" iconName="chevron-right" />
+
+        {/* <ProfileCard
+          title="Account Settings"
+          iconName="chevron-right"
+          onPress={() => navigation.navigate('Account Setting')}
+        /> */}
+        <Text style={styles.text}>Account Settings</Text>
+        <ProfileCard
           title="Logout"
+          iconName="logout"
+          delete-outline
           onPress={() => {
             logoutHandeler();
           }}
         />
+        <ProfileCard title="Delete My Account" iconName="delete" />
       </ScrollView>
     </View>
   );
@@ -110,7 +113,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-  companyName: {
+  name: {
     fontSize: 24,
     fontFamily: 'Cochin',
     textAlign: 'center',
@@ -128,8 +131,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   text: {
-    fontSize: 16,
+    padding: 20,
+    fontSize: 18,
   },
 });
 
-export default UserDetailsScreen;
+export default ProfileScreen;

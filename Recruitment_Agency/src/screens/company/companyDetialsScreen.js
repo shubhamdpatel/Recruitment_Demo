@@ -8,7 +8,6 @@ import {
   Button,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import * as userAction from '../../redux/actions/user';
 import * as authAction from '../../redux/actions/auth';
 import * as companyAction from '../../redux/actions/company';
 import {Avatar} from 'react-native-paper';
@@ -16,46 +15,21 @@ import Color from '../../constant/Color';
 
 //Icons
 import MC from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import AppButton from '../../components/AppButton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CompanyDetialsScreen = ({route}) => {
-  // const user = useSelector(state => state?.user?.userProfile[0]);
-  AsyncStorage.getItem('user').then(user => {
-    console.log(user.user.user._id);
-    debugger;
-  });
-  // console.log('Company-->', user);
-  debugger;
-  let cid = '';
-  if (user) {
-    debugger;
-    cid = user?._id;
-  } else {
-    debugger;
-    cid = route?.params?.params?.cid;
-  }
   const dispatch = useDispatch();
+  const cid = route?.params?.params?.cid;
 
   const company = useSelector(state => state.company.companyData);
-  console.log('======', company);
-  debugger;
 
   const fetchCompany = async () => {
-    debugger;
-    await dispatch(userAction.fetchUser());
-    const data = await dispatch(companyAction.fetchCompanyData(cid));
-    console.log(data);
-    debugger;
+    await dispatch(companyAction.fetchCompanyData(cid));
   };
 
   React.useEffect(() => {
-    debugger;
     fetchCompany();
   }, []);
 
@@ -63,6 +37,7 @@ const CompanyDetialsScreen = ({route}) => {
   const logoutHandeler = async () => {
     await dispatch(authAction.logout());
   };
+
   return (
     <View style={{flex: 1}}>
       <View style={styles.imageCard}>
@@ -80,14 +55,6 @@ const CompanyDetialsScreen = ({route}) => {
           />
         )}
         <Text style={styles.companyName}>{company?.companyName}</Text>
-        <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity>
-            <Text>Edit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text>Update</Text>
-          </TouchableOpacity>
-        </View>
       </View>
 
       <ScrollView>
@@ -146,18 +113,6 @@ const CompanyDetialsScreen = ({route}) => {
             </View>
           </View>
         </View>
-        <Button
-          title="Edit"
-          onPress={() => {
-            navigation.navigate('Edit Profile');
-          }}
-        />
-        <Button
-          title="Logout"
-          onPress={() => {
-            logoutHandeler();
-          }}
-        />
       </ScrollView>
     </View>
   );

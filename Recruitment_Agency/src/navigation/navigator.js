@@ -11,9 +11,10 @@ import SplashScreen from '../screens/splashScreen';
 import UserSelectScreen from '../screens/userSelectScreen';
 import LoginScreen from '../screens/auth/loginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
-import ProfileScreen from '../screens/profileScreen';
-import UserDetailsScreen from '../screens/user/UserDetailsScreen';
-import EditProfileScreen from '../screens/user/EditProfileScreen';
+// import ProfileScreen from '../screens/profileScreen';
+import ProfileScreen from '../screens/user/profileScreen';
+import EditProfileScreen from '../screens/user/editProfileScreen';
+import AccountSettingScreen from '../screens/user/accountSettingScreen';
 
 import JobPostFormScreen from '../screens/company/jobPostFormScreen';
 import JobListScreen from '../screens/company/jobListScreen';
@@ -31,6 +32,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CompanyFormScreen from '../screens/company/companyFormScreen';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -55,110 +58,6 @@ const AuthStack = () => {
         options={{headerShown: false}}
       />
     </Stack.Navigator>
-  );
-};
-
-const HomeTab = () => {
-  return (
-    <BottomTab.Navigator>
-      <BottomTab.Screen
-        name="Jobs List"
-        component={JobListScreen}
-        options={{
-          headerShown: false,
-          tabBarActiveTintColor: Color.primary,
-          tabBarLabel: 'Job',
-          tabBarLabelStyle: {
-            flex: 1,
-            fontSize: 14,
-          },
-          tabBarIcon: tabInfo => {
-            return (
-              <MI
-                name="work"
-                size={24}
-                color={tabInfo.focused ? Color.primary : '#8e8e93'}
-              />
-            );
-          },
-        }}
-      />
-      <BottomTab.Screen
-        name="Message"
-        component={MessageScreen}
-        // options={{headerShown: false}}
-        options={{
-          headerShown: false,
-          tabBarActiveTintColor: Color.primary,
-          tabBarLabel: 'Messages',
-          tabBarLabelStyle: {
-            flex: 1,
-            fontSize: 14,
-          },
-          tabBarBadge: 2,
-          tabBarBadgeStyle: {
-            backgroundColor: Color.primary,
-          },
-          // tabBarLabelPosition: 'beside-icon',
-          tabBarIcon: tabInfo => {
-            return (
-              <MI
-                name="messenger"
-                size={25}
-                color={tabInfo.focused ? Color.primary : '#8e8e93'}
-              />
-            );
-          },
-        }}
-      />
-      <BottomTab.Screen
-        name="Favourite"
-        component={FavouriteScreen}
-        // options={{headerShown: false}}
-        options={{
-          headerShown: false,
-          tabBarActiveTintColor: Color.primary,
-          tabBarLabel: 'Favourite',
-          tabBarLabelStyle: {
-            flex: 1,
-            fontSize: 14,
-          },
-          // tabBarLabelPosition: 'beside-icon',
-          tabBarIcon: tabInfo => {
-            return (
-              <Icon
-                name="heart"
-                size={25}
-                color={tabInfo.focused ? Color.primary : '#8e8e93'}
-              />
-            );
-          },
-        }}
-      />
-
-      <BottomTab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          headerShown: false,
-          tabBarActiveTintColor: Color.primary,
-          tabBarLabel: 'Me',
-          tabBarLabelStyle: {
-            fontSize: 14,
-          },
-          // tabBarLabelPosition: 'beside-icon',
-          tabBarIcon: tabInfo => {
-            return (
-              <Icon
-                name="person"
-                size={24}
-                color={tabInfo.focused ? Color.primary : '#8e8e93'}
-              />
-            );
-          },
-        }}
-      />
-    </BottomTab.Navigator>
   );
 };
 
@@ -216,8 +115,114 @@ const Navigator = ({navigation}) => {
   console.log('User Type =', user.userType);
   const dispatch = useDispatch();
 
-  const MyStack = props => {
-    console.log('===', props);
+  const HomeTab = () => {
+    const params = {userId: user._id};
+    // console.log('params', params);
+    return (
+      <BottomTab.Navigator>
+        <BottomTab.Screen
+          name="Jobs List"
+          component={JobListScreen}
+          options={{
+            headerShown: false,
+            tabBarActiveTintColor: Color.primary,
+            tabBarLabel: 'Job',
+            tabBarLabelStyle: {
+              flex: 1,
+              fontSize: 14,
+            },
+            tabBarIcon: tabInfo => {
+              return (
+                <MI
+                  name="work"
+                  size={24}
+                  color={tabInfo.focused ? Color.primary : '#8e8e93'}
+                />
+              );
+            },
+          }}
+        />
+        <BottomTab.Screen
+          name="Message"
+          component={MessageScreen}
+          // options={{headerShown: false}}
+          options={{
+            headerShown: false,
+            tabBarActiveTintColor: Color.primary,
+            tabBarLabel: 'Messages',
+            tabBarLabelStyle: {
+              flex: 1,
+              fontSize: 14,
+            },
+            tabBarBadge: 2,
+            tabBarBadgeStyle: {
+              backgroundColor: Color.primary,
+            },
+            // tabBarLabelPosition: 'beside-icon',
+            tabBarIcon: tabInfo => {
+              return (
+                <MI
+                  name="messenger"
+                  size={25}
+                  color={tabInfo.focused ? Color.primary : '#8e8e93'}
+                />
+              );
+            },
+          }}
+        />
+        <BottomTab.Screen
+          name="Favourite"
+          component={FavouriteScreen}
+          // options={{headerShown: false}}
+          options={{
+            headerShown: false,
+            tabBarActiveTintColor: Color.primary,
+            tabBarLabel: 'Favourite',
+            tabBarLabelStyle: {
+              flex: 1,
+              fontSize: 14,
+            },
+            // tabBarLabelPosition: 'beside-icon',
+            tabBarIcon: tabInfo => {
+              return (
+                <Icon
+                  name="heart"
+                  size={25}
+                  color={tabInfo.focused ? Color.primary : '#8e8e93'}
+                />
+              );
+            },
+          }}
+        />
+
+        <BottomTab.Screen
+          name="Profile"
+          component={ProfileScreen}
+          initialParams={params}
+          options={{
+            headerShown: false,
+            tabBarActiveTintColor: Color.primary,
+            tabBarLabel: 'Me',
+            tabBarLabelStyle: {
+              fontSize: 14,
+            },
+            // tabBarLabelPosition: 'beside-icon',
+            tabBarIcon: tabInfo => {
+              return (
+                <Icon
+                  name="person"
+                  size={24}
+                  color={tabInfo.focused ? Color.primary : '#8e8e93'}
+                />
+              );
+            },
+          }}
+        />
+      </BottomTab.Navigator>
+    );
+  };
+
+  const MyStack = () => {
     return (
       <Stack.Navigator>
         <Stack.Screen
@@ -263,6 +268,24 @@ const Navigator = ({navigation}) => {
           options={{title: '', headerBackTitleVisible: false}}
         />
         <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
+        <Stack.Screen
+          name="Account Setting"
+          component={AccountSettingScreen}
+          options={{
+            title: '',
+            headerBackTitleVisible: false,
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="Company Form"
+          component={CompanyFormScreen}
+          options={{
+            title: '',
+            headerBackTitleVisible: false,
+            headerShown: true,
+          }}
+        />
         {user.userType === 'Jober' ? (
           <Stack.Screen
             name="JC Details"
@@ -295,13 +318,11 @@ const Navigator = ({navigation}) => {
   };
 
   const init = async () => {
-    debugger;
     await dispatch(Init());
     setIsLoding(false);
   };
 
   React.useEffect(() => {
-    debugger;
     setTimeout(() => {
       setIsLoding(false);
     }, 1000);

@@ -60,8 +60,8 @@ const JobDetailsScreen = ({route, navigation}) => {
   }, [navigation]);
 
   return (
-    // <ScrollView style={{padding: 20}}>
-    <View style={{padding: 10}}>
+    // <ScrollView style={{padding: 20}} showsVerticalScrollIndicator={false}>
+    <View style={{padding: 20}}>
       <View style={styles.container}>
         <Text style={styles.Jobtitle}>{selectedJob?.title}</Text>
 
@@ -80,10 +80,12 @@ const JobDetailsScreen = ({route, navigation}) => {
         </View>
       </View>
 
-      <ScrollView style={{paddingLeft: 10}}>
+      <ScrollView
+        style={{paddingHorizontal: 10}}
+        showsVerticalScrollIndicator={false}>
         <View style={{marginVertical: '10%'}}>
           <View style={styles.element}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', width: '55%'}}>
               <Ionicons name="location-outline" size={30} color="#4F8EF7" />
               <View style={{marginHorizontal: 10}}>
                 <Text style={styles.textHeading}>Location</Text>
@@ -91,7 +93,7 @@ const JobDetailsScreen = ({route, navigation}) => {
               </View>
             </View>
 
-            <View style={{...styles.element, marginHorizontal: '20%'}}>
+            <View style={{flexDirection: 'row', width: '50%'}}>
               <Ionicons name="briefcase-outline" size={30} color="#4F8EF7" />
               <View style={{marginHorizontal: 10}}>
                 <Text style={styles.textHeading}>Job Type</Text>
@@ -101,7 +103,7 @@ const JobDetailsScreen = ({route, navigation}) => {
           </View>
 
           <View style={{...styles.element, marginVertical: '5%'}}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', width: '55%'}}>
               <FontAwesome name="transgender" size={30} color="#4F8EF7" />
               <View style={{marginHorizontal: 10}}>
                 <Text style={styles.textHeading}>Gender</Text>
@@ -109,7 +111,7 @@ const JobDetailsScreen = ({route, navigation}) => {
               </View>
             </View>
 
-            <View style={{...styles.element, marginHorizontal: '20%'}}>
+            <View style={{flexDirection: 'row', width: '50%'}}>
               <Ionicons name="star-outline" size={30} color="#4F8EF7" />
               <View style={{marginHorizontal: 10}}>
                 <Text style={styles.textHeading}>Experience</Text>
@@ -133,7 +135,9 @@ const JobDetailsScreen = ({route, navigation}) => {
               <Ionicons name="reader-outline" size={30} color="#4F8EF7" />
               <View style={{marginHorizontal: 10}}>
                 <Text style={styles.textHeading}>Job Info</Text>
-                <Text style={{...styles.text}}>{selectedJob?.description}</Text>
+                <Text style={{...styles.text, marginHorizontal: 20}}>
+                  {selectedJob?.description}
+                </Text>
               </View>
             </View>
           </View>
@@ -195,8 +199,9 @@ const JobDetailsScreen = ({route, navigation}) => {
             </View>
           </View>
         </View>
-
-        <AppButton buttonTitle="Apply For Job" />
+        <View style={{paddingBottom: 100}}>
+          <AppButton buttonTitle="Apply For Job" />
+        </View>
       </ScrollView>
     </View>
     // </ScrollView>
