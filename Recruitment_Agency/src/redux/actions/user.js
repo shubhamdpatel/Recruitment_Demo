@@ -5,8 +5,8 @@ export const UPDATE_USER = 'UPDATE_USER';
 
 export const fetchUser = () => {
   return async (dispatch, getState) => {
-    const userToken = getState().auth.token;
-    const userType = getState().auth.user.userType;
+    const userToken = getState().auth?.token;
+    const userType = getState().auth?.user?.userType;
     const header = {Authorization: `Bearer ${userToken}`};
     let response;
     try {
@@ -34,7 +34,7 @@ export const fetchUser = () => {
 export const updateProfile = data => {
   return async (dispatch, getState) => {
     const userToken = getState().auth.token;
-    const userType = getState().auth.user.userType;
+    const userType = getState().auth?.user?.userType;
     const header = {Authorization: `Bearer ${userToken}`};
     let response;
     try {
@@ -47,7 +47,7 @@ export const updateProfile = data => {
           headers: header,
         });
       }
-      const resData = response.data;
+      const resData = response?.data;
       dispatch({type: UPDATE_USER, userData: resData});
       return resData;
     } catch (error) {

@@ -3,8 +3,6 @@ import {
   StyleSheet,
   View,
   FlatList,
-  Button,
-  Alert,
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform,
@@ -12,10 +10,7 @@ import {
 import {useSelector, useDispatch} from 'react-redux';
 import {Card, Title, Paragraph, Text} from 'react-native-paper';
 import * as JobsAction from '../../redux/actions/jobs';
-import Color from '../../constant/Color';
-import {Icon} from 'react-native-paper/lib/typescript/components/Avatar/Avatar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import ActionButton from 'react-native-action-button';
 import FabButton from '../../components/FabButton';
 
 const JobListScreen = ({navigation}) => {
@@ -23,7 +18,7 @@ const JobListScreen = ({navigation}) => {
 
   // Get data from Store by user type
   let jobs;
-  if (user.userType === 'Company')
+  if (user?.userType === 'Company')
     jobs = useSelector(state => state.jobs.userPostedJobs);
   else jobs = useSelector(state => state.jobs.availableJobs);
 
@@ -31,7 +26,7 @@ const JobListScreen = ({navigation}) => {
 
   React.useLayoutEffect(() => {
     {
-      user.userType === 'Company'
+      user?.userType === 'Company'
         ? navigation.setOptions({
             headerRight: <Ionicons name="home" size={20} color="white" />,
           })
@@ -54,7 +49,7 @@ const JobListScreen = ({navigation}) => {
   // Pass jobId for show single job Data
   const selectJobHandeler = async (id, cid) => {
     {
-      user.userType === 'Jober'
+      user?.userType === 'Jober'
         ? await navigation.navigate('JC Details', {
             params: {jobId: id, cid},
           })
@@ -65,6 +60,29 @@ const JobListScreen = ({navigation}) => {
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
+  }
+
+  if (jobs.length === 0) {
+    return (
+      <View style={{flex: 1}}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text>Data Not Available, Please Start to Post Job !</Text>
+        </View>
+        <View>
+          <FabButton
+            iconName="plus"
+            onPress={() =>
+              navigation.navigate('Job Post', {params: {jobId: ''}})
+            }
+          />
+        </View>
+      </View>
+    );
   }
 
   return (
@@ -100,21 +118,11 @@ const JobListScreen = ({navigation}) => {
         )}
       />
 
-      {user.userType === 'Company' && (
-        // <ActionButton
-        //   Icon=''
-        //   buttonColor={Color.accent}
-        //   onPress={() => navigation.navigate('Job Post')}
-        // />
+      {user?.userType === 'Company' && (
         <FabButton
           iconName="plus"
           onPress={() => navigation.navigate('Job Post', {params: {jobId: ''}})}
         />
-        // <FAB
-        //   style={styles.fab}
-        //   icon="plus"
-        //   onPress={() => navigation.navigate('Job Post')}
-        // />
       )}
     </View>
   );
@@ -159,11 +167,4 @@ const styles = StyleSheet.create({
     elevation: 0,
     color: '#787878',
   },
-  // fab: {
-  //   position: 'absolute',
-  //   backgroundColor: Color.accent,
-  //   margin: 20,
-  //   right: 5,
-  //   bottom: 20,
-  // },
 });

@@ -12,6 +12,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const JobDetailsScreen = ({route, navigation}) => {
   const jobId = route?.params.params.jobId;
@@ -36,15 +37,18 @@ const JobDetailsScreen = ({route, navigation}) => {
         ? navigation.setOptions({
             headerRight: () => (
               <View style={{flexDirection: 'row'}}>
-                <Button
-                  title="Edit"
+                <MCI
+                  name="circle-edit-outline"
+                  style={{marginHorizontal: 20}}
+                  size={30}
                   color="white"
                   onPress={() =>
                     navigation.navigate('Job Post', {jobId: selectedJob._id})
                   }
                 />
-                <Button
-                  title="Delete"
+                <MCI
+                  name="delete-outline"
+                  size={30}
                   color="white"
                   onPress={() =>
                     dispatch(JobsAction.deleteJob(selectedJob?._id))
@@ -73,10 +77,10 @@ const JobDetailsScreen = ({route, navigation}) => {
           <Text style={styles.openings}>
             {selectedJob?.noOfOpenings} Openings
           </Text>
-          <View style={styles.favourite}>
+          <TouchableOpacity style={styles.favourite}>
             <Ionicons name="heart-outline" size={35} color="#4F8EF7" />
             <Text>Favourite</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -188,7 +192,7 @@ const JobDetailsScreen = ({route, navigation}) => {
           style={{
             justifyContent: 'center',
             marginHorizontal: '8%',
-            marginVertical: '15%',
+            marginVertical: '10%',
           }}>
           <View style={{flexDirection: 'row'}}>
             <MCI name="message-reply-text" size={30} color="#4F8EF7" />
@@ -200,7 +204,7 @@ const JobDetailsScreen = ({route, navigation}) => {
           </View>
         </View>
         <View style={{paddingBottom: 100}}>
-          <AppButton buttonTitle="Apply For Job" />
+          <AppButton buttonTitle="Apply For Job" style={{width: '100%'}} />
         </View>
       </ScrollView>
     </View>

@@ -11,7 +11,7 @@ import SplashScreen from '../screens/splashScreen';
 import UserSelectScreen from '../screens/userSelectScreen';
 import LoginScreen from '../screens/auth/loginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
-// import ProfileScreen from '../screens/profileScreen';
+
 import ProfileScreen from '../screens/user/profileScreen';
 import EditProfileScreen from '../screens/user/editProfileScreen';
 import AccountSettingScreen from '../screens/user/accountSettingScreen';
@@ -19,10 +19,15 @@ import AccountSettingScreen from '../screens/user/accountSettingScreen';
 import JobPostFormScreen from '../screens/company/jobPostFormScreen';
 import JobListScreen from '../screens/company/jobListScreen';
 import JobDetailsScreen from '../screens/company/jobDetailsScreen';
+
 import CompanyDetialsScreen from '../screens/company/companyDetialsScreen';
+import CompanyFormScreen from '../screens/company/companyFormScreen';
+import CompanyProfileScreen from '../screens/company/companyProfileScreen';
+
 import NotificationScreen from '../screens/company/notificationScreen';
 import FavouriteScreen from '../screens/company/favouriteScreen';
 import MessageScreen from '../screens/company/messageScreen';
+
 import {useDispatch, useSelector} from 'react-redux';
 import {Init} from '../redux/actions/auth';
 import Color from '../constant/Color';
@@ -33,7 +38,6 @@ import MI from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CompanyFormScreen from '../screens/company/companyFormScreen';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -112,11 +116,11 @@ const Navigator = ({navigation}) => {
   const token = useSelector(state => state.auth.token);
   const user = useSelector(state => state.auth.user);
   console.log('token =', token);
-  console.log('User Type =', user.userType);
+  console.log('User Type =', user?.userType);
   const dispatch = useDispatch();
 
   const HomeTab = () => {
-    const params = {userId: user._id};
+    const params = {userId: user?._id};
     // console.log('params', params);
     return (
       <BottomTab.Navigator>
@@ -265,9 +269,28 @@ const Navigator = ({navigation}) => {
         <Stack.Screen
           name="Job Post"
           component={JobPostFormScreen}
-          options={{title: '', headerBackTitleVisible: false}}
+          options={{
+            title: '',
+            headerBackTitleVisible: false,
+            leftButton: 'back',
+            // rightButton:{
+            //   <Icon
+            //     style={{marginHorizontal: 20}}
+            //     name="search"
+            //     size={30}
+            //     color="black"
+            //     onPress={() => Alert.alert('Not Work')}
+            //     // onPress={({notification}) => navigation.navigate('Job Post')}
+            //   />;
+            // },
+          }}
         />
         <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
+        <Stack.Screen
+          name="Company Profile"
+          component={CompanyProfileScreen}
+          options={{title: '', headerBackTitleVisible: false}}
+        />
         <Stack.Screen
           name="Account Setting"
           component={AccountSettingScreen}
@@ -278,7 +301,7 @@ const Navigator = ({navigation}) => {
           }}
         />
         <Stack.Screen
-          name="Company Form"
+          name="Update Company"
           component={CompanyFormScreen}
           options={{
             title: '',
@@ -286,7 +309,7 @@ const Navigator = ({navigation}) => {
             headerShown: true,
           }}
         />
-        {user.userType === 'Jober' ? (
+        {user?.userType === 'Jober' ? (
           <Stack.Screen
             name="JC Details"
             component={JobCompanyDetailsTab}

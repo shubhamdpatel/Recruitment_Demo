@@ -2,17 +2,43 @@ import React from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
+import {useDispatch, useSelector} from 'react-redux';
+import * as userAction from '../../redux/actions/user';
 
 const CompanyFormScreen = () => {
-  const [companyName, setCompanyName] = React.useState('');
-  const [contactPerson, setContactPerson] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [mobile, setMobile] = React.useState('');
-  const [about, setAbout] = React.useState('');
-  const [address, setAddress] = React.useState('');
-  const [state, setState] = React.useState('');
-  const [country, setCountry] = React.useState('');
-  const [website, setWebsite] = React.useState('');
+  // const emailId = useSelector(state => state.user.userProfile[0].email);
+  const company = useSelector(state => state.user.userProfile[0]);
+
+  const [companyName, setCompanyName] = React.useState(
+    company.companyName ?? '',
+  );
+  const [contactPerson, setContactPerson] = React.useState(
+    company.contactPerson ?? '',
+  );
+  const [email, setEmail] = React.useState(company.email ?? '');
+  const [mobile, setMobile] = React.useState(company.mobile ?? '');
+  const [about, setAbout] = React.useState(company.about ?? '');
+  const [address, setAddress] = React.useState(company.address ?? '');
+  const [state, setState] = React.useState(company.state ?? '');
+  const [country, setCountry] = React.useState(company.country ?? '');
+  const [website, setWebsite] = React.useState(company.website ?? '');
+
+  const dispatch = useDispatch();
+  const postSubmit = async () => {
+    const data = {
+      companyName,
+      contactPerson,
+      email,
+      mobile,
+      about,
+      address,
+      state,
+      country,
+      website,
+    };
+    await dispatch(userAction.updateProfile(data));
+  };
+
   return (
     <View style={{padding: 20}}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -41,6 +67,7 @@ const CompanyFormScreen = () => {
           labelValue={email}
           onChangeText={Email => setEmail(Email)}
           mode="outlined"
+          disabled
           //   error={''}
           //   placeholderText="Ex. Male | Female"
 
@@ -79,6 +106,7 @@ const CompanyFormScreen = () => {
           labelValue={address}
           onChangeText={Address => setAddress(Address)}
           mode="outlined"
+          multiline
           //   placeholderText="Ex. 0-6 Months | 1-2 Years"
           autoCorrect={false}
         />
@@ -99,7 +127,11 @@ const CompanyFormScreen = () => {
           //   placeholderText="Ex. 0-6 Months | 1-2 Years
           autoCorrect={false}
         />
-        <AppButton buttonTitle="Submit" style={{width: '100%'}} />
+        <AppButton
+          buttonTitle="Submit"
+          style={{width: '100%'}}
+          onPress={postSubmit}
+        />
       </ScrollView>
     </View>
   );

@@ -7,6 +7,7 @@ const {
   companyDetailsByIdController,
   allCompanyDetailsController,
   updateController,
+  deleteController,
 } = require("../controller/company");
 
 //Create Company
@@ -19,5 +20,7 @@ router.get("/getCompanyDetails/:id", auth, companyDetailsByIdController);
 router.get("/getAllCompanyDetails", auth, allCompanyDetailsController);
 // Update
 router.patch("/update", auth, updateController);
+// delete
+router.patch("/delete", auth, deleteController);
 
 module.exports = router;

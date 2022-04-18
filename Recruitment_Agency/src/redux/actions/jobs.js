@@ -8,13 +8,13 @@ export const UPDATE_JOBS_DETAILS = 'UPDATE_JOBS_DETAILS';
 
 export const fetchJobs = () => {
   return async (dispatch, getState) => {
-    const userToken = getState().auth.token;
-    const userId = getState().auth.user._id;
+    const userToken = getState()?.auth?.token;
+    const userId = getState().auth?.user?._id;
     try {
       const response = await recruit.get('/job/getAllJobs', {
         headers: {Authorization: `Bearer ${userToken}`},
       });
-      const resData = response.data;
+      const resData = response?.data;
       dispatch({
         type: GET_JOBS_DETAILS,
         allJobs: resData,

@@ -28,10 +28,6 @@ const companySchema = mongoose.Schema(
       type: String,
       default: "",
     },
-    city: {
-      type: String,
-      default: "",
-    },
     state: {
       type: String,
       default: "",

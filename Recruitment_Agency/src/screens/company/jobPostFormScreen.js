@@ -17,7 +17,6 @@ const JobPostFormScreen = ({navigation, route}) => {
   const selectedJob = useSelector(state =>
     state.jobs.userPostedJobs.find(job => job?._id === jobId),
   );
-  console.log('Selected Job', selectedJob);
 
   const [title, setTitle] = React.useState(selectedJob?.title ?? '');
   const [type, setType] = React.useState(selectedJob?.type ?? '');

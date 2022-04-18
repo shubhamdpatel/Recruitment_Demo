@@ -1,3 +1,4 @@
+const User = require("../models/user");
 const Company = require("../models/company");
 
 const registerController = async (req, res) => {
@@ -45,13 +46,14 @@ const allCompanyDetailsController = async (req, res) => {
 };
 
 const updateController = async (req, res) => {
+  console.log("Company update api call!");
   const updates = Object.keys(req.body);
   const allowedUpdates = [
     "companyName",
     "mobile",
+    "contactPerson",
     "about",
     "address",
-    "city",
     "state",
     "country",
     "companyLogo",
@@ -69,22 +71,48 @@ const updateController = async (req, res) => {
     const company = await Company.findOne({
       createdBy: req.user._id,
     });
-
+    console.log(company);
     if (!company) {
-      return res
-        .status(404)
-        .send({ error: "You Do Not Enter The Company Detials" });
+      return res.status(404).send({ error: "COMPANY_NOT_FOUND" });
     }
-
+    debugger;
     updates.forEach((update) => (company[update] = req.body[update]));
     await company.save();
 
     res.send({
-      Msg: "Company Data Updated Sucessfully !!!",
-      UpdatedCompany: company,
+      sucess: "Company Data Updated Sucessfully !!!",
+      company,
     });
   } catch (error) {
-    res.status(400).send({ Erorr: error });
+    res.status(400).send({ error });
+    console.log(error);
+  }
+};
+const deleteController = async (req, res) => {
+  console.log("Delete Company Api Call");
+  try {
+    const user = await User.findOneAndDelete({
+      _id: req.user._id,
+    });
+
+    if (!user) {
+      res.status(404).send({ error: "User Not Found" });
+    }
+
+    const company = await Company.findOneAndDelete({
+      createdBy: req.user._id,
+    });
+
+    if (!user) {
+      res.status(404).send({ error: "User Not Found" });
+    }
+
+    res.status(200).send({
+      success: "Job Deleted Sucessfully !!!",
+      createdBy: Job,
+    });
+  } catch (error) {
+    res.status(500).send({ error: "Something wents wrong.", error });
   }
 };
 
@@ -94,4 +122,5 @@ module.exports = {
   companyDetailsByIdController,
   allCompanyDetailsController,
   updateController,
+  deleteController,
 };
