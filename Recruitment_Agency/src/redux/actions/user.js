@@ -53,9 +53,9 @@ export const updateProfile = data => {
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;
-        // Alert.alert(`${errorMsg}`, 'Post the new job.');
+        // Alert.alert('Invalid Upadte!', `${errorMsg}`);
+        console.log(errorMsg);
       }
-      console.log(error);
     }
   };
 };

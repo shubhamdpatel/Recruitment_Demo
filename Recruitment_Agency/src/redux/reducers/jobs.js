@@ -1,4 +1,4 @@
-import {CREATE_JOBS, GET_JOBS_DETAILS} from '../actions/jobs';
+import {CREATE_JOBS, GET_JOBS_DETAILS, UPDATE_JOBS} from '../actions/jobs';
 
 const initialstate = {
   availableJobs: [],
@@ -12,11 +12,16 @@ export default (state = initialstate, action) => {
         availableJobs: action.allJobs,
         userPostedJobs: action.userPostedJobs,
       };
-    // case CREATE_JOBS:
-    //   return {
-    //     ...state,
-    //     userPostedJobs: state.userPostedJobs.concat(action.newPostJob),
-    //   };
+    case CREATE_JOBS:
+      return {
+        ...state,
+        userPostedJobs: action.newPostJob,
+      };
+    case UPDATE_JOBS:
+      return {
+        ...state,
+        userPostedJobs: action.updateJob,
+      };
   }
   return state;
 };

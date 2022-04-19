@@ -4,7 +4,7 @@ import {Alert} from 'react-native';
 export const GET_JOBS_DETAILS = 'GET_JOBS_DETAILS';
 export const CREATE_JOBS = 'CREATE_JOBS';
 export const DELETE_JOB = 'DELETE_JOB';
-export const UPDATE_JOBS_DETAILS = 'UPDATE_JOBS_DETAILS';
+export const UPDATE_JOBS = 'UPDATE_JOBS';
 
 export const fetchJobs = () => {
   return async (dispatch, getState) => {
@@ -29,22 +29,33 @@ export const fetchJobs = () => {
   };
 };
 
-export const createJob = data => {
+export const createJob = (id, data) => {
   return async (dispatch, getState) => {
     const userToken = getState().auth.token;
     try {
-      await recruit
-        .post('/job/postJob', data, {
-          headers: {Authorization: `Bearer ${userToken}`},
-        })
-        .then(res => {
-          dispatch({type: CREATE_JOBS, newPostJob: res.data});
-          Alert.alert('Success !', `${res.data.success}`);
-        });
+      if (id === undefined) {
+        await recruit
+          .post('/job/postJob', data, {
+            headers: {Authorization: `Bearer ${userToken}`},
+          })
+          .then(res => {
+            dispatch({type: CREATE_JOBS, newPostJob: res.data});
+            Alert.alert('Success !', `${res.data.success}`);
+          });
+      } else {
+        await recruit
+          .patch(`/job/update/${id}`, data, {
+            headers: {Authorization: `Bearer ${userToken}`},
+          })
+          .then(res => {
+            dispatch({type: UPDATE_JOBS, updateJob: res.data});
+            Alert.alert('Success !', `${res.data.success}`);
+          });
+      }
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;
-        Alert.alert('Job Not Posted!', `${errorMsg}`);
+        Alert.alert('Invalid Job!', `${errorMsg}`);
       }
     }
   };

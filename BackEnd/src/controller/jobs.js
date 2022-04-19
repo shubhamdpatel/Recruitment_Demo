@@ -61,21 +61,20 @@ const GetRecentJobsController = async (req, res) => {
 };
 
 const updateController = async (req, res) => {
+  console.log("Update Job details api call !");
   const updates = Object.keys(req.body);
   const allowedUpdates = [
-    "description",
+    "title",
     "type",
     "gender",
     "education",
     "minSalary",
     "maxSalary",
+    "noOfOpenings",
+    "description",
     "experience",
-    "jobTime",
-    "jobDays",
+    "workTime",
     "interviewTime",
-    "interviewDays",
-    "contactPersonName",
-    "contactPersonMobile",
     "status",
   ];
   const isValidOperation = updates.every((update) =>
@@ -100,11 +99,12 @@ const updateController = async (req, res) => {
     await job.save();
 
     res.send({
-      Msg: "Job Updated Sucessfully !!!",
+      success: "Job Updated Sucessfully !!!",
       UpdatedJob: job,
     });
   } catch (error) {
     res.status(400).send({ error: "Something wents wrong.", error });
+    console.log(error);
   }
 };
 

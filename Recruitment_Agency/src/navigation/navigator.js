@@ -9,24 +9,24 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import SplashScreen from '../screens/splashScreen';
 import UserSelectScreen from '../screens/userSelectScreen';
+
 import LoginScreen from '../screens/auth/loginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 
-import ProfileScreen from '../screens/user/profileScreen';
-import EditProfileScreen from '../screens/user/editProfileScreen';
-import AccountSettingScreen from '../screens/user/accountSettingScreen';
+import ProfileScreen from '../screens/profileScreen';
+import EditProfileScreen from '../screens/jober/editProfileScreen';
 
-import JobPostFormScreen from '../screens/company/jobPostFormScreen';
-import JobListScreen from '../screens/company/jobListScreen';
-import JobDetailsScreen from '../screens/company/jobDetailsScreen';
+import JobDetailsScreen from '../screens/job/jobDetailsScreen';
+import JobPostFormScreen from '../screens/job/jobPostEditFormScreen';
+import JobListScreen from '../screens/job/jobListScreen';
 
 import CompanyDetialsScreen from '../screens/company/companyDetialsScreen';
-import CompanyFormScreen from '../screens/company/companyFormScreen';
+import CompanyFormScreen from '../screens/company/companyPostEditFormScreen';
 import CompanyProfileScreen from '../screens/company/companyProfileScreen';
 
-import NotificationScreen from '../screens/company/notificationScreen';
-import FavouriteScreen from '../screens/company/favouriteScreen';
-import MessageScreen from '../screens/company/messageScreen';
+import NotificationScreen from '../screens/notificationScreen';
+import FavouriteScreen from '../screens/favouriteScreen';
+import MessageScreen from '../screens/messageScreen';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {Init} from '../redux/actions/auth';
@@ -291,15 +291,7 @@ const Navigator = ({navigation}) => {
           component={CompanyProfileScreen}
           options={{title: '', headerBackTitleVisible: false}}
         />
-        <Stack.Screen
-          name="Account Setting"
-          component={AccountSettingScreen}
-          options={{
-            title: '',
-            headerBackTitleVisible: false,
-            headerShown: true,
-          }}
-        />
+
         <Stack.Screen
           name="Update Company"
           component={CompanyFormScreen}

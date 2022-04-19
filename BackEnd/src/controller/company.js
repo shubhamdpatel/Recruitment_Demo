@@ -48,6 +48,7 @@ const allCompanyDetailsController = async (req, res) => {
 const updateController = async (req, res) => {
   console.log("Company update api call!");
   const updates = Object.keys(req.body);
+
   const allowedUpdates = [
     "companyName",
     "mobile",
@@ -64,30 +65,30 @@ const updateController = async (req, res) => {
   );
 
   if (!isValidOperation) {
-    return res.status(400).send({ error: "Invalid updates!" });
+    return res.status(400).send({ error: "Some field not updates!" });
   }
 
   try {
     const company = await Company.findOne({
       createdBy: req.user._id,
     });
-    console.log(company);
+
     if (!company) {
       return res.status(404).send({ error: "COMPANY_NOT_FOUND" });
     }
-    debugger;
+
     updates.forEach((update) => (company[update] = req.body[update]));
     await company.save();
 
     res.send({
-      sucess: "Company Data Updated Sucessfully !!!",
+      sucess: "SUCESS",
       company,
     });
   } catch (error) {
     res.status(400).send({ error });
-    console.log(error);
   }
 };
+
 const deleteController = async (req, res) => {
   console.log("Delete Company Api Call");
   try {
