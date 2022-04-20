@@ -27,7 +27,6 @@ const ProfileScreen = ({navigation}) => {
     'https://firebasestorage.googleapis.com/v0/b/recruitment-agency-e0465.appspot.com/o/images%2Fdefault%2Fboy.png?alt=media&token=32913849-407a-4e96-8700-ca1c4bfd839d';
 
   const user = useSelector(state => state.user.userProfile[0]);
-
   const [profile, setProfile] = useState('');
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
@@ -39,7 +38,6 @@ const ProfileScreen = ({navigation}) => {
   };
 
   React.useEffect(() => {
-    debugger;
     fetchUser();
   }, [dispatch]);
 
@@ -113,7 +111,12 @@ const ProfileScreen = ({navigation}) => {
 
       task.then(async () => {
         const url = await storage().ref(folderPath).getDownloadURL();
-        await dispatch(userAction.updateProfile({companyLogo: url}));
+        await dispatch(
+          userAction.updateProfile(
+            user?.companyLogo ? {companyLogo: url} : {profileImage: url},
+          ),
+        );
+
         await dispatch(userAction.fetchUser());
       });
     } catch (e) {
@@ -211,7 +214,7 @@ const ProfileScreen = ({navigation}) => {
                 <Avatar.Image
                   size={180}
                   source={{
-                    uri: user?.firstName ? userImage : profile,
+                    uri: user?.fullName ? user?.profileImage : userImage,
                   }}
                 />
               )}
@@ -236,27 +239,6 @@ const ProfileScreen = ({navigation}) => {
           )}
         </View>
         <ScrollView>
-          {/* <View style={styles.details}>
-          <View style={{...styles.element}}>
-            <View style={{flexDirection: 'row'}}>
-              <Ionicons name="mail-outline" size={30} color="#4F8EF7" />
-              <View style={{marginHorizontal: 10}}>
-                <Text style={styles.textHeading}>Email </Text>
-                <Text style={styles.text}>{user?.email}</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={{...styles.element}}>
-            <View style={{flexDirection: 'row'}}>
-              <Ionicons name="call-outline" size={30} color="#4F8EF7" />
-              <View style={{marginHorizontal: 10}}>
-                <Text style={styles.textHeading}>Mobile</Text>
-                <Text style={styles.text}>{user?.mobile}</Text>
-              </View>
-            </View>
-          </View>
-        </View> */}
           <Text style={styles.text}>Personal Info </Text>
           {user?.companyName ? (
             <ProfileCard
@@ -269,7 +251,7 @@ const ProfileScreen = ({navigation}) => {
               <ProfileCard
                 title="My Profile"
                 iconName="chevron-right"
-                onPress={() => navigation.navigate('Company Profile')}
+                onPress={() => navigation.navigate('Jober Profile')}
               />
               <ProfileCard title="My Resume" iconName="chevron-right" />
             </View>

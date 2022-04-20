@@ -1,14 +1,46 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const joberSchema = mongoose.Schema(
   {
-    firstName: {
+    jobType: {
       type: String,
-      default: '',
+      default: "",
     },
-    lastName: {
+    functionalArea: {
       type: String,
-      default: '',
+      default: "",
+    },
+    prefereedCity: {
+      type: String,
+      default: "",
+    },
+    expectedSalary: {
+      type: String,
+      default: "",
+    },
+    instituteName: {
+      type: String,
+      default: "",
+    },
+    educationLevelDegree: {
+      type: String,
+      default: "",
+    },
+    fieldOfStudy: {
+      type: String,
+      default: "",
+    },
+    fromStudyYear: {
+      type: String,
+      default: "",
+    },
+    toStudyYear: {
+      type: String,
+      default: "",
+    },
+    fullName: {
+      type: String,
+      default: "",
     },
     email: {
       type: String,
@@ -18,19 +50,27 @@ const joberSchema = mongoose.Schema(
     },
     mobile: {
       type: String,
-      default: '',
+      default: "",
+    },
+    profileImage: {
+      type: String,
+      default: "",
+    },
+    myBio: {
+      type: String,
+      default: "",
     },
     resume: {
       type: String,
-      default: '',
+      default: "",
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
   },
-  {timestamps: true},
+  { timestamps: true }
 );
 
-const Jober = mongoose.model('Jober', joberSchema);
+const Jober = mongoose.model("Jober", joberSchema);
 module.exports = Jober;

@@ -38,6 +38,7 @@ import MI from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import JoberDetialsScreen from '../screens/jober/joberDetialsScreen';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -285,13 +286,17 @@ const Navigator = ({navigation}) => {
             // },
           }}
         />
-        <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
+        <Stack.Screen name="Jober Form" component={EditProfileScreen} />
         <Stack.Screen
           name="Company Profile"
           component={CompanyProfileScreen}
           options={{title: '', headerBackTitleVisible: false}}
         />
-
+        <Stack.Screen
+          name="Jober Profile"
+          component={JoberDetialsScreen}
+          options={{title: '', headerBackTitleVisible: false}}
+        />
         <Stack.Screen
           name="Company Form"
           component={CompanyFormScreen}

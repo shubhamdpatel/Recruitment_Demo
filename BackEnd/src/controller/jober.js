@@ -35,7 +35,22 @@ const allJoberDetailsController = async (req, res) => {
 const updateController = async (req, res) => {
   console.log("Jober Updtae Api Call");
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["firstName", "lastName", "mobile", "resume"];
+  const allowedUpdates = [
+    "jobType",
+    "functionalArea",
+    "prefereedCity",
+    "expectedSalary",
+    "instituteName",
+    "educationLevelDegree",
+    "fieldOfStudy",
+    "fromStudyYear",
+    "toStudyYear",
+    "fullName",
+    "mobile",
+    "profileImage",
+    "myBio",
+    "resume",
+  ];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
