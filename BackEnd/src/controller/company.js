@@ -81,7 +81,7 @@ const updateController = async (req, res) => {
     await company.save();
 
     res.send({
-      sucess: "SUCESS",
+      sucess: "Your Company Profile Updated",
       company,
     });
   } catch (error) {

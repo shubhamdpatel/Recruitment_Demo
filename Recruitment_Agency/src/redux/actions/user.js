@@ -1,3 +1,4 @@
+import {Alert} from 'react-native';
 import {recruit} from '../axois';
 
 export const FETCH_USER = 'FETCH_USER';
@@ -48,8 +49,8 @@ export const updateProfile = data => {
         });
       }
       const resData = response?.data;
-      dispatch({type: UPDATE_USER, userData: resData});
-      return resData;
+      await dispatch({type: UPDATE_USER, userData: resData});
+      // Alert.alert('Success!', 'Your Company Profile Updated');
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;

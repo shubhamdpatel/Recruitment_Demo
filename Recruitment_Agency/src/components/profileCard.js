@@ -3,6 +3,7 @@ import {
   View,
   TouchableOpacity,
   TouchableNativeFeedback,
+  Platform,
 } from 'react-native';
 import React from 'react';
 import {Card, Title} from 'react-native-paper';

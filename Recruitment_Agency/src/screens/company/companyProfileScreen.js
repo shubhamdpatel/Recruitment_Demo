@@ -7,9 +7,12 @@ import MC from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppButton from '../../components/AppButton';
+import {useEffect} from 'react';
+import * as userAction from '../../redux/actions/user';
 
 const CompanyProfileScreen = ({navigation}) => {
   const user = useSelector(state => state.user.userProfile[0]);
+  const dispatch = useDispatch();
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -74,7 +77,7 @@ const CompanyProfileScreen = ({navigation}) => {
           </View>
           <AppButton
             buttonTitle="Edit"
-            onPress={() => navigation.navigate('Update Company')}
+            onPress={() => navigation.navigate('Company Form')}
           />
         </View>
       </ScrollView>

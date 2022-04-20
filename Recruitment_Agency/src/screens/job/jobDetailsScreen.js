@@ -223,6 +223,7 @@ const JobDetailsScreen = ({route, navigation}) => {
     // </ScrollView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     shadowColor: 'black',
@@ -270,4 +271,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
 export default JobDetailsScreen;

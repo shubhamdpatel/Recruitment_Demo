@@ -5,7 +5,7 @@ import AppButton from '../../components/AppButton';
 import {useDispatch, useSelector} from 'react-redux';
 import * as userAction from '../../redux/actions/user';
 
-const CompanyFormScreen = () => {
+const CompanyFormScreen = ({navigation}) => {
   const company = useSelector(state => state.user.userProfile[0]);
 
   const [companyName, setCompanyName] = React.useState(
@@ -49,6 +49,7 @@ const CompanyFormScreen = () => {
       website,
     };
     await dispatch(userAction.updateProfile(data));
+    // navigation.navigate('Company Form');
   };
 
   return (

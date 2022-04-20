@@ -39,6 +39,7 @@ const ProfileScreen = ({navigation}) => {
   };
 
   React.useEffect(() => {
+    debugger;
     fetchUser();
   }, [dispatch]);
 
@@ -56,6 +57,7 @@ const ProfileScreen = ({navigation}) => {
         console.error(error);
       });
   }, []);
+
   // Delete Account
   const accountDelete = () => {
     Alert.alert(
@@ -77,7 +79,50 @@ const ProfileScreen = ({navigation}) => {
     await dispatch(authAction.logout());
   };
 
-  // Image Choose and Upload
+  // Image Upload
+  const imageUpload = async imagePath => {
+    setProfile(imagePath);
+    // set image name
+    const imageName = imagePath.substring(imagePath.lastIndexOf('/') + 1);
+    const ext = imageName.split('.').pop();
+    const name = imageName.split('.')[0];
+    const newImageName = name + Date.now() + '.' + ext;
+    const folderPath = user?.companyName
+      ? `images/company/${newImageName}`
+      : `images/jober/${newImageName}`;
+    // console.log(folderPath);
+
+    //FileName
+    const uploadUri =
+      Platform.OS === 'ios' ? imagePath.replace('file://', '') : imagePath;
+
+    sheetRef.current.snapTo(1);
+
+    setUploading(true);
+    setTransferred(0);
+
+    try {
+      const imageReference = storage().ref(folderPath);
+      const task = imageReference.putFile(uploadUri);
+      // set progress state
+      task.on('state_changed', snapshot => {
+        setTransferred(
+          Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000,
+        );
+      });
+
+      task.then(async () => {
+        const url = await storage().ref(folderPath).getDownloadURL();
+        await dispatch(userAction.updateProfile({companyLogo: url}));
+        await dispatch(userAction.fetchUser());
+      });
+    } catch (e) {
+      console.error(e);
+    }
+    setUploading(false);
+  };
+
+  // Image Choose
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
@@ -85,9 +130,7 @@ const ProfileScreen = ({navigation}) => {
       cropping: true,
       compressImageQuality: 0.7,
     }).then(image => {
-      console.log(image);
-      setImage(image.path);
-      sheetRef.current.snapTo(1);
+      imageUpload(image.path);
     });
   };
 
@@ -98,47 +141,7 @@ const ProfileScreen = ({navigation}) => {
       cropping: true,
       compressImageQuality: 0.7,
     }).then(async image => {
-      // console.log(image);
-      setProfile(image.path);
-
-      // set image name
-      const imageName = image.path.substring(image.path.lastIndexOf('/') + 1);
-      const ext = imageName.split('.').pop();
-      const name = imageName.split('.')[0];
-      const newImageName = name + Date.now() + '.' + ext;
-      const folderPath = user?.companyName
-        ? `images/company/${newImageName}`
-        : `images/jober/${newImageName}`;
-      // console.log(folderPath);
-
-      //FileName
-      const uploadUri =
-        Platform.OS === 'ios' ? image.path.replace('file://', '') : image.path;
-
-      sheetRef.current.snapTo(1);
-
-      setUploading(true);
-      setTransferred(0);
-
-      try {
-        const imageReference = storage().ref(folderPath);
-        const task = imageReference.putFile(uploadUri);
-        // set progress state
-        task.on('state_changed', snapshot => {
-          setTransferred(
-            Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000,
-          );
-        });
-
-        task.then(async () => {
-          const url = await storage().ref(folderPath).getDownloadURL();
-          dispatch(userAction.updateProfile({companyLogo: url}));
-        });
-      } catch (e) {
-        console.error(e);
-      }
-      setUploading(false);
-      // setImage(null);
+      imageUpload(image.path);
     });
   };
 
@@ -198,34 +201,18 @@ const ProfileScreen = ({navigation}) => {
           ) : (
             <View>
               {user?.companyName ? (
-                user?.companyLogo ? (
-                  <Avatar.Image
-                    size={180}
-                    source={{
-                      uri: user?.companyLogo,
-                    }}
-                  />
-                ) : (
-                  <Avatar.Image
-                    source={{
-                      uri: companyImage,
-                    }}
-                    size={180}
-                  />
-                )
-              ) : user?.firstName ? (
                 <Avatar.Image
                   size={180}
                   source={{
-                    uri: profile,
+                    uri: user?.companyName ? user?.companyLogo : companyImage,
                   }}
                 />
               ) : (
                 <Avatar.Image
-                  source={{
-                    uri: userImage,
-                  }}
                   size={180}
+                  source={{
+                    uri: user?.firstName ? userImage : profile,
+                  }}
                 />
               )}
               <TouchableOpacity

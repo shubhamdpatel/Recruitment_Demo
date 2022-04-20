@@ -293,7 +293,7 @@ const Navigator = ({navigation}) => {
         />
 
         <Stack.Screen
-          name="Update Company"
+          name="Company Form"
           component={CompanyFormScreen}
           options={{
             title: '',
