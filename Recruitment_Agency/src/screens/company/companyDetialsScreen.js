@@ -34,7 +34,7 @@ const CompanyDetialsScreen = ({route}) => {
   }, []);
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: Color.app}}>
       <View style={styles.imageCard}>
         {company?.companyLogo ? (
           <Avatar.Image

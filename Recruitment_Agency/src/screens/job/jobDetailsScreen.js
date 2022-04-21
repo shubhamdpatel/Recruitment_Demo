@@ -2,12 +2,12 @@ import React from 'react';
 import {View, Text, ScrollView, StyleSheet, Button, Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as JobsAction from '../../redux/actions/jobs';
+import * as userAction from '../../redux/actions/user';
 import Color from '../../constant/Color';
 import AppButton from '../../components/AppButton';
 import {Divider} from 'react-native-paper';
 
 //Icons
-import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -75,9 +75,12 @@ const JobDetailsScreen = ({route, navigation}) => {
     }
   }, [navigation]);
 
+  const addFavourite = async id => {
+    await dispatch(userAction.favourite(id));
+  };
   return (
     // <ScrollView style={{padding: 20}} showsVerticalScrollIndicator={false}>
-    <View style={{padding: 20}}>
+    <View style={{padding: 20, backgroundColor: Color.app}}>
       <View style={styles.container}>
         <Text style={styles.Jobtitle}>{selectedJob?.title}</Text>
 
@@ -89,10 +92,15 @@ const JobDetailsScreen = ({route, navigation}) => {
           <Text style={styles.openings}>
             {selectedJob?.noOfOpenings} Openings
           </Text>
-          <TouchableOpacity style={styles.favourite}>
-            <Ionicons name="heart-outline" size={35} color="#4F8EF7" />
+
+          <View>
+            <TouchableOpacity
+              style={styles.favourite}
+              onPress={() => addFavourite(selectedJob?._id)}>
+              <Ionicons name="heart-outline" size={35} color="#4F8EF7" />
+            </TouchableOpacity>
             <Text>Favourite</Text>
-          </TouchableOpacity>
+          </View>
         </View>
       </View>
 

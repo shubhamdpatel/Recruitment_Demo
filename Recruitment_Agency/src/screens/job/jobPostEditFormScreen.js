@@ -7,6 +7,7 @@ import * as JobsAction from '../../redux/actions/jobs';
 import {ScrollView} from 'react-native-gesture-handler';
 import FabButton from '../../components/FabButton';
 import * as Progress from 'react-native-progress';
+import Color from '../../constant/Color';
 
 const JobPostFormScreen = ({navigation, route}) => {
   const [Next, setNext] = React.useState(true);
@@ -246,6 +247,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor:Color.app
   },
   inputName: {
     fontSize: 18,

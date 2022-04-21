@@ -184,7 +184,7 @@ const ProfileScreen = ({navigation}) => {
   fall = new Animated.Value(1);
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: Color.app}}>
       <BottomSheet
         ref={sheetRef}
         snapPoints={[330, 0]}
@@ -233,9 +233,7 @@ const ProfileScreen = ({navigation}) => {
           {user?.companyName ? (
             <Text style={styles.name}>{user?.companyName}</Text>
           ) : (
-            <Text style={styles.name}>
-              {user?.firstName} {user?.lastName}
-            </Text>
+            <Text style={styles.name}>{user?.fullName}</Text>
           )}
         </View>
         <ScrollView>

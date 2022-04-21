@@ -2,7 +2,7 @@ import React from 'react';
 import {Platform, StyleSheet, Text, View, ScrollView} from 'react-native';
 import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
-import * as userAction from '../../redux/actions/user'
+import * as userAction from '../../redux/actions/user';
 import {useDispatch, useSelector} from 'react-redux';
 import FabButton from '../../components/FabButton';
 import * as Progress from 'react-native-progress';
@@ -19,6 +19,8 @@ const EditProfileScreen = ({navigation, route}) => {
   const [functionalArea, setFunctionalArea] = React.useState(
     jober?.functionalArea ?? '',
   );
+  const [experience, setExperience] = React.useState(jober?.experience ?? '');
+
   const [prefereedCity, setPrefereedCity] = React.useState(
     jober?.prefereedCity ?? '',
   );
@@ -60,10 +62,12 @@ const EditProfileScreen = ({navigation, route}) => {
     setNext2Next(false);
     setNext(true);
   };
+
   const updateHandler = async () => {
     const data = {
       jobType,
       functionalArea,
+      experience,
       prefereedCity,
       expectedSalary,
       instituteName,
@@ -118,6 +122,16 @@ const EditProfileScreen = ({navigation, route}) => {
                 }
                 mode="outlined"
                 placeholderText="Ex. Company Manager"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+              <Text style={styles.inputName}>Experience</Text>
+              <FormInput
+                labelValue={experience}
+                // error={isError}
+                onChangeText={Experience => setExperience(Experience)}
+                mode="outlined"
+                placeholderText="Ex. Fresher | 0 - 6 Months | 1 - 3 Years"
                 autoCapitalize="none"
                 autoCorrect={false}
               />
@@ -272,7 +286,7 @@ const EditProfileScreen = ({navigation, route}) => {
                 labelValue={myBio}
                 onChangeText={MyBio => setMyBio(MyBio)}
                 mode="outlined"
-                placeholderText="Introduce yourself with your key skilla and major achievements"
+                placeholderText="Introduce yourself with your key skills and major achievements"
                 multiline
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -306,6 +320,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: Color.app,
   },
   stepName: {
     flexDirection: 'row',

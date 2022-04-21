@@ -12,6 +12,7 @@ import {Card, Title, Paragraph, Text} from 'react-native-paper';
 import * as JobsAction from '../../redux/actions/jobs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FabButton from '../../components/FabButton';
+import Color from '../../constant/Color';
 
 const JobListScreen = ({navigation}) => {
   const user = useSelector(state => state.auth.user);
@@ -90,6 +91,7 @@ const JobListScreen = ({navigation}) => {
       <FlatList
         data={jobs}
         keyExtractor={(index, item) => index._id}
+        showsVerticalScrollIndicator={false}
         renderItem={({item}) => (
           <TouchableCmp onPress={() => selectJobHandeler(item?._id, item?.cid)}>
             <Card style={styles.card}>
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   container: {
-    backgroundColor: '#f9fafd',
+    backgroundColor: Color.app,
     flex: 1,
     justifyContent: 'center',
   },

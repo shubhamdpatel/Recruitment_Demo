@@ -5,7 +5,8 @@ import {useDispatch, useSelector} from 'react-redux';
 //Icons
 import MC from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AppButton from '../../components/AppButton';
 
 const JoberDetialsScreen = ({navigation}) => {
@@ -15,106 +16,109 @@ const JoberDetialsScreen = ({navigation}) => {
   console.log(user);
 
   return (
-    <View style={{flex: 1}}>
-      <View style={styles.details}>
-        <ScrollView>
-          <View style={{...styles.element}}>
+    <View style={{flex: 1, padding: '4%', backgroundColor: '#edebeb'}}>
+      <View style={{height: '88%'}}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{...styles.element, ...styles.card}}>
+            <View style={{flexDirection: 'row', marginBottom: '5%'}}>
+              <Ionicons name="person-circle" size={40} color="#4F8EF7" />
+              <Text style={{...styles.textHeading, top: 10}}>About Me</Text>
+            </View>
+            <Text style={styles.text}>{user?.myBio}</Text>
+          </View>
+
+          <View style={{...styles.element, ...styles.card}}>
+            <View style={{flexDirection: 'row', marginBottom: '5%'}}>
+              <Ionicons name="briefcase-sharp" size={30} color="#4F8EF7" />
+              <Text style={{...styles.textHeading, top: 5}}>
+                Work Experience
+              </Text>
+            </View>
+            <Text style={styles.text}>{user?.experience}</Text>
+          </View>
+
+          <View style={{...styles.element, ...styles.card}}>
             <View style={{flexDirection: 'row'}}>
-              <Ionicons name="mail-outline" size={30} color="#4F8EF7" />
-              <View style={{marginHorizontal: 10}}>
-                <Text style={styles.textHeading}>Email </Text>
-                <Text style={styles.text}>{user?.email}</Text>
-              </View>
+              <FontAwesome name="graduation-cap" size={30} color="#4F8EF7" />
+              <Text style={{...styles.textHeading, top: 5}}>
+                Education & Qulification
+              </Text>
+            </View>
+
+            <View style={{...styles.element}}>
+              <Text style={{...styles.text, fontWeight: '700'}}>
+                Qulification
+              </Text>
+              <Text style={styles.text}>{user?.educationLevelDegree}</Text>
+            </View>
+
+            <View style={{...styles.element}}>
+              <Text style={{...styles.text, fontWeight: '700'}}>
+                Institute Name
+              </Text>
+              <Text style={styles.text}>{user?.instituteName}</Text>
             </View>
           </View>
 
-          <View style={{...styles.element}}>
+          <View style={{...styles.element, ...styles.card}}>
             <View style={{flexDirection: 'row'}}>
-              <Ionicons name="call-outline" size={30} color="#4F8EF7" />
-              <View style={{marginHorizontal: 10}}>
-                <Text style={styles.textHeading}>Mobile</Text>
+              <Fontisto name="person" size={30} color="#4F8EF7" />
+              <Text style={{...styles.textHeading, top: 5}}>
+                Personal Information
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <View style={{...styles.element, width: '40%'}}>
+                <Text style={{...styles.text, fontWeight: '700'}}>Mobile</Text>
                 <Text style={styles.text}>{user?.mobile}</Text>
               </View>
-            </View>
-          </View>
 
-          <View style={{...styles.element}}>
-            <View style={{flexDirection: 'row'}}>
-              <Ionicons name="reader-outline" size={30} color="#4F8EF7" />
-              <View style={{marginHorizontal: 10}}>
-                <Text style={styles.textHeading}>About us </Text>
-                <Text style={styles.text}>{user?.about}</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={{...styles.element}}>
-            <View style={{flexDirection: 'row'}}>
-              <Ionicons name="mail-outline" size={30} color="#4F8EF7" />
-              <View style={{marginHorizontal: 10}}>
-                <Text style={styles.textHeading}>Email </Text>
+              <View style={{...styles.element, width: '60%'}}>
+                <Text style={{...styles.text, fontWeight: '700'}}>Email</Text>
                 <Text style={styles.text}>{user?.email}</Text>
               </View>
             </View>
           </View>
-
-          <View style={{...styles.element}}>
-            <View style={{flexDirection: 'row'}}>
-              <MCI name="web" size={30} color="#4F8EF7" />
-              <View style={{marginHorizontal: 10}}>
-                <Text style={styles.textHeading}>Website</Text>
-                <Text style={styles.text}>{user?.email}</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={{...styles.element}}>
-            <View style={{flexDirection: 'row'}}>
-              <MC name="work-outline" size={30} color="#4F8EF7" />
-              <View style={{marginHorizontal: 10}}>
-                <Text style={styles.textHeading}>Interview Address </Text>
-                <Text style={styles.text}>
-                  {user?.address} {user?.city}
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={{...styles.element}}>
-            <View style={{flexDirection: 'row'}}>
-              <Ionicons name="location-outline" size={30} color="#4F8EF7" />
-              <View style={{marginHorizontal: 10}}>
-                <Text style={styles.textHeading}>Country </Text>
-                <Text style={styles.text}>
-                  {user?.state}, {user?.country}
-                </Text>
-              </View>
-            </View>
-          </View>
-          <AppButton
-            buttonTitle="Edit"
-            onPress={() => navigation.navigate('Jober Form')}
-          />
         </ScrollView>
       </View>
+      <AppButton
+        style={styles.editBtn}
+        buttonTitle="Edit"
+        onPress={() => navigation.navigate('Jober Form')}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  details: {
-    flex: 1,
-    padding: '5%',
-  },
   element: {
     marginVertical: 10,
   },
+  card: {
+    shadowColor: 'black',
+    shadowOpacity: 0.1,
+    shadowOffset: {width: 3, height: 5},
+    // shadowRadius: 5,
+    elevation: 5,
+    borderRadius: 10,
+    backgroundColor: 'white',
+    padding: 10,
+  },
   textHeading: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
+    marginHorizontal: 10,
   },
   text: {
     fontSize: 16,
+    marginHorizontal: 20,
+  },
+  editBtn: {
+    position: 'absolute',
+    bottom: 50,
+    right: 20,
+    height: '6%',
+    width: '25%',
   },
 });
 

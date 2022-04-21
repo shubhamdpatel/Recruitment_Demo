@@ -4,6 +4,7 @@ import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
 import {useDispatch, useSelector} from 'react-redux';
 import * as userAction from '../../redux/actions/user';
+import Color from '../../constant/Color';
 
 const CompanyFormScreen = ({navigation}) => {
   const company = useSelector(state => state.user.userProfile[0]);
@@ -53,7 +54,7 @@ const CompanyFormScreen = ({navigation}) => {
   };
 
   return (
-    <View style={{padding: 20}}>
+    <View style={{padding: 20,backgroundColor:Color.app}}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.inputName}>Name Of My Company</Text>
         <FormInput

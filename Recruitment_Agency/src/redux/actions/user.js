@@ -3,6 +3,7 @@ import {recruit} from '../axois';
 
 export const FETCH_USER = 'FETCH_USER';
 export const UPDATE_USER = 'UPDATE_USER';
+export const FAVOURITE = 'FAVOURITE';
 
 export const fetchUser = () => {
   return async (dispatch, getState) => {
@@ -57,6 +58,38 @@ export const updateProfile = data => {
         // Alert.alert('Invalid Upadte!', `${errorMsg}`);
         console.log(errorMsg);
       }
+    }
+  };
+};
+
+export const favourite = id => {
+  return async (dispatch, getState) => {
+    const userToken = getState().auth?.token;
+    const userType = getState().auth?.user?.userType;
+    const header = {Authorization: `Bearer ${userToken}`};
+    debugger;
+    let response;
+    try {
+      if (userType === 'Company') {
+        response = await recruit.patch('/company/getCompanyDetails', {
+          headers: header,
+        });
+      } else if (userType === 'Jober') {
+        debugger;
+        response = await recruit.patch(`/jober/favourites/${id}`, {
+          headers: {Authorization: `Bearer ${userToken}`},
+        });
+        debugger;
+      }
+      const resData = response.data;
+      console.log(resData);
+      // dispatch({type: FAVOURITE, userData: resData});
+    } catch (error) {
+      if (error.response.data.error) {
+        const errorMsg = error.response.data.error;
+        Alert.alert('Invalid Favourite Operation!', `${errorMsg}`);
+      }
+      console.log(error);
     }
   };
 };
