@@ -10,6 +10,10 @@ const joberSchema = mongoose.Schema(
       type: String,
       default: "",
     },
+    experience: {
+      type: String,
+      default: "",
+    },
     prefereedCity: {
       type: String,
       default: "",
@@ -64,6 +68,12 @@ const joberSchema = mongoose.Schema(
       type: String,
       default: "",
     },
+    favourites: [
+      {
+        type: String,
+        default: "",
+      },
+    ],
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

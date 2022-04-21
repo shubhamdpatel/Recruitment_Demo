@@ -38,6 +38,7 @@ const updateController = async (req, res) => {
   const allowedUpdates = [
     "jobType",
     "functionalArea",
+    "experience",
     "prefereedCity",
     "expectedSalary",
     "instituteName",
@@ -80,9 +81,46 @@ const updateController = async (req, res) => {
   }
 };
 
+const favouriteController = async (req, res) => {
+  console.log("Add To Favourite Api Call ");
+
+  try {
+    const jober = await Jober.find({ createdBy: req.user._id });
+    const isFavourite = jober[0].favourites.includes(req.params.jobId);
+
+    if (!isFavourite) {
+      await Jober.findOneAndUpdate(
+        { createdBy: req.user._id },
+        {
+          $push: {
+            favourites: req.params.jobId,
+          },
+        }
+      )
+        .then(() => res.status(200).send({ sucess: "ADDED" }))
+        .catch((error) => res.status(400).send({ error }));
+    } else {
+      await Jober.findOneAndUpdate(
+        { createdBy: req.user._id },
+        {
+          $pull: {
+            favourites: req.params.jobId,
+          },
+        }
+      )
+        .then(() => res.status(200).send({ sucess: "REMOVE" }))
+        .catch((error) => res.status(400).send({ error }));
+    }
+  } catch (e) {
+    res.status(400).send(e);
+    console.log(e);
+  }
+};
+
 module.exports = {
   createJoberController,
   joberDetailsController,
   allJoberDetailsController,
   updateController,
+  favouriteController,
 };
