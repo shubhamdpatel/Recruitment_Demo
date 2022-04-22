@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Alert,
 } from 'react-native';
 import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
@@ -13,14 +14,20 @@ import {useDispatch} from 'react-redux';
 import Color from '../../constant/Color';
 
 import * as authAction from '../../redux/actions/auth';
+import {Snackbar} from 'react-native-paper';
 
 const RegisterScreen = ({navigation, route}) => {
   const [email, setEmail] = React.useState(null);
   const [password, setPassword] = React.useState(null);
   const [confirmPassword, setconfirmPassword] = React.useState(null);
+  const [visible, setVisible] = React.useState(false);
+  const [errorMsg, setErrorMsg] = React.useState('');
+
+  const onToggleSnackBar = () => setVisible(!visible);
+
+  const onDismissSnackBar = () => setVisible(false);
 
   const {userType} = route.params;
-  console.log(userType);
   let utype;
   if (userType === 'Jober') {
     utype = 'Job Seeker';
@@ -30,7 +37,12 @@ const RegisterScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
 
   const registerUser = async () => {
-    await dispatch(authAction.signUp(email, password, userType));
+    if (password === confirmPassword) {
+      await dispatch(authAction.signUp(email, password, userType));
+    } else {
+      setErrorMsg('Passowrd Not Match!');
+      setVisible(true);
+    }
   };
 
   return (
@@ -86,6 +98,19 @@ const RegisterScreen = ({navigation, route}) => {
         }>
         {/* <Text style={{color: 'blue'}}>Login</Text> */}
       </TouchableOpacity>
+
+      <Snackbar
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: 'Undo',
+          onPress: () => {
+            // Do something
+          },
+        }}
+        theme={ReactNativePaper.Theme}>
+        {errorMsg}
+      </Snackbar>
     </View>
   );
 };

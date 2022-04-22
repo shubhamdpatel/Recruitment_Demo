@@ -28,13 +28,14 @@ export const Init = () => {
   };
 };
 
-export const signUp = (email, password, userType) => {
+export const signUp = (data, userType) => {
+  // return console.log(navigation, data, userType);
   return async dispatch => {
     try {
-      const response = await recruit.post('/register', {
-        email,
-        password,
-        userType,
+      const response = await recruit.post('/register', data, {
+        params: {
+          userType: userType,
+        },
       });
       const resData = response.data;
 
@@ -49,7 +50,7 @@ export const signUp = (email, password, userType) => {
         });
 
         await AsyncStorage.setItem('user', jsonValue);
-        dispatch(authentication(resData.token, resData.user));
+        await dispatch(authentication(resData.token, resData.user));
       } catch (error) {
         console.log('Data Not Save In Async-Storage', error);
       }

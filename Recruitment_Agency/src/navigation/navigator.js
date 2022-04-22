@@ -25,7 +25,7 @@ import CompanyFormScreen from '../screens/company/companyPostEditFormScreen';
 import CompanyProfileScreen from '../screens/company/companyProfileScreen';
 
 import NotificationScreen from '../screens/notificationScreen';
-import FavouriteScreen from '../screens/favouriteScreen';
+import FavouriteScreen from '../screens/jober/favouriteScreen';
 import MessageScreen from '../screens/messageScreen';
 
 import {useDispatch, useSelector} from 'react-redux';

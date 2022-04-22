@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import * as userAction from '../redux/actions/user';
-import JobCard from '../components/jobCard';
+import * as userAction from '../../redux/actions/user';
+import JobCard from '../../components/jobCard';
 
 const FavouriteScreen = () => {
   const user = useSelector(state => state.user.userProfile[0]);

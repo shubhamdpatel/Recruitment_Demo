@@ -14,9 +14,12 @@ const generateOTP = () => {
 
 const registerController = async (req, res) => {
   console.log("Register api call...!");
-  const user = new User(req.body);
-  // const userType = req.query.UserType;
-  // return res.send("register Succefully");
+  const userType = req.query.userType;
+  const user = new User({
+    ...req.body,
+    userType: userType,
+  });
+
   // const otp = await generateOTP();
   // try {
   //   const OTP = new Otp({
@@ -31,7 +34,7 @@ const registerController = async (req, res) => {
   // }
 
   try {
-    if (user.userType === "Company") {
+    if (userType === "Company") {
       const company = new Company({
         email: user.email,
         createdBy: user._id,
@@ -40,10 +43,10 @@ const registerController = async (req, res) => {
       await user.save();
       await company.save();
       const token = await user.generateAuthToken();
-      res.status(201).send({ user, token });
+      res.status(201).send({ user, token, flag: 0 });
     }
 
-    if (user.userType === "Jober") {
+    if (userType === "Jober") {
       const jober = new Jober({
         email: user.email,
         createdBy: user._id,
@@ -51,12 +54,13 @@ const registerController = async (req, res) => {
       await user.save();
       await jober.save();
       const token = await user.generateAuthToken();
-      res.status(201).send({ user, token });
+      res.status(201).send({ user, token, flag: 0 });
     }
   } catch (error) {
     if (error.code === 11000) {
       res.send({ error: "EMAIL_EXISTS" });
     }
+    console.log(error);
   }
 };
 
