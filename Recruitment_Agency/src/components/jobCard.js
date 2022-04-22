@@ -2,95 +2,37 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  FlatList,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Platform,
+  FlatList,
 } from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import Color from '../constant/Color';
 import {Card, Title, Paragraph, Text} from 'react-native-paper';
-import * as JobsAction from '../../redux/actions/jobs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FabButton from '../../components/FabButton';
-import Color from '../../constant/Color';
-import JobCard from '../../components/jobCard';
+import {useSelector} from 'react-redux';
 
-const JobListScreen = ({navigation}) => {
+const JobCard = ({navigation, ...props}) => {
   const user = useSelector(state => state.auth.user);
-
-  // Get data from Store by user type
-  let jobs;
-  if (user?.userType === 'Company')
-    jobs = useSelector(state => state.jobs.userPostedJobs);
-  else jobs = useSelector(state => state.jobs.availableJobs);
-
-  const dispatch = useDispatch();
-
-  React.useLayoutEffect(() => {
-    {
-      user?.userType === 'Company'
-        ? navigation.setOptions({
-            headerRight: <Ionicons name="home" size={20} color="white" />,
-          })
-        : navigation.setOptions({
-            headerRight: '',
-          });
-    }
-  }, [navigation]);
-
-  // Fetch Data
-  const fetchPost = async () => {
-    await dispatch(JobsAction.fetchJobs());
-  };
-
-  // Call Fetch Data on Screen Load
-  React.useEffect(() => {
-    fetchPost();
-  }, []);
-
-  // Pass jobId,companyId for show single job Data and Company Data of job
-  const selectJobHandeler = async (id, cid) => {
-    {
-      user?.userType === 'Jober'
-        ? await navigation.navigate('JC Details', {
-            params: {jobId: id, cid},
-          })
-        : await navigation.navigate('Job Details', {params: {jobId: id, cid}});
-    }
-  };
-
+  const {data} = props;
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
   }
 
-  if (jobs.length === 0) {
-    return (
-      <View style={{flex: 1}}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text>Data Not Available, Please Start to Post Job !</Text>
-        </View>
-        <View>
-          <FabButton
-            iconName="plus"
-            onPress={() =>
-              navigation.navigate('Job Post', {params: {jobId: ''}})
-            }
-          />
-        </View>
-      </View>
-    );
-  }
+  // Pass jobId,companyId for show single job Data and Company Data of job
+  const selectJobHandeler = (id, cid) => {
+    {
+      user?.userType === 'Jober'
+        ? navigation.navigate('JC Details', {
+            params: {jobId: id, cid},
+          })
+        : navigation.navigate('Job Details', {params: {jobId: id, cid}});
+    }
+  };
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={jobs}
+        data={data}
         keyExtractor={(index, item) => index._id}
         showsVerticalScrollIndicator={false}
         renderItem={({item}) => (
@@ -120,18 +62,9 @@ const JobListScreen = ({navigation}) => {
           </TouchableCmp>
         )}
       />
-
-      {user?.userType === 'Company' && (
-        <FabButton
-          iconName="plus"
-          onPress={() => navigation.navigate('Job Post', {params: {jobId: ''}})}
-        />
-      )}
     </View>
   );
 };
-
-export default JobListScreen;
 
 const styles = StyleSheet.create({
   card: {
@@ -171,3 +104,5 @@ const styles = StyleSheet.create({
     color: '#787878',
   },
 });
+
+export default JobCard;

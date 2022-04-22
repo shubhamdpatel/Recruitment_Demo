@@ -15,9 +15,11 @@ import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const JobDetailsScreen = ({route, navigation}) => {
+  const [isFavourite, setIsFavourite] = React.useState(false);
   const jobId = route?.params.params.jobId;
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
+  const userData = useSelector(state => state.user.userProfile[0]);
 
   let selectedJob;
 
@@ -30,6 +32,15 @@ const JobDetailsScreen = ({route, navigation}) => {
       state.jobs.availableJobs.find(job => job?._id === jobId),
     );
   }
+
+  const fav = userData.favourites.includes(selectedJob._id);
+
+  React.useEffect(() => {
+    if (fav) {
+      console.log('fav', fav);
+      setIsFavourite(fav);
+    }
+  }, []);
 
   const jobDelete = id => {
     Alert.alert('Are you sure?', 'Are sure you want to delete this job?', [
@@ -97,7 +108,11 @@ const JobDetailsScreen = ({route, navigation}) => {
             <TouchableOpacity
               style={styles.favourite}
               onPress={() => addFavourite(selectedJob?._id)}>
-              <Ionicons name="heart-outline" size={35} color="#4F8EF7" />
+              <Ionicons
+                name={isFavourite ? 'heart' : 'heart-outline'}
+                size={35}
+                color="#4F8EF7"
+              />
             </TouchableOpacity>
             <Text>Favourite</Text>
           </View>

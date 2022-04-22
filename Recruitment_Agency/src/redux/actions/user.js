@@ -62,24 +62,23 @@ export const updateProfile = data => {
   };
 };
 
-export const favourite = id => {
+export const favourite = jobId => {
   return async (dispatch, getState) => {
     const userToken = getState().auth?.token;
     const userType = getState().auth?.user?.userType;
     const header = {Authorization: `Bearer ${userToken}`};
-    debugger;
+
     let response;
+
     try {
-      if (userType === 'Company') {
-        response = await recruit.patch('/company/getCompanyDetails', {
+      if (userType === 'Jober') {
+        response = await recruit.patch(`/jober/favourites/${jobId}`, null, {
           headers: header,
         });
-      } else if (userType === 'Jober') {
-        debugger;
-        response = await recruit.patch(`/jober/favourites/${id}`, {
-          headers: {Authorization: `Bearer ${userToken}`},
+      } else if (userType === 'Company') {
+        response = await recruit.patch('/company/getCompanyDetails', null, {
+          headers: header,
         });
-        debugger;
       }
       const resData = response.data;
       console.log(resData);
