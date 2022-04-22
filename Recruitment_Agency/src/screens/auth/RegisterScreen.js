@@ -107,8 +107,7 @@ const RegisterScreen = ({navigation, route}) => {
           onPress: () => {
             // Do something
           },
-        }}
-        theme={ReactNativePaper.Theme}>
+        }}>
         {errorMsg}
       </Snackbar>
     </View>
