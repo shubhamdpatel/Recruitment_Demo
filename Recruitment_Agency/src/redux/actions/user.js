@@ -33,8 +33,9 @@ export const fetchUser = () => {
   };
 };
 
-export const updateProfile = data => {
+export const updateProfile = props => {
   return async (dispatch, getState) => {
+    const {data, navigation} = props;
     const userToken = getState().auth.token;
     const userType = getState().auth?.user?.userType;
     const header = {Authorization: `Bearer ${userToken}`};
@@ -50,8 +51,10 @@ export const updateProfile = data => {
         });
       }
       const resData = response?.data;
+      Alert.alert('Success!', 'Your Company Profile Updated');
       await dispatch({type: UPDATE_USER, userData: resData});
-      // Alert.alert('Success!', 'Your Company Profile Updated');
+
+      props.navigation.goBack();
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;
@@ -81,8 +84,8 @@ export const favourite = jobId => {
         });
       }
       const resData = response.data;
-      console.log(resData);
-      // dispatch({type: FAVOURITE, userData: resData});
+      await dispatch({type: UPDATE_USER, userData: resData.jober});
+      await fetchUser();
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;

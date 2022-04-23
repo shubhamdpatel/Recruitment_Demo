@@ -29,7 +29,7 @@ export const Init = () => {
 };
 
 export const signUp = (data, userType) => {
-  // return console.log(navigation, data, userType);
+ 
   return async dispatch => {
     try {
       const response = await recruit.post('/register', data, {

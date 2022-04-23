@@ -37,8 +37,9 @@ const RegisterScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
 
   const registerUser = async () => {
+    const data = {email, password};
     if (password === confirmPassword) {
-      await dispatch(authAction.signUp(email, password, userType));
+      await dispatch(authAction.signUp(data, userType));
     } else {
       setErrorMsg('Passowrd Not Match!');
       setVisible(true);

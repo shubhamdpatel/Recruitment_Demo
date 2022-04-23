@@ -37,7 +37,6 @@ const JobDetailsScreen = ({route, navigation}) => {
 
   React.useEffect(() => {
     if (fav) {
-      console.log('fav', fav);
       setIsFavourite(fav);
     }
   }, []);
@@ -88,6 +87,7 @@ const JobDetailsScreen = ({route, navigation}) => {
 
   const addFavourite = async id => {
     await dispatch(userAction.favourite(id));
+    
   };
   return (
     // <ScrollView style={{padding: 20}} showsVerticalScrollIndicator={false}>

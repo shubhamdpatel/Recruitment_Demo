@@ -24,14 +24,14 @@ const ProfileScreen = ({navigation}) => {
   const companyImage =
     'https://firebasestorage.googleapis.com/v0/b/recruitment-agency-e0465.appspot.com/o/images%2Fdefault%2Fcompany.png?alt=media&token=e5db119f-31d2-4449-9d1b-4f3a9549a2ab';
   const userImage =
-    'https://firebasestorage.googleapis.com/v0/b/recruitment-agency-e0465.appspot.com/o/images%2Fdefault%2Fboy.png?alt=media&token=32913849-407a-4e96-8700-ca1c4bfd839d';
+    'https://firebasestorage.googleapis.com/v0/b/recruitment-agency-e0465.appspot.com/o/images%2Fdefault%2Fpngwing.com.png?alt=media&token=c9f87809-a35d-43e8-b909-e14687624980';
 
   const user = useSelector(state => state.user.userProfile[0]);
-  const [profile, setProfile] = useState('');
+  const [profile, setProfile] = useState(user?.profileImage || '');
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
-
   const dispatch = useDispatch();
+
   // Fetch Job
   const fetchUser = async () => {
     await dispatch(userAction.fetchUser());
@@ -40,21 +40,6 @@ const ProfileScreen = ({navigation}) => {
   React.useEffect(() => {
     fetchUser();
   }, [dispatch]);
-
-  React.useEffect(() => {
-    auth()
-      .signInAnonymously()
-      .then(() => {
-        // console.log('User signed in anonymously');
-      })
-      .catch(error => {
-        if (error.code === 'auth/operation-not-allowed') {
-          console.log('Enable anonymous in your firebase console.');
-        }
-
-        console.error(error);
-      });
-  }, []);
 
   // Delete Account
   const accountDelete = () => {
@@ -194,6 +179,7 @@ const ProfileScreen = ({navigation}) => {
         callbackNode={fall}
         enabledGestureInteraction={true}
       />
+
       <Animated.View
         style={{
           opacity: Animated.add(0.1, Animated.multiply(fall, 1.0)),
@@ -213,8 +199,9 @@ const ProfileScreen = ({navigation}) => {
               ) : (
                 <Avatar.Image
                   size={180}
+                  style={{backgroundColor: '#d9d9d9'}}
                   source={{
-                    uri: user?.fullName ? user?.profileImage : userImage,
+                    uri: profile ? user?.profileImage : userImage,
                   }}
                 />
               )}
@@ -231,9 +218,11 @@ const ProfileScreen = ({navigation}) => {
           )}
 
           {user?.companyName ? (
-            <Text style={styles.name}>{user?.companyName}</Text>
+            <Text style={styles.name}>
+              {user?.companyName || 'Your Company Name'}
+            </Text>
           ) : (
-            <Text style={styles.name}>{user?.fullName}</Text>
+            <Text style={styles.name}>{user?.fullName || 'Your Name'}</Text>
           )}
         </View>
         <ScrollView>

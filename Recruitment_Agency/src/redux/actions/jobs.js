@@ -1,5 +1,6 @@
 import {recruit} from '../axois';
 import {Alert} from 'react-native';
+import * as userAction from '../actions/user';
 
 export const GET_JOBS_DETAILS = 'GET_JOBS_DETAILS';
 export const CREATE_JOBS = 'CREATE_JOBS';
@@ -15,11 +16,12 @@ export const fetchJobs = () => {
         headers: {Authorization: `Bearer ${userToken}`},
       });
       const resData = response?.data;
-      dispatch({
+      await dispatch({
         type: GET_JOBS_DETAILS,
         allJobs: resData,
         userPostedJobs: resData.filter(job => job.createdBy === userId),
       });
+      await dispatch(userAction.fetchUser());
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;

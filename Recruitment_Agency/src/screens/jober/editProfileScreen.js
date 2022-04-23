@@ -15,36 +15,36 @@ const EditProfileScreen = ({navigation, route}) => {
   const [Next, setNext] = React.useState(true);
   const [next2Next, setNext2Next] = React.useState(false);
 
-  const [jobType, setJobType] = React.useState(jober?.jobType ?? '');
+  const [jobType, setJobType] = React.useState(jober?.jobType || '');
   const [functionalArea, setFunctionalArea] = React.useState(
-    jober?.functionalArea ?? '',
+    jober?.functionalArea || '',
   );
-  const [experience, setExperience] = React.useState(jober?.experience ?? '');
+  const [experience, setExperience] = React.useState(jober?.experience || '');
 
   const [prefereedCity, setPrefereedCity] = React.useState(
-    jober?.prefereedCity ?? '',
+    jober?.prefereedCity || '',
   );
   const [expectedSalary, setExpectedSalary] = React.useState(
-    jober?.expectedSalary ?? '',
+    jober?.expectedSalary || '',
   );
   const [instituteName, setInstituteName] = React.useState(
-    jober?.instituteName ?? '',
+    jober?.instituteName || '',
   );
   const [educationLevelDegree, setEducationLevelDegree] = React.useState(
-    jober?.educationLevelDegree ?? '',
+    jober?.educationLevelDegree || '',
   );
   const [fieldOfStudy, setFieldOfStudy] = React.useState(
-    jober?.fieldOfStudy ?? '',
+    jober?.fieldOfStudy || '',
   );
   const [fromStudyYear, setFromStudyYear] = React.useState(
-    jober?.fromStudyYear ?? '',
+    jober?.fromStudyYear || '',
   );
   const [toStudyYear, setToStudyYear] = React.useState(
-    jober?.toStudyYear ?? '',
+    jober?.toStudyYear || '',
   );
-  const [fullName, setFullName] = React.useState(jober?.fullName ?? '');
-  const [mobile, setMobile] = React.useState(jober?.mobile ?? '');
-  const [myBio, setMyBio] = React.useState(jober?.myBio ?? '');
+  const [fullName, setFullName] = React.useState(jober?.fullName || '');
+  const [mobile, setMobile] = React.useState(jober?.mobile || '');
+  const [myBio, setMyBio] = React.useState(jober?.myBio || '');
 
   const onNext = () => {
     setNext(false);
@@ -79,10 +79,7 @@ const EditProfileScreen = ({navigation, route}) => {
       mobile,
       myBio,
     };
-    const res = await dispatch(userAction.updateProfile(data));
-    // if (res.success) {
-    //   navigation.navigate('Profile');
-    // }
+    await dispatch(userAction.updateProfile({data, navigation: navigation}));
   };
 
   return (

@@ -10,9 +10,9 @@ import Color from '../constant/Color';
 import {Card, Title, Paragraph, Text} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 
-const JobCard = ({navigation, ...props}) => {
+const JobCard = props => {
   const user = useSelector(state => state.auth.user);
-  const {data} = props;
+  const {data, navigation} = props;
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
@@ -36,7 +36,9 @@ const JobCard = ({navigation, ...props}) => {
         keyExtractor={(index, item) => index._id}
         showsVerticalScrollIndicator={false}
         renderItem={({item}) => (
-          <TouchableCmp onPress={() => selectJobHandeler(item?._id, item?.cid)}>
+          <TouchableCmp
+            style={{marginTop: 15}}
+            onPress={() => selectJobHandeler(item?._id, item?.cid)}>
             <Card style={styles.card}>
               <Card.Content>
                 <View style={styles.card1stView}>
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   card: {
     shadowColor: 'black',
     shadowOpacity: 0.2,
-    shadowOffset: {width: 8, height: 5},
+    shadowOffset: {width: 0, height: 0},
     shadowRadius: 8,
     elevation: 5,
     borderRadius: 10,
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
     // padding: 10,
     marginLeft: 10,
     marginRight: 10,
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   container: {
     backgroundColor: Color.app,

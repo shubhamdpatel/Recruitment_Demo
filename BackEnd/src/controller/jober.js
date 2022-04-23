@@ -96,9 +96,9 @@ const favouriteController = async (req, res) => {
             favourites: req.params.jobId,
           },
         }
-      )
-        .then(() => res.status(200).send({ sucess: "ADDED" }))
-        .catch((error) => res.status(400).send({ error }));
+      );
+      const jober = await Jober.find({ createdBy: req.user._id });
+      res.status(200).send({ sucess: "ADDED", jober });
     } else {
       await Jober.findOneAndUpdate(
         { createdBy: req.user._id },
@@ -107,9 +107,9 @@ const favouriteController = async (req, res) => {
             favourites: req.params.jobId,
           },
         }
-      )
-        .then(() => res.status(200).send({ sucess: "REMOVE" }))
-        .catch((error) => res.status(400).send({ error }));
+      );
+      const jober = await Jober.find({ createdBy: req.user._id });
+      res.status(200).send({ sucess: "REMOVE", jober });
     }
   } catch (e) {
     res.status(400).send(e);
