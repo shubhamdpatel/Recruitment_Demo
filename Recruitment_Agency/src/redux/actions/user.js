@@ -51,10 +51,10 @@ export const updateProfile = props => {
         });
       }
       const resData = response?.data;
-      Alert.alert('Success!', 'Your Company Profile Updated');
+      Alert.alert('Success!', 'Profile Updated Successfully!');
       await dispatch({type: UPDATE_USER, userData: resData});
-
-      props.navigation.goBack();
+      await fetchUser();
+      navigation.navigate('Jober Profile');
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;

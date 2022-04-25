@@ -13,33 +13,38 @@ const JoberDetialsScreen = ({navigation}) => {
   const user = useSelector(state => state.user.userProfile[0]);
   const dispatch = useDispatch();
 
+  // Fetch Data on Screen Load
   React.useEffect(() => {
     dispatch(userAction.fetchUser());
-  }, []);
+  }, [dispatch]);
 
   return (
     <View style={{flex: 1, padding: '4%', backgroundColor: '#edebeb'}}>
       <View style={{height: '88%'}}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={{...styles.element, ...styles.card}}>
+          <View style={{...styles.element, ...styles.underline}}>
             <View style={{flexDirection: 'row', marginBottom: '5%'}}>
               <Ionicons name="person-circle" size={40} color="#4F8EF7" />
               <Text style={{...styles.textHeading, top: 10}}>About Me</Text>
             </View>
-            <Text style={styles.text}>{user?.myBio || '.....'}</Text>
+            <Text style={{...styles.text, marginBottom: 10}}>
+              {user?.myBio || '.....'}
+            </Text>
           </View>
 
-          <View style={{...styles.element, ...styles.card}}>
+          <View style={{...styles.element, ...styles.underline}}>
             <View style={{flexDirection: 'row', marginBottom: '5%'}}>
               <Ionicons name="briefcase-sharp" size={30} color="#4F8EF7" />
               <Text style={{...styles.textHeading, top: 5}}>
                 Work Experience
               </Text>
             </View>
-            <Text style={styles.text}>{user?.experience || '.....'}</Text>
+            <Text style={{...styles.text, marginBottom: 10}}>
+              {user?.experience || '.....'}
+            </Text>
           </View>
 
-          <View style={{...styles.element, ...styles.card}}>
+          <View style={{...styles.element, ...styles.underline}}>
             <View style={{flexDirection: 'row'}}>
               <FontAwesome name="graduation-cap" size={30} color="#4F8EF7" />
               <Text style={{...styles.textHeading, top: 5}}>
@@ -64,7 +69,7 @@ const JoberDetialsScreen = ({navigation}) => {
             </View>
           </View>
 
-          <View style={{...styles.element, ...styles.card}}>
+          <View style={{...styles.element, ...styles.underline}}>
             <View style={{flexDirection: 'row'}}>
               <Fontisto name="person" size={30} color="#4F8EF7" />
               <Text style={{...styles.textHeading, top: 5}}>
@@ -98,15 +103,17 @@ const styles = StyleSheet.create({
   element: {
     marginVertical: 10,
   },
-  card: {
-    shadowColor: 'black',
-    shadowOpacity: 0.1,
-    shadowOffset: {width: 3, height: 5},
+  underline: {
+    borderBottomWidth: 2,
+    borderBottomColor: 'lightgray',
+    // shadowColor: 'black',
+    // shadowOpacity: 0.1,
+    // shadowOffset: {width: 3, height: 5},
     // shadowRadius: 5,
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: 'white',
-    padding: 10,
+    // elevation: 5,
+    // borderRadius: 10,
+    // backgroundColor: 'white',
+    // padding: 10,
   },
   textHeading: {
     fontSize: 18,

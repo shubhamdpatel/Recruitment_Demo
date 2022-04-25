@@ -32,6 +32,8 @@ const ProfileScreen = ({navigation}) => {
   const [transferred, setTransferred] = useState(0);
   const dispatch = useDispatch();
 
+  // console.log(user);
+
   // Fetch Job
   const fetchUser = async () => {
     await dispatch(userAction.fetchUser());
@@ -58,8 +60,18 @@ const ProfileScreen = ({navigation}) => {
   };
 
   // Logout
-  const logoutHandeler = async () => {
-    await dispatch(authAction.logout());
+  const logoutHandeler = () => {
+    Alert.alert('Are You Sure ?', 'Are you sure Logout from app ?', [
+      {
+        text: 'No',
+      },
+      {
+        text: 'Yes',
+        onPress: async () => {
+          await dispatch(authAction.logout());
+        },
+      },
+    ]);
   };
 
   // Image Upload
@@ -96,6 +108,7 @@ const ProfileScreen = ({navigation}) => {
 
       task.then(async () => {
         const url = await storage().ref(folderPath).getDownloadURL();
+        console.log(url);
         await dispatch(
           userAction.updateProfile(
             user?.companyLogo ? {companyLogo: url} : {profileImage: url},
@@ -193,7 +206,7 @@ const ProfileScreen = ({navigation}) => {
                 <Avatar.Image
                   size={180}
                   source={{
-                    uri: user?.companyName ? user?.companyLogo : companyImage,
+                    uri: profile ? user?.companyLogo : companyImage,
                   }}
                 />
               ) : (
@@ -201,7 +214,7 @@ const ProfileScreen = ({navigation}) => {
                   size={180}
                   style={{backgroundColor: '#d9d9d9'}}
                   source={{
-                    uri: profile ? user?.profileImage : userImage,
+                    uri: user?.profileImage ? user?.profileImage : userImage,
                   }}
                 />
               )}

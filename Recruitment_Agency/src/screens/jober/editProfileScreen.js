@@ -64,6 +64,7 @@ const EditProfileScreen = ({navigation, route}) => {
   };
 
   const updateHandler = async () => {
+    debugger;
     const data = {
       jobType,
       functionalArea,
