@@ -5,10 +5,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import * as authAction from '../../redux/actions/auth';
 import * as companyAction from '../../redux/actions/company';
 import {Avatar} from 'react-native-paper';
 import Color from '../../constant/Color';
@@ -17,7 +15,6 @@ import Color from '../../constant/Color';
 import MC from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const CompanyDetialsScreen = ({route}) => {
   const dispatch = useDispatch();

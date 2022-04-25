@@ -19,6 +19,7 @@ import EditProfileScreen from '../screens/jober/editProfileScreen';
 import JobDetailsScreen from '../screens/job/jobDetailsScreen';
 import JobPostFormScreen from '../screens/job/jobPostEditFormScreen';
 import JobListScreen from '../screens/job/jobListScreen';
+import ApplicationScreen from '../screens/job/applicationScreen';
 
 import CompanyDetialsScreen from '../screens/company/companyDetialsScreen';
 import CompanyFormScreen from '../screens/company/companyPostEditFormScreen';
@@ -33,11 +34,8 @@ import {Init} from '../redux/actions/auth';
 import Color from '../constant/Color';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
 import MI from 'react-native-vector-icons/MaterialIcons';
-import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import FA from 'react-native-vector-icons/FontAwesome';
 import JoberDetialsScreen from '../screens/jober/joberDetialsScreen';
 
 const Stack = createNativeStackNavigator();
@@ -147,58 +145,88 @@ const Navigator = ({navigation}) => {
             },
           }}
         />
+
         <BottomTab.Screen
-          name="Message"
-          component={MessageScreen}
-          // options={{headerShown: false}}
+          name="Applies"
+          component={ApplicationScreen}
           options={{
             headerShown: false,
             tabBarActiveTintColor: Color.primary,
-            tabBarLabel: 'Messages',
+            tabBarLabel: 'Applies',
             tabBarLabelStyle: {
               flex: 1,
               fontSize: 14,
+              fontWeight: '600',
             },
-            tabBarBadge: 2,
-            tabBarBadgeStyle: {
-              backgroundColor: Color.primary,
-            },
-            // tabBarLabelPosition: 'beside-icon',
             tabBarIcon: tabInfo => {
               return (
-                <MI
-                  name="messenger"
-                  size={25}
+                <FA
+                  name="send"
+                  size={18}
                   color={tabInfo.focused ? Color.primary : '#8e8e93'}
                 />
               );
             },
           }}
         />
-        <BottomTab.Screen
-          name="Favourite"
-          component={FavouriteScreen}
-          // options={{headerShown: false}}
-          options={{
-            headerShown: false,
-            tabBarActiveTintColor: Color.primary,
-            tabBarLabel: 'Favourite',
-            tabBarLabelStyle: {
-              flex: 1,
-              fontSize: 14,
-            },
-            // tabBarLabelPosition: 'beside-icon',
-            tabBarIcon: tabInfo => {
-              return (
-                <Icon
-                  name="heart"
-                  size={25}
-                  color={tabInfo.focused ? Color.primary : '#8e8e93'}
-                />
-              );
-            },
-          }}
-        />
+
+        {/* {user.userType === 'Jober' && (
+          <BottomTab.Screen
+            name="Message"
+            component={MessageScreen}
+            // options={{headerShown: false}}
+            options={{
+              headerShown: false,
+              tabBarActiveTintColor: Color.primary,
+              tabBarLabel: 'Messages',
+              tabBarLabelStyle: {
+                flex: 1,
+                fontSize: 14,
+              },
+              tabBarBadge: 2,
+              tabBarBadgeStyle: {
+                backgroundColor: Color.primary,
+              },
+              // tabBarLabelPosition: 'beside-icon',
+              tabBarIcon: tabInfo => {
+                return (
+                  <MI
+                    name="messenger"
+                    size={25}
+                    color={tabInfo.focused ? Color.primary : '#8e8e93'}
+                  />
+                );
+              },
+            }}
+          />
+        )} */}
+
+        {user.userType === 'Jober' && (
+          <BottomTab.Screen
+            name="Favourite"
+            component={FavouriteScreen}
+            // options={{headerShown: false}}
+            options={{
+              headerShown: false,
+              tabBarActiveTintColor: Color.primary,
+              tabBarLabel: 'Favourite',
+              tabBarLabelStyle: {
+                flex: 1,
+                fontSize: 14,
+              },
+              // tabBarLabelPosition: 'beside-icon',
+              tabBarIcon: tabInfo => {
+                return (
+                  <Icon
+                    name="heart"
+                    size={25}
+                    color={tabInfo.focused ? Color.primary : '#8e8e93'}
+                  />
+                );
+              },
+            }}
+          />
+        )}
 
         <BottomTab.Screen
           name="Profile"
@@ -274,16 +302,6 @@ const Navigator = ({navigation}) => {
             title: '',
             headerBackTitleVisible: false,
             leftButton: 'back',
-            // rightButton:{
-            //   <Icon
-            //     style={{marginHorizontal: 20}}
-            //     name="search"
-            //     size={30}
-            //     color="black"
-            //     onPress={() => Alert.alert('Not Work')}
-            //     // onPress={({notification}) => navigation.navigate('Job Post')}
-            //   />;
-            // },
           }}
         />
         <Stack.Screen name="Jober Form" component={EditProfileScreen} />

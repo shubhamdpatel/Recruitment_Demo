@@ -31,7 +31,8 @@ export const fetchJobs = () => {
   };
 };
 
-export const createJob = (id, data) => {
+export const createJob = props => {
+  const {id, data, navigation} = props;
   return async (dispatch, getState) => {
     const userToken = getState().auth.token;
     try {
@@ -43,6 +44,7 @@ export const createJob = (id, data) => {
           .then(res => {
             dispatch({type: CREATE_JOBS, newPostJob: res.data});
             Alert.alert('Success !', `${res.data.success}`);
+            // navigation.goBack();
           });
       } else {
         await recruit
@@ -52,6 +54,7 @@ export const createJob = (id, data) => {
           .then(res => {
             dispatch({type: UPDATE_JOBS, updateJob: res.data});
             Alert.alert('Success !', `${res.data.success}`);
+            // navigation.navigate('Home');
           });
       }
     } catch (error) {

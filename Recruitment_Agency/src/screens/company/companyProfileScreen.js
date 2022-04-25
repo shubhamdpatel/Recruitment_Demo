@@ -29,9 +29,9 @@ const CompanyProfileScreen = ({navigation}) => {
             <View style={{...styles.element, ...styles.card}}>
               <View style={{flexDirection: 'row'}}>
                 <Ionicons name="reader-outline" size={30} color="#4F8EF7" />
-                <View style={{marginHorizontal: 10}}>
+                <View style={{marginHorizontal: 20}}>
                   <Text style={styles.textHeading}>About us </Text>
-                  <Text style={styles.text}>{user?.about}</Text>
+                  <Text style={styles.text}>{user?.about || '...'}</Text>
                 </View>
               </View>
             </View>
@@ -41,7 +41,7 @@ const CompanyProfileScreen = ({navigation}) => {
                 <Ionicons name="mail-outline" size={30} color="#4F8EF7" />
                 <View style={{marginHorizontal: 10}}>
                   <Text style={styles.textHeading}>Email </Text>
-                  <Text style={styles.text}>{user?.email}</Text>
+                  <Text style={styles.text}>{user?.email || '...'}</Text>
                 </View>
               </View>
             </View>
@@ -51,7 +51,7 @@ const CompanyProfileScreen = ({navigation}) => {
                 <MCI name="web" size={30} color="#4F8EF7" />
                 <View style={{marginHorizontal: 10}}>
                   <Text style={styles.textHeading}>Website</Text>
-                  <Text style={styles.text}>https://bosleo.com/</Text>
+                  <Text style={styles.text}>{user?.website || '...'}</Text>
                 </View>
               </View>
             </View>
@@ -61,7 +61,7 @@ const CompanyProfileScreen = ({navigation}) => {
                 <MC name="work-outline" size={30} color="#4F8EF7" />
                 <View style={{marginHorizontal: 10}}>
                   <Text style={styles.textHeading}>Interview Address </Text>
-                  <Text style={styles.text}>{user?.address}</Text>
+                  <Text style={styles.text}>{user?.address || '...'}</Text>
                 </View>
               </View>
             </View>
@@ -72,7 +72,7 @@ const CompanyProfileScreen = ({navigation}) => {
                 <View style={{marginHorizontal: 10}}>
                   <Text style={styles.textHeading}>Country </Text>
                   <Text style={styles.text}>
-                    {user?.state}, {user?.country}
+                    {user?.state || '...'}, {user?.country || '...'}
                   </Text>
                 </View>
               </View>
@@ -80,6 +80,7 @@ const CompanyProfileScreen = ({navigation}) => {
           </View>
         </ScrollView>
       </View>
+
       <AppButton
         style={styles.editBtn}
         buttonTitle="Edit"

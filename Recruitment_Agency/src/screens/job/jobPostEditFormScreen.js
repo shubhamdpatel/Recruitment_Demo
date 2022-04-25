@@ -70,19 +70,25 @@ const JobPostFormScreen = ({navigation, route}) => {
       workTime: workTiming,
       interviewTime: interviewTiming,
     };
-    await dispatch(JobsAction.createJob(id, data));
+    await dispatch(JobsAction.createJob({id, data, navigation: navigation}));
   };
 
   return (
     <View style={styles.container}>
       {Next ? (
         <View>
-          <View style={{marginBottom: 20}}>
+          <View style={{marginBottom: 10}}>
             <Progress.Bar
               progress={0.5}
               width={Platform.OS === 'ios' ? 390 : 350}
             />
           </View>
+
+          <View style={styles.stepName}>
+            <Text style={{color: Color.accent}}>Job Details</Text>
+            <Text>Job descriptions</Text>
+          </View>
+
           <ScrollView>
             <Text style={styles.inputName}>I Want To Hire A</Text>
             <FormInput
@@ -138,6 +144,7 @@ const JobPostFormScreen = ({navigation, route}) => {
               autoCorrect={false}
             />
           </ScrollView>
+
           <FabButton
             style={styles.fab}
             iconName="chevron-right"
@@ -146,85 +153,96 @@ const JobPostFormScreen = ({navigation, route}) => {
         </View>
       ) : (
         <View>
-          <View style={{marginBottom: 20}}>
+          <View style={{marginBottom: 10}}>
             <Progress.Bar
               progress={1}
               width={Platform.OS === 'ios' ? 390 : 350}
             />
           </View>
-          <ScrollView>
-            <Text style={styles.inputName}>I Will Pay A Monthly Salary Of</Text>
-            <View style={{flexDirection: 'row', width: '30%'}}>
+
+          <View style={styles.stepName}>
+            <Text>Job Details</Text>
+            <Text style={{color: Color.accent}}>Job descriptions</Text>
+          </View>
+
+          <View style={{height: '86.5%'}}>
+            <ScrollView>
+              <Text style={styles.inputName}>
+                I Will Pay A Monthly Salary Of
+              </Text>
+              <View style={{flexDirection: 'row', width: '30%'}}>
+                <FormInput
+                  labelValue={minSalary}
+                  onChangeText={MinSalary => setMinSalary(MinSalary)}
+                  mode="outlined"
+                  placeholderText="Ex. 10000"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <Text style={styles.to}>to</Text>
+                <FormInput
+                  labelValue={maxSalary}
+                  onChangeText={MaxSalary => setMaxSalary(MaxSalary)}
+                  mode="outlined"
+                  placeholderText="Ex. 20000"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+              </View>
+
+              <Text style={styles.inputName}>No Of Staff I Need</Text>
+              <View style={{width: '20%'}}>
+                <FormInput
+                  labelValue={openings}
+                  onChangeText={Openings => setOpenings(Openings)}
+                  mode="outlined"
+                  placeholderText="Ex. 5"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+              </View>
+
+              <Text style={styles.inputName}>
+                Describe The Job Role For The Staff
+              </Text>
               <FormInput
-                labelValue={minSalary}
-                onChangeText={MinSalary => setMinSalary(MinSalary)}
+                labelValue={description}
+                onChangeText={Description => setDescription(Description)}
                 mode="outlined"
-                placeholderText="Ex. 10000"
+                placeholderText="Description"
+                multiline
                 autoCapitalize="none"
                 autoCorrect={false}
               />
-              <Text style={styles.to}>to</Text>
+              <Text style={styles.inputName}>Work Timings</Text>
               <FormInput
-                labelValue={maxSalary}
-                onChangeText={MaxSalary => setMaxSalary(MaxSalary)}
+                labelValue={workTiming}
+                onChangeText={WorkTiming => setWorkTiming(WorkTiming)}
                 mode="outlined"
-                placeholderText="Ex. 20000"
+                placeholderText="09:30am - 06:30pm | Monday - Saturday"
                 autoCapitalize="none"
                 autoCorrect={false}
               />
-            </View>
-
-            <Text style={styles.inputName}>No Of Staff I Need</Text>
-            <View style={{width: '20%'}}>
+              <Text style={styles.inputName}>
+                Interview Would Be Done Between
+              </Text>
               <FormInput
-                labelValue={openings}
-                onChangeText={Openings => setOpenings(Openings)}
+                labelValue={interviewTiming}
+                onChangeText={InterviewTiming =>
+                  setInterviewTiming(InterviewTiming)
+                }
                 mode="outlined"
-                placeholderText="Ex. 5"
+                placeholderText="11:00am - 04:00pm | Monday - Saturday"
                 autoCapitalize="none"
                 autoCorrect={false}
               />
-            </View>
+            </ScrollView>
+          </View>
 
-            <Text style={styles.inputName}>
-              Describe The Job Role For The Staff
-            </Text>
-            <FormInput
-              labelValue={description}
-              onChangeText={Description => setDescription(Description)}
-              mode="outlined"
-              placeholderText="Description"
-              multiline
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-            <Text style={styles.inputName}>Work Timings</Text>
-            <FormInput
-              labelValue={workTiming}
-              onChangeText={WorkTiming => setWorkTiming(WorkTiming)}
-              mode="outlined"
-              placeholderText="09:30am - 06:30pm | Monday - Saturday"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-            <Text style={styles.inputName}>
-              Interview Would Be Done Between
-            </Text>
-            <FormInput
-              labelValue={interviewTiming}
-              onChangeText={InterviewTiming =>
-                setInterviewTiming(InterviewTiming)
-              }
-              mode="outlined"
-              placeholderText="11:00am - 04:00pm | Monday - Saturday"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-          </ScrollView>
-
-          <View style={styles.btnContainer}>
+          <View
+            style={{...styles.buttonContainer, flexDirection: 'row-reverse'}}>
             <FabButton
-              style={styles.onPrevious}
+              style={{...styles.onPrevious, left: 214}}
               color="gray"
               iconName="chevron-left"
               onPress={onPrevious}
@@ -247,7 +265,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor:Color.app
+    backgroundColor: Color.app,
+  },
+  stepName: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+    marginHorizontal: 50,
   },
   inputName: {
     fontSize: 18,
@@ -268,11 +292,11 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   fab: {
-    bottom: -70,
+    bottom: -50,
   },
-  btnContainer: {
-    flexDirection: 'row-reverse',
-    marginVertical: 80,
+  buttonContainer: {
+    marginVertical: 700,
+    position: 'absolute',
   },
   onPrevious: {
     backgroundColor: 'white',
@@ -280,6 +304,8 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
   },
   submitBtn: {
-    marginHorizontal: -110,
+    left: -190,
+    // bottom: -90,
+    width: '50%',
   },
 });

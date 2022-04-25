@@ -11,11 +11,10 @@ import {useSelector, useDispatch} from 'react-redux';
 import * as userAction from '../redux/actions/user';
 import * as authAction from '../redux/actions/auth';
 import Color from '../constant/Color';
-import auth from '@react-native-firebase/auth';
 import {Avatar} from 'react-native-paper';
 import ProfileCard from '../components/profileCard';
 import ImagePicker from 'react-native-image-crop-picker';
-import Animated, {color} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import * as Progress from 'react-native-progress';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -26,13 +25,12 @@ const ProfileScreen = ({navigation}) => {
   const userImage =
     'https://firebasestorage.googleapis.com/v0/b/recruitment-agency-e0465.appspot.com/o/images%2Fdefault%2Fpngwing.com.png?alt=media&token=c9f87809-a35d-43e8-b909-e14687624980';
 
+  const userType = useSelector(state => state.auth.user.userType);
   const user = useSelector(state => state.user.userProfile[0]);
   const [profile, setProfile] = useState(user?.profileImage || '');
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
   const dispatch = useDispatch();
-
-  // console.log(user);
 
   // Fetch Job
   const fetchUser = async () => {
@@ -108,13 +106,12 @@ const ProfileScreen = ({navigation}) => {
 
       task.then(async () => {
         const url = await storage().ref(folderPath).getDownloadURL();
-        console.log(url);
+
         await dispatch(
           userAction.updateProfile(
-            user?.companyLogo ? {companyLogo: url} : {profileImage: url},
+            userType === 'Company' ? {companyLogo: url} : {profileImage: url},
           ),
         );
-
         await dispatch(userAction.fetchUser());
       });
     } catch (e) {
@@ -182,7 +179,7 @@ const ProfileScreen = ({navigation}) => {
   fall = new Animated.Value(1);
 
   return (
-    <View style={{flex: 1, backgroundColor: Color.app}}>
+    <View style={{backgroundColor: Color.app}}>
       <BottomSheet
         ref={sheetRef}
         snapPoints={[330, 0]}
@@ -202,7 +199,7 @@ const ProfileScreen = ({navigation}) => {
             <Progress.Bar progress={transferred} width={100} />
           ) : (
             <View>
-              {user?.companyName ? (
+              {userType === 'Company' ? (
                 <Avatar.Image
                   size={180}
                   source={{
@@ -230,7 +227,7 @@ const ProfileScreen = ({navigation}) => {
             </View>
           )}
 
-          {user?.companyName ? (
+          {userType === 'Company' ? (
             <Text style={styles.name}>
               {user?.companyName || 'Your Company Name'}
             </Text>
@@ -238,47 +235,44 @@ const ProfileScreen = ({navigation}) => {
             <Text style={styles.name}>{user?.fullName || 'Your Name'}</Text>
           )}
         </View>
-        <ScrollView>
-          <Text style={styles.text}>Personal Info </Text>
-          {user?.companyName ? (
-            <ProfileCard
-              title="My Profile"
-              iconName="chevron-right"
-              onPress={() => navigation.navigate('Company Profile')}
-            />
-          ) : (
-            <View>
+        <View style={{height: '60%'}}>
+          <ScrollView>
+            <Text style={styles.text}>Personal Info </Text>
+            {userType === 'Company' ? (
               <ProfileCard
                 title="My Profile"
                 iconName="chevron-right"
-                onPress={() => navigation.navigate('Jober Profile')}
+                onPress={() => navigation.navigate('Company Profile')}
               />
-              <ProfileCard title="My Resume" iconName="chevron-right" />
-            </View>
-          )}
+            ) : (
+              <View>
+                <ProfileCard
+                  title="My Profile"
+                  iconName="chevron-right"
+                  onPress={() => navigation.navigate('Jober Profile')}
+                />
+                <ProfileCard title="My Resume" iconName="chevron-right" />
+              </View>
+            )}
 
-          {/* <ProfileCard
-          title="Account Settings"
-          iconName="chevron-right"
-          onPress={() => navigation.navigate('Account Setting')}
-        /> */}
-          <Text style={styles.text}>Account Settings</Text>
-          <ProfileCard
-            title="Logout"
-            iconName="logout"
-            delete-outline
-            onPress={() => {
-              logoutHandeler();
-            }}
-          />
-          <ProfileCard
-            title="Delete My Account"
-            iconName="delete"
-            onPress={() => {
-              accountDelete();
-            }}
-          />
-        </ScrollView>
+            <Text style={styles.text}>Account Settings</Text>
+            <ProfileCard
+              title="Logout"
+              iconName="logout"
+              delete-outline
+              onPress={() => {
+                logoutHandeler();
+              }}
+            />
+            {/* <ProfileCard
+              title="Delete My Account"
+              iconName="delete"
+              onPress={() => {
+                accountDelete();
+              }}
+            /> */}
+          </ScrollView>
+        </View>
       </Animated.View>
     </View>
   );
