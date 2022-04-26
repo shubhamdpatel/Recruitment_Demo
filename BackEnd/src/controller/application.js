@@ -30,7 +30,7 @@ const fetchApplicationByUser = async (req, res) => {
     const application = await Application.find({ joberId: req.user._id });
     res.status(200).send(application);
   } catch (error) {
-    res.status(400).status({ error });
+    res.status(400).send({ error });
     console.log(error);
   }
 };

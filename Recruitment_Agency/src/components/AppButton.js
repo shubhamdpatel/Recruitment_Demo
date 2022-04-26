@@ -4,9 +4,10 @@ import Color from '../constant/Color';
 import {windowWidth, windowHeight} from '../utils/Dimentions';
 
 const AppButton = props => {
-  const {style, buttonTitle, onPress} = props;
+  const {style, buttonTitle, onPress, disabled} = props;
   return (
     <TouchableOpacity
+      disabled={disabled}
       style={[styles.buttonContainer, style]}
       onPress={onPress}>
       <Text style={styles.button}>{buttonTitle}</Text>
@@ -20,18 +21,18 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 5,
     marginBottom: 10,
-    width: '40%',
-    height: windowHeight / 15,
+    width: '35%',
+    height: windowHeight / 17,
     backgroundColor: Color.primary,
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 3,
+    borderRadius: 5,
   },
   button: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: Color.white,
   },
 });
 

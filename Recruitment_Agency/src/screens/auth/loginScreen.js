@@ -10,15 +10,22 @@ import {
 } from 'react-native';
 import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import * as authAction from '../../redux/actions/auth';
 import Color from '../../constant/Color';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const LoginScreen = ({navigation, route}) => {
-  const [email, setEmail] = React.useState(null);
-  const [password, setPassword] = React.useState(null);
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const [emailError, setEmailError] = React.useState(false);
+  const [viewPwd, setViewPwd] = React.useState(true);
+  const [pwdError, setPwdError] = React.useState(false);
+  const [errorMsg, setErrorMsg] = React.useState(false);
 
   const {userType} = route.params;
+
   let utype;
   if (userType === 'Jober') {
     utype = 'Job Seeker';
@@ -28,8 +35,31 @@ const LoginScreen = ({navigation, route}) => {
 
   const dispach = useDispatch();
 
-  const loginHandler = async props => {
-    await dispach(authAction.signIn(email, password));
+  const pattern =
+    /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
+  const result = pattern.test(email);
+
+  const onKeyPressEvent = () => {
+    if (!result) {
+      setEmailError(true);
+      setErrorMsg('Invalid email !');
+    } else {
+      setEmailError(false);
+      setErrorMsg('');
+    }
+  };
+
+  const loginHandler = async () => {
+    if (email === '' || password === '') {
+      setEmailError(true);
+      setPwdError(true);
+      setTimeout(() => {
+        setEmailError(false);
+        setPwdError(false);
+      }, 1000);
+    } else {
+      await dispach(authAction.signIn(email, password));
+    }
   };
 
   return (
@@ -52,14 +82,35 @@ const LoginScreen = ({navigation, route}) => {
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
+            error={emailError}
+            clearButtonMode="while-editing"
+            keyboardAppearance="dark"
           />
+          <Text style={styles.errorMessage}>{errorMsg ? errorMsg : ''}</Text>
+
           <FormInput
             labelText="Password"
             labelValue={password}
             onChangeText={userPassword => setPassword(userPassword)}
             placeholderText="Enter the password"
-            secureTextEntry={true}
+            secureTextEntry={viewPwd}
+            error={pwdError}
+            onFocus={() => {
+              onKeyPressEvent();
+            }}
           />
+
+          <TouchableOpacity
+            onPress={() => {
+              viewPwd ? setViewPwd(false) : setViewPwd(true);
+            }}>
+            <Ionicons
+              name={viewPwd ? 'eye-off-outline' : 'eye-outline'}
+              size={30}
+              color={Color.primary}
+              style={{position: 'absolute', right: 0, bottom: 20}}
+            />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.loginbtn}>
@@ -119,6 +170,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     marginBottom: '10%',
+  },
+  errorMessage: {
+    color: 'red',
+    marginLeft: '3%',
   },
 });
 export default LoginScreen;

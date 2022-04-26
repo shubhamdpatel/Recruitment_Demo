@@ -8,14 +8,14 @@ import {
   Alert,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import * as userAction from '../redux/actions/user';
-import * as authAction from '../redux/actions/auth';
 import Color from '../constant/Color';
 import {Avatar} from 'react-native-paper';
 import ProfileCard from '../components/profileCard';
 import ImagePicker from 'react-native-image-crop-picker';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
+import * as userAction from '../redux/actions/user';
+import * as authAction from '../redux/actions/auth';
 import * as Progress from 'react-native-progress';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import storage from '@react-native-firebase/storage';
@@ -236,7 +236,7 @@ const ProfileScreen = ({navigation}) => {
           )}
         </View>
         <View style={{height: '60%'}}>
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.text}>Personal Info </Text>
             {userType === 'Company' ? (
               <ProfileCard
@@ -250,6 +250,13 @@ const ProfileScreen = ({navigation}) => {
                   title="My Profile"
                   iconName="chevron-right"
                   onPress={() => navigation.navigate('Jober Profile')}
+                />
+
+                <Text style={styles.text}>Job Preference</Text>
+                <ProfileCard
+                  title="My Favourite Jobs"
+                  iconName="chevron-right"
+                  onPress={() => navigation.navigate('Favourite')}
                 />
                 <ProfileCard title="My Resume" iconName="chevron-right" />
               </View>

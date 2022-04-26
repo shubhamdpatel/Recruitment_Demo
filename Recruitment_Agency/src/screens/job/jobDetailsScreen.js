@@ -3,6 +3,7 @@ import {View, Text, ScrollView, StyleSheet, Button, Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as JobsAction from '../../redux/actions/jobs';
 import * as userAction from '../../redux/actions/user';
+import * as applicatonAction from '../../redux/actions/application';
 import Color from '../../constant/Color';
 import AppButton from '../../components/AppButton';
 
@@ -89,13 +90,21 @@ const JobDetailsScreen = ({route, navigation}) => {
     await dispatch(userAction.favourite(id));
   };
 
-  const applyHandler = () => {
-    if (isApplied) {
-      setIsApplied(false);
-    } else {
-      setIsApplied(true);
-    }
-  };
+  // const applyHandler = React.useCallback(
+  //   async jobid => {
+  //     console.log('call');
+  //     const data = {jobId: jobid};
+  //     if (!isApplied) {
+  //       setIsApplied(false);
+  //     } else {
+  //       setIsApplied(true);
+  //       await dispatch(applicatonAction.applyJob(data));
+  //     }
+  //   },
+  //   [isApplied],
+  // );
+
+  React.useEffect(() => {});
 
   return (
     // <ScrollView style={{padding: 20}} showsVerticalScrollIndicator={false}>
@@ -257,7 +266,7 @@ const JobDetailsScreen = ({route, navigation}) => {
                     width: '100%',
                     backgroundColor: isApplied ? 'green' : Color.primary,
                   }}
-                  onPress={applyHandler}
+                  // onPress={applyHandler(selectedJob?._id)}
                 />
               </View>
             </View>

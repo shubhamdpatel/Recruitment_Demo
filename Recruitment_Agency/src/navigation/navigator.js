@@ -114,6 +114,7 @@ const Navigator = ({navigation}) => {
   const [isLoading, setIsLoding] = React.useState(true);
   const token = useSelector(state => state.auth.token);
   const user = useSelector(state => state.auth.user);
+
   console.log('token =', token);
   console.log('User Type =', user?.userType);
   const dispatch = useDispatch();
@@ -128,6 +129,7 @@ const Navigator = ({navigation}) => {
           component={JobListScreen}
           options={{
             headerShown: false,
+            // tabBarShowLabel: false,
             tabBarActiveTintColor: Color.primary,
             tabBarLabel: 'Job',
             tabBarLabelStyle: {
@@ -138,7 +140,7 @@ const Navigator = ({navigation}) => {
               return (
                 <MI
                   name="work"
-                  size={24}
+                  size={30}
                   color={tabInfo.focused ? Color.primary : '#8e8e93'}
                 />
               );
@@ -201,7 +203,7 @@ const Navigator = ({navigation}) => {
           />
         )} */}
 
-        {user.userType === 'Jober' && (
+        {/* {user.userType === 'Jober' && (
           <BottomTab.Screen
             name="Favourite"
             component={FavouriteScreen}
@@ -226,7 +228,7 @@ const Navigator = ({navigation}) => {
               },
             }}
           />
-        )}
+        )} */}
 
         <BottomTab.Screen
           name="Profile"
@@ -304,22 +306,38 @@ const Navigator = ({navigation}) => {
             leftButton: 'back',
           }}
         />
-        <Stack.Screen name="Jober Form" component={EditProfileScreen} />
+        <Stack.Screen
+          name="Jober Form"
+          component={EditProfileScreen}
+          options={{title: 'Update Profile', headerBackTitleVisible: false}}
+        />
         <Stack.Screen
           name="Company Profile"
           component={CompanyProfileScreen}
-          options={{title: '', headerBackTitleVisible: false}}
+          options={{
+            title: 'Your Company Profile',
+            headerBackTitleVisible: false,
+          }}
         />
         <Stack.Screen
           name="Jober Profile"
           component={JoberDetialsScreen}
-          options={{title: '', headerBackTitleVisible: false}}
+          options={{title: 'Profile Details', headerBackTitleVisible: false}}
         />
         <Stack.Screen
           name="Company Form"
           component={CompanyFormScreen}
           options={{
-            title: '',
+            title: 'Update Company Profile',
+            headerBackTitleVisible: false,
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="Favourite"
+          component={FavouriteScreen}
+          options={{
+            title: 'My Favourite Jobs',
             headerBackTitleVisible: false,
             headerShown: true,
           }}

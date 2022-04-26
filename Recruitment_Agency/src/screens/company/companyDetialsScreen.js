@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as companyAction from '../../redux/actions/company';
 import {Avatar} from 'react-native-paper';
@@ -17,6 +11,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CompanyDetialsScreen = ({route}) => {
+  const companyImage =
+    'https://firebasestorage.googleapis.com/v0/b/recruitment-agency-e0465.appspot.com/o/images%2Fdefault%2Fcompany.png?alt=media&token=e5db119f-31d2-4449-9d1b-4f3a9549a2ab';
   const dispatch = useDispatch();
   const cid = route?.params?.params?.cid;
 
@@ -33,19 +29,13 @@ const CompanyDetialsScreen = ({route}) => {
   return (
     <View style={{flex: 1, backgroundColor: Color.app}}>
       <View style={styles.imageCard}>
-        {company?.companyLogo ? (
-          <Avatar.Image
-            size={180}
-            source={require('../../assets/bosleo.png')}
-          />
-        ) : (
-          <Avatar.Image
-            backgroundColor="#e3e3e3"
-            size={180}
-            // source={{uri: `../../assets/${company?.companyLogo}`}}
-            source={require('../../assets/company.png')}
-          />
-        )}
+        <Avatar.Image
+          size={180}
+          source={{
+            uri: company?.companyLogo ? company?.companyLogo : companyImage,
+          }}
+        />
+
         <Text style={styles.companyName}>{company?.companyName}</Text>
       </View>
 
