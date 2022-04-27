@@ -90,19 +90,16 @@ const JobDetailsScreen = ({route, navigation}) => {
     await dispatch(userAction.favourite(id));
   };
 
-  // const applyHandler = React.useCallback(
-  //   async jobid => {
-  //     console.log('call');
-  //     const data = {jobId: jobid};
-  //     if (!isApplied) {
-  //       setIsApplied(false);
-  //     } else {
-  //       setIsApplied(true);
-  //       await dispatch(applicatonAction.applyJob(data));
-  //     }
-  //   },
-  //   [isApplied],
-  // );
+  const applyHandler = async jobid => {
+    const data = {jobId: jobid};
+    if (isApplied) {
+      setIsApplied(false);
+      console.log('call');
+    } else {
+      setIsApplied(true);
+      await dispatch(applicatonAction.applyJob(data));
+    }
+  };
 
   React.useEffect(() => {});
 
@@ -266,7 +263,7 @@ const JobDetailsScreen = ({route, navigation}) => {
                     width: '100%',
                     backgroundColor: isApplied ? 'green' : Color.primary,
                   }}
-                  // onPress={applyHandler(selectedJob?._id)}
+                  onPress={() => applyHandler(selectedJob?._id)}
                 />
               </View>
             </View>

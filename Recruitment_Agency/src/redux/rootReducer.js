@@ -10,7 +10,7 @@ const appReducer = combineReducers({
   jobs: jobsReducer,
   user: userReducer,
   company: companyReducer,
-  applicatuin: applicationReducer,
+  application: applicationReducer,
 });
 
 export const rootReducer = (state, action) => {
