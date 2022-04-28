@@ -20,7 +20,7 @@ import JobDetailsScreen from '../screens/job/jobDetailsScreen';
 import JobPostFormScreen from '../screens/job/jobPostEditFormScreen';
 import JobListScreen from '../screens/job/jobListScreen';
 import ApplicationScreen from '../screens/job/applicationScreen';
-
+import ResumeScreen from '../screens/jober/resumeScreen';
 import CompanyDetialsScreen from '../screens/company/companyDetialsScreen';
 import CompanyFormScreen from '../screens/company/companyPostEditFormScreen';
 import CompanyProfileScreen from '../screens/company/companyProfileScreen';
@@ -140,37 +140,38 @@ const Navigator = ({navigation}) => {
               return (
                 <MI
                   name="work"
-                  size={30}
+                  size={25}
                   color={tabInfo.focused ? Color.primary : '#8e8e93'}
                 />
               );
             },
           }}
         />
-
-        <BottomTab.Screen
-          name="Applies"
-          component={ApplicationScreen}
-          options={{
-            headerShown: false,
-            tabBarActiveTintColor: Color.primary,
-            tabBarLabel: 'Applies',
-            tabBarLabelStyle: {
-              flex: 1,
-              fontSize: 14,
-              fontWeight: '600',
-            },
-            tabBarIcon: tabInfo => {
-              return (
-                <FA
-                  name="send"
-                  size={18}
-                  color={tabInfo.focused ? Color.primary : '#8e8e93'}
-                />
-              );
-            },
-          }}
-        />
+        {user.userType === 'Jober' && (
+          <BottomTab.Screen
+            name="Applies"
+            component={ApplicationScreen}
+            options={{
+              headerShown: false,
+              tabBarActiveTintColor: Color.primary,
+              tabBarLabel: 'Applies',
+              tabBarLabelStyle: {
+                flex: 1,
+                fontSize: 14,
+                fontWeight: '600',
+              },
+              tabBarIcon: tabInfo => {
+                return (
+                  <FA
+                    name="send"
+                    size={18}
+                    color={tabInfo.focused ? Color.primary : '#8e8e93'}
+                  />
+                );
+              },
+            }}
+          />
+        )}
 
         {/* {user.userType === 'Jober' && (
           <BottomTab.Screen
@@ -311,6 +312,7 @@ const Navigator = ({navigation}) => {
           component={EditProfileScreen}
           options={{title: 'Update Profile', headerBackTitleVisible: false}}
         />
+
         <Stack.Screen
           name="Company Profile"
           component={CompanyProfileScreen}
@@ -319,11 +321,19 @@ const Navigator = ({navigation}) => {
             headerBackTitleVisible: false,
           }}
         />
+
         <Stack.Screen
           name="Jober Profile"
           component={JoberDetialsScreen}
           options={{title: 'Profile Details', headerBackTitleVisible: false}}
         />
+
+        <Stack.Screen
+          name="Resume"
+          component={ResumeScreen}
+          options={{title: '', headerBackTitleVisible: false}}
+        />
+
         <Stack.Screen
           name="Company Form"
           component={CompanyFormScreen}
@@ -333,6 +343,7 @@ const Navigator = ({navigation}) => {
             headerShown: true,
           }}
         />
+
         <Stack.Screen
           name="Favourite"
           component={FavouriteScreen}
@@ -342,6 +353,7 @@ const Navigator = ({navigation}) => {
             headerShown: true,
           }}
         />
+
         {user?.userType === 'Jober' ? (
           <Stack.Screen
             name="JC Details"

@@ -33,10 +33,9 @@ export const fetchUser = () => {
   };
 };
 
-export const updateProfile = data => {
+export const updateProfile = props => {
   return async (dispatch, getState) => {
-    // const {data, navigation} = props;
-    // console.log('===========', data);
+    const {data, navigation} = props;
     const userToken = getState().auth.token;
     const userType = getState().auth?.user?.userType;
     const header = {Authorization: `Bearer ${userToken}`};
@@ -56,15 +55,42 @@ export const updateProfile = data => {
       await dispatch({type: UPDATE_USER, userData: resData});
       await fetchUser();
 
-      // {
-      //   userType === 'Company'
-      //     ? navigation.navigate('Company Profile')
-      //     : navigation.navigate('Jober Profile');
-      // }
+      {
+        userType === 'Company'
+          ? navigation.navigate('Company Profile')
+          : navigation.navigate('Jober Profile');
+      }
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;
-        // Alert.alert('Invalid Upadte!', `${errorMsg}`);
+        console.log(errorMsg);
+      }
+    }
+  };
+};
+
+export const imageUpload = data => {
+  return async (dispatch, getState) => {
+    const userToken = getState().auth.token;
+    const userType = getState().auth?.user?.userType;
+    const header = {Authorization: `Bearer ${userToken}`};
+    let response;
+    try {
+      if (userType === 'Company') {
+        response = await recruit.patch('/company/update', data, {
+          headers: header,
+        });
+      } else if (userType === 'Jober') {
+        response = await recruit.patch('/jober/update', data, {
+          headers: header,
+        });
+      }
+      const resData = response?.data;
+      await dispatch({type: UPDATE_USER, userData: resData});
+      await fetchUser();
+    } catch (error) {
+      if (error.response.data.error) {
+        const errorMsg = error.response.data.error;
         console.log(errorMsg);
       }
     }

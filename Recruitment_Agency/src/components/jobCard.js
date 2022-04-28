@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   FlatList,
+  Platform,
 } from 'react-native';
 import Color from '../constant/Color';
 import {Card, Title, Paragraph, Text} from 'react-native-paper';
@@ -36,9 +37,7 @@ const JobCard = props => {
         keyExtractor={(index, item) => index._id}
         showsVerticalScrollIndicator={false}
         renderItem={({item}) => (
-          <TouchableCmp
-            style={{marginTop: 15}}
-            onPress={() => selectJobHandeler(item?._id, item?.cid)}>
+          <TouchableCmp onPress={() => selectJobHandeler(item?._id, item?.cid)}>
             <Card style={styles.card}>
               <Card.Content>
                 <View style={styles.card1stView}>
@@ -80,7 +79,8 @@ const styles = StyleSheet.create({
     // padding: 10,
     marginLeft: 10,
     marginRight: 10,
-    // marginBottom: 10,
+    marginBottom: 2,
+    marginTop: 15,
   },
   container: {
     backgroundColor: Color.app,

@@ -70,7 +70,7 @@ const LoginScreen = ({navigation, route}) => {
       />
 
       <Text style={{...styles.text, fontWeight: 'bold'}}>Login</Text>
-      <Text style={{...styles.text, fontSize: 22}}>For {utype} Only</Text>
+      {/* <Text style={{...styles.text, fontSize: 22}}>For {utype} Only</Text> */}
 
       <ScrollView>
         <View style={styles.input}>
@@ -84,7 +84,7 @@ const LoginScreen = ({navigation, route}) => {
             autoCorrect={false}
             error={emailError}
             clearButtonMode="while-editing"
-            keyboardAppearance="dark"
+            // keyboardAppearance="dark"
           />
           <Text style={styles.errorMessage}>{errorMsg ? errorMsg : ''}</Text>
 
@@ -113,13 +113,15 @@ const LoginScreen = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.loginbtn}>
-          <AppButton buttonTitle="Login" onPress={() => loginHandler()} />
-        </View>
+        <AppButton
+          style={styles.loginbtn}
+          buttonTitle="Login"
+          onPress={() => loginHandler()}
+        />
       </ScrollView>
 
       <View style={styles.createAC}>
-        <Text>You Don't Have An Account ?</Text>
+        <Text style={{color: 'black'}}>You Don't Have An Account ?</Text>
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('Register', {
@@ -156,14 +158,10 @@ const styles = StyleSheet.create({
     marginTop: '5%',
   },
   loginbtn: {
-    // flex: 1,
-    // width: Platform.OS === 'ios' ? '30%' : '30%',
-    // height: Platform.OS === 'ios' ? '2%' : '6%',
-    // justifyContent: 'center',
-    // marginLeft: '50%',
+    width: Platform.OS === 'ios' ? '30%' : '33%',
+    height: Platform.OS === 'ios' ? '20%' : '18%',
+    marginLeft: Platform.OS === 'ios' ? '70%' : '65%',
     marginTop: '8%',
-    // backgroundColor: 'red',
-    alignItems: 'flex-end',
   },
   createAC: {
     flex: 1,

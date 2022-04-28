@@ -12,6 +12,8 @@ const CreateJobController = async (req, res) => {
     createdBy: req.user._id,
   });
 
+  console.log(job);
+
   try {
     await job.save();
     res

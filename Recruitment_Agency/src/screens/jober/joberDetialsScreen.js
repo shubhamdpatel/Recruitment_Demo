@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 //Icons
@@ -106,29 +106,23 @@ const styles = StyleSheet.create({
   underline: {
     borderBottomWidth: 2,
     borderBottomColor: 'lightgray',
-    // shadowColor: 'black',
-    // shadowOpacity: 0.1,
-    // shadowOffset: {width: 3, height: 5},
-    // shadowRadius: 5,
-    // elevation: 5,
-    // borderRadius: 10,
-    // backgroundColor: 'white',
-    // padding: 10,
   },
   textHeading: {
     fontSize: 18,
     fontWeight: '700',
     marginHorizontal: 10,
+    color: 'black',
   },
   text: {
     fontSize: 16,
     marginHorizontal: 20,
+    color: 'black',
   },
   editBtn: {
     position: 'absolute',
     bottom: 50,
     right: 20,
-    height: '6%',
+    height: Platform.OS === 'ios' ? '6%' : '7%',
     width: '25%',
   },
 });

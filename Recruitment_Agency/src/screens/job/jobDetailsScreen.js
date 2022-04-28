@@ -1,5 +1,13 @@
 import React from 'react';
-import {View, Text, ScrollView, StyleSheet, Button, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Platform,
+  Alert,
+  TouchableNativeFeedback,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as JobsAction from '../../redux/actions/jobs';
 import * as userAction from '../../redux/actions/user';
@@ -103,6 +111,10 @@ const JobDetailsScreen = ({route, navigation}) => {
 
   React.useEffect(() => {});
 
+  let TouchableCmp = TouchableOpacity;
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchableCmp = TouchableNativeFeedback;
+  }
   return (
     // <ScrollView style={{padding: 20}} showsVerticalScrollIndicator={false}>
     <View style={styles.container}>
@@ -120,7 +132,7 @@ const JobDetailsScreen = ({route, navigation}) => {
 
           {user.userType === 'Jober' && (
             <View>
-              <TouchableOpacity
+              <TouchableCmp
                 style={styles.favourite}
                 onPress={() => addFavourite(selectedJob?._id)}>
                 <Ionicons
@@ -128,14 +140,14 @@ const JobDetailsScreen = ({route, navigation}) => {
                   size={35}
                   color="#4F8EF7"
                 />
-              </TouchableOpacity>
-              <Text>Favourite</Text>
+              </TouchableCmp>
+              <Text style={{color: 'black'}}>Favourite</Text>
             </View>
           )}
         </View>
       </View>
 
-      <View style={{height: '80%'}}>
+      <View style={{height: '83%'}}>
         <ScrollView
           style={{paddingHorizontal: 10}}
           showsVerticalScrollIndicator={false}>
@@ -214,6 +226,7 @@ const JobDetailsScreen = ({route, navigation}) => {
               style={{
                 fontSize: 19,
                 marginBottom: 10,
+                color: 'black',
               }}>
               INTERVIEW DETAILS
             </Text>
@@ -291,6 +304,7 @@ const styles = StyleSheet.create({
   Jobtitle: {
     fontSize: 28,
     fontWeight: '500',
+    color: 'black',
   },
   view2nd: {
     flexDirection: 'row',
@@ -299,14 +313,17 @@ const styles = StyleSheet.create({
   salary: {
     fontSize: 17,
     marginVertical: '5%',
+    color: 'black',
   },
   openings: {
     fontSize: 16,
     marginVertical: '5%',
     marginRight: '15%',
+    color: 'black',
   },
   favourite: {
     alignItems: 'center',
+    color: 'black',
   },
   element: {
     flex: 1,
@@ -315,6 +332,7 @@ const styles = StyleSheet.create({
   textHeading: {
     fontSize: 16,
     fontWeight: '700',
+    color: 'black',
   },
   heading: {
     fontSize: 19,
@@ -323,6 +341,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    color: 'black',
   },
 });
 

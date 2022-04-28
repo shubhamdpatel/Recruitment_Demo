@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
@@ -22,8 +23,6 @@ const RegisterScreen = ({navigation, route}) => {
   const [confirmPassword, setconfirmPassword] = React.useState(null);
   const [visible, setVisible] = React.useState(false);
   const [errorMsg, setErrorMsg] = React.useState('');
-
-  const onToggleSnackBar = () => setVisible(!visible);
 
   const onDismissSnackBar = () => setVisible(false);
 
@@ -52,53 +51,64 @@ const RegisterScreen = ({navigation, route}) => {
         style={styles.image}
         source={require('../../assets/menOnDesk.png')}
       />
-      <Text style={{...styles.text, fontWeight: 'bold'}}>Register</Text>
-      <Text style={{...styles.text, fontSize: 22}}>For {utype} Only</Text>
 
-      <ScrollView>
-        <View style={styles.input}>
-          <FormInput
-            labelText="Email"
-            labelValue={email}
-            onChangeText={emailId => setEmail(emailId)}
-            placeholderText="Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <Text style={{...styles.text, fontWeight: 'bold'}}>Register</Text>
+        {/* <Text style={{...styles.text, fontSize: 22}}>For {utype} Only</Text> */}
+
+        <ScrollView>
+          <View style={styles.input}>
+            <FormInput
+              labelText="Email"
+              labelValue={email}
+              onChangeText={emailId => setEmail(emailId)}
+              placeholderText="Email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+
+            <FormInput
+              labelText="Password"
+              labelValue={password}
+              onChangeText={userPassword => setPassword(userPassword)}
+              placeholderText="Password"
+              secureTextEntry={true}
+            />
+
+            <FormInput
+              labelText="Confirm Password"
+              labelValue={confirmPassword}
+              onChangeText={confirmPassword =>
+                setconfirmPassword(confirmPassword)
+              }
+              placeholderText="Confirm Password"
+              secureTextEntry={true}
+            />
+          </View>
+
+          <AppButton
+            style={styles.regbtn}
+            buttonTitle="Register"
+            onPress={() => registerUser()}
           />
 
-          <FormInput
-            labelText="Password"
-            labelValue={password}
-            onChangeText={userPassword => setPassword(userPassword)}
-            placeholderText="Password"
-            secureTextEntry={true}
-          />
-
-          <FormInput
-            labelText="Confirm Password"
-            labelValue={confirmPassword}
-            onChangeText={confirmPassword =>
-              setconfirmPassword(confirmPassword)
-            }
-            placeholderText="Confirm Password"
-            secureTextEntry={true}
-          />
-        </View>
-
-        <View style={styles.regbtn}>
-          <AppButton buttonTitle="Register" onPress={() => registerUser()} />
-        </View>
-      </ScrollView>
-
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('Login', {
-            userType,
-          })
-        }>
-        {/* <Text style={{color: 'blue'}}>Login</Text> */}
-      </TouchableOpacity>
+          <View style={{alignItems: 'center', top: 120}}>
+            <Text style={{color: 'black'}}>You have account !</Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Login', {
+                  userType,
+                })
+              }>
+              <Text style={{color: 'blue', textDecorationLine: 'underline'}}>
+                Login here !
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       <Snackbar
         visible={visible}
@@ -119,30 +129,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    padding: 20,
+    padding: '5%',
   },
   image: {
     width: '70%',
     height: '40%',
+    marginTop: Platform.OS === 'android' ? '-15%' : '0%',
   },
   input: {
-    marginTop: '5%',
+    // marginTop: '0%',
   },
   text: {
     fontSize: 28,
     color: Color.primary,
     width: '100%',
-    // marginRight: '70%',
     marginBottom: '2%',
   },
   regbtn: {
-    // flex: 1,
-    // width: '0%',
-    // height: Platform.OS === 'ios' ? '5%' : '6%',
-    // justifyContent: 'center',
-    // marginLeft: '70%',
-    marginTop: '8%',
-    alignItems: 'flex-end',
+    width: Platform.OS === 'ios' ? '35%' : '33%',
+    height: Platform.OS === 'ios' ? '15%' : '15%',
+    marginLeft: Platform.OS === 'ios' ? '65%' : '65%',
+    marginTop: '10%',
   },
 });
 export default RegisterScreen;

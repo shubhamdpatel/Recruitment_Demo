@@ -19,10 +19,10 @@ const ProfileCard = props => {
     TouchableCmp = TouchableNativeFeedback;
   }
 
-  const {title, iconName, onPress} = props;
+  const {title, iconName, onPress, style} = props;
 
   return (
-    <TouchableCmp onPress={onPress}>
+    <TouchableCmp onPress={onPress} style={style}>
       <Card style={styles.card}>
         <Card.Content>
           <View style={styles.card1stView}>

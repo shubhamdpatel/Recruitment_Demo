@@ -1,5 +1,12 @@
 import React from 'react';
-import {Platform, StyleSheet, Text, View, ScrollView} from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native';
 import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
 import * as userAction from '../../redux/actions/user';
@@ -99,66 +106,68 @@ const EditProfileScreen = ({navigation, route}) => {
             </View>
           </View>
 
-          <View style={{height: '100%'}}>
-            <ScrollView>
-              <Text style={styles.inputName}>Job Type</Text>
-              <FormInput
-                labelValue={jobType}
-                onChangeText={Type => setJobType(Type)}
-                mode="outlined"
-                // error={isError}
-                placeholderText="Ex. Full Time | Part Time"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <Text style={styles.inputName}>Functional Area</Text>
-              <FormInput
-                labelValue={functionalArea}
-                // error={isError}
-                onChangeText={FunctionalArea =>
-                  setFunctionalArea(FunctionalArea)
-                }
-                mode="outlined"
-                placeholderText="Ex. Company Manager"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <Text style={styles.inputName}>Experience</Text>
-              <FormInput
-                labelValue={experience}
-                // error={isError}
-                onChangeText={Experience => setExperience(Experience)}
-                mode="outlined"
-                placeholderText="Ex. Fresher | 0 - 6 Months | 1 - 3 Years"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <Text style={styles.inputName}>Prefereed City</Text>
-              <FormInput
-                labelValue={prefereedCity}
-                onChangeText={City => setPrefereedCity(City)}
-                mode="outlined"
-                // error={isError}
-                placeholderText="Ex. Surat"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <Text style={styles.inputName}>Expected Salary</Text>
-              <FormInput
-                labelValue={expectedSalary}
-                onChangeText={Salary => setExpectedSalary(Salary)}
-                mode="outlined"
-                // error={isError}
-                placeholderText="Ex. 4 - 6 LPA"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-            </ScrollView>
-          </View>
+          <KeyboardAvoidingView>
+            <View style={{height: Platform.OS === 'android' ? '100%' : '100%'}}>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <Text style={styles.inputName}>Job Type</Text>
+                <FormInput
+                  labelValue={jobType}
+                  onChangeText={Type => setJobType(Type)}
+                  mode="outlined"
+                  // error={isError}
+                  placeholderText="Ex. Full Time | Part Time"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <Text style={styles.inputName}>Functional Area</Text>
+                <FormInput
+                  labelValue={functionalArea}
+                  // error={isError}
+                  onChangeText={FunctionalArea =>
+                    setFunctionalArea(FunctionalArea)
+                  }
+                  mode="outlined"
+                  placeholderText="Ex. Company Manager"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <Text style={styles.inputName}>Experience</Text>
+                <FormInput
+                  labelValue={experience}
+                  // error={isError}
+                  onChangeText={Experience => setExperience(Experience)}
+                  mode="outlined"
+                  placeholderText="Ex. Fresher | 0 - 6 Months | 1 - 3 Years"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <Text style={styles.inputName}>Prefereed City</Text>
+                <FormInput
+                  labelValue={prefereedCity}
+                  onChangeText={City => setPrefereedCity(City)}
+                  mode="outlined"
+                  // error={isError}
+                  placeholderText="Ex. Surat"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <Text style={styles.inputName}>Expected Salary</Text>
+                <FormInput
+                  labelValue={expectedSalary}
+                  onChangeText={Salary => setExpectedSalary(Salary)}
+                  mode="outlined"
+                  // error={isError}
+                  placeholderText="Ex. 4 - 6 LPA"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+              </ScrollView>
+            </View>
+          </KeyboardAvoidingView>
 
           <View style={styles.buttonContainer}>
             <FabButton
-              style={{bottom: -70}}
+              style={{bottom: -70, left: Platform.OS === 'android' ? 270 : 300}}
               iconName="chevron-right"
               onPress={onNext}
             />
@@ -239,7 +248,7 @@ const EditProfileScreen = ({navigation, route}) => {
               onPress={onPrevious}
             />
             <FabButton
-              style={{bottom: -70, left: 190}}
+              style={{bottom: -70, left: Platform.OS === 'ios' ? 190 : 170}}
               iconName="chevron-right"
               onPress={onNext2Next}
             />
@@ -259,43 +268,50 @@ const EditProfileScreen = ({navigation, route}) => {
             </View>
           </View>
 
-          <View style={{height: '100%'}}>
-            <ScrollView>
-              <Text style={styles.inputName}>Name</Text>
-              <FormInput
-                labelValue={fullName}
-                onChangeText={Name => setFullName(Name)}
-                mode="outlined"
-                placeholderText="First & Last name"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <Text style={styles.inputName}>Mobile</Text>
-              <FormInput
-                labelValue={mobile}
-                onChangeText={Mobile => setMobile(Mobile)}
-                mode="outlined"
-                placeholderText="Mobile"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <Text style={styles.inputName}>My Bio </Text>
-              <FormInput
-                labelValue={myBio}
-                onChangeText={MyBio => setMyBio(MyBio)}
-                mode="outlined"
-                placeholderText="Introduce yourself with your key skills and major achievements"
-                multiline
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-            </ScrollView>
-          </View>
+          <KeyboardAvoidingView
+            enabled
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <View style={{height: Platform.OS === 'ios' ? '100%' : '200%'}}>
+              <ScrollView>
+                <Text style={styles.inputName}>Name</Text>
+                <FormInput
+                  labelValue={fullName}
+                  onChangeText={Name => setFullName(Name)}
+                  mode="outlined"
+                  placeholderText="First & Last name"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <Text style={styles.inputName}>Mobile</Text>
+                <FormInput
+                  labelValue={mobile}
+                  onChangeText={Mobile => setMobile(Mobile)}
+                  mode="outlined"
+                  placeholderText="Mobile"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <Text style={styles.inputName}>My Bio </Text>
+                <FormInput
+                  labelValue={myBio}
+                  onChangeText={MyBio => setMyBio(MyBio)}
+                  mode="outlined"
+                  placeholderText="Introduce yourself with your key skills and major achievements"
+                  multiline
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+              </ScrollView>
+            </View>
+          </KeyboardAvoidingView>
 
           <View
             style={{...styles.buttonContainer, flexDirection: 'row-reverse'}}>
             <FabButton
-              style={{...styles.onPrevious, left: 214}}
+              style={{
+                ...styles.onPrevious,
+                left: Platform.OS === 'ios' ? 195 : 179,
+              }}
               color="gray"
               iconName="chevron-left"
               onPress={onPrevious2Previous}
@@ -330,7 +346,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
     marginTop: 10,
-    // color: '#051d5f',
+    color: 'black',
   },
   input: {
     width: '50%',
@@ -345,7 +361,7 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   buttonContainer: {
-    marginVertical: 600,
+    marginVertical: Platform.OS === 'ios' ? 600 : 450,
     position: 'absolute',
   },
   fab: {
@@ -359,8 +375,9 @@ const styles = StyleSheet.create({
     top: 70,
   },
   submitBtn: {
-    left: -190,
+    left: Platform.OS === 'ios' ? -200 : -190,
     bottom: -90,
-    width: '50%',
+    width: Platform.OS === 'ios' ? '45%' : '45%',
+    height: Platform.OS === 'ios' ? '50%' : '45%',
   },
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import AppButton from '../../components/AppButton';
 import FormInput from '../../components/FormInput';
 import {useDispatch, useSelector} from 'react-redux';
@@ -89,64 +89,72 @@ const JobPostFormScreen = ({navigation, route}) => {
             <Text>Job descriptions</Text>
           </View>
 
-          <ScrollView>
-            <Text style={styles.inputName}>I Want To Hire A</Text>
-            <FormInput
-              labelValue={title}
-              error={isError}
-              onChangeText={Title => setTitle(Title)}
-              mode="outlined"
-              placeholderText="Ex. Company Manager"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-            <Text style={styles.inputName}>Job Type</Text>
-            <FormInput
-              labelValue={type}
-              onChangeText={Type => setType(Type)}
-              mode="outlined"
-              error={isError}
-              placeholderText="Ex. Full-Time | Part Time"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-            <Text style={styles.inputName}>Gender Of The Staff should Be</Text>
-            <FormInput
-              labelValue={gender}
-              onChangeText={Gender => setGender(Gender)}
-              mode="outlined"
-              error={isError}
-              placeholderText="Ex. Male | Female"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-            <Text style={styles.inputName}>
-              Candidate's Minimum Qulification should Be
-            </Text>
-            <FormInput
-              labelValue={education}
-              onChangeText={Education => setEducation(Education)}
-              mode="outlined"
-              error={isError}
-              placeholderText="Ex. Bachlor"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-            <Text style={styles.inputName}>
-              Candidate's Minimum Work Experience Must Be
-            </Text>
-            <FormInput
-              labelValue={experience}
-              onChangeText={Experience => setExperience(Experience)}
-              mode="outlined"
-              placeholderText="Ex. 0-6 Months | 1-2 Years"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-          </ScrollView>
+          <View style={{height: Platform.OS === 'android' ? '88%' : '90%'}}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Text style={styles.inputName}>I Want To Hire A</Text>
+              <FormInput
+                labelValue={title}
+                error={isError}
+                onChangeText={Title => setTitle(Title)}
+                mode="outlined"
+                placeholderText="Ex. Company Manager"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+              <Text style={styles.inputName}>Job Type</Text>
+              <FormInput
+                labelValue={type}
+                onChangeText={Type => setType(Type)}
+                mode="outlined"
+                error={isError}
+                placeholderText="Ex. Full-Time | Part Time"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+              <Text style={styles.inputName}>
+                Gender Of The Staff should Be
+              </Text>
+              <FormInput
+                labelValue={gender}
+                onChangeText={Gender => setGender(Gender)}
+                mode="outlined"
+                error={isError}
+                placeholderText="Ex. Male | Female"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+              <Text style={styles.inputName}>
+                Candidate's Minimum Qulification should Be
+              </Text>
+              <FormInput
+                labelValue={education}
+                onChangeText={Education => setEducation(Education)}
+                mode="outlined"
+                error={isError}
+                placeholderText="Ex. Bachlor"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+              <Text style={styles.inputName}>
+                Candidate's Minimum Work Experience Must Be
+              </Text>
+              <FormInput
+                labelValue={experience}
+                onChangeText={Experience => setExperience(Experience)}
+                mode="outlined"
+                placeholderText="Ex. 0-6 Months | 1-2 Years"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+            </ScrollView>
+          </View>
 
           <FabButton
-            style={styles.fab}
+            style={{
+              ...styles.fab,
+              left: Platform.OS === 'ios' ? '75%' : '78%',
+              bottom: Platform.OS === 'ios' ? '0%' : '-5%',
+            }}
             iconName="chevron-right"
             onPress={onNext}
           />
@@ -242,7 +250,10 @@ const JobPostFormScreen = ({navigation, route}) => {
           <View
             style={{...styles.buttonContainer, flexDirection: 'row-reverse'}}>
             <FabButton
-              style={{...styles.onPrevious, left: 214}}
+              style={{
+                ...styles.onPrevious,
+                left: Platform.OS === 'android' ? 180 : 190,
+              }}
               color="gray"
               iconName="chevron-left"
               onPress={onPrevious}
@@ -277,7 +288,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
     marginTop: 10,
-    // color: '#051d5f',
+    color: 'black',
   },
   input: {
     width: '50%',
@@ -293,9 +304,10 @@ const styles = StyleSheet.create({
   },
   fab: {
     bottom: -50,
+    position: 'absolute',
   },
   buttonContainer: {
-    marginVertical: 700,
+    marginVertical: Platform.OS === 'ios' ? 700 : 565,
     position: 'absolute',
   },
   onPrevious: {
@@ -306,6 +318,7 @@ const styles = StyleSheet.create({
   submitBtn: {
     left: -190,
     // bottom: -90,
-    width: '50%',
+    width: '45%',
+    height: '50%',
   },
 });

@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Platform,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Color from '../constant/Color';
@@ -108,7 +109,7 @@ const ProfileScreen = ({navigation}) => {
         const url = await storage().ref(folderPath).getDownloadURL();
 
         await dispatch(
-          userAction.updateProfile(
+          userAction.imageUpload(
             userType === 'Company' ? {companyLogo: url} : {profileImage: url},
           ),
         );
@@ -235,7 +236,7 @@ const ProfileScreen = ({navigation}) => {
             <Text style={styles.name}>{user?.fullName || 'Your Name'}</Text>
           )}
         </View>
-        <View style={{height: '60%'}}>
+        <View style={{height: Platform.OS === 'android' ? '58%' : '67%'}}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.text}>Personal Info </Text>
             {userType === 'Company' ? (
@@ -258,7 +259,11 @@ const ProfileScreen = ({navigation}) => {
                   iconName="chevron-right"
                   onPress={() => navigation.navigate('Favourite')}
                 />
-                <ProfileCard title="My Resume" iconName="chevron-right" />
+                <ProfileCard
+                  title="My Resume"
+                  iconName="chevron-right"
+                  onPress={() => navigation.navigate('Resume')}
+                />
               </View>
             )}
 
@@ -345,7 +350,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderBottomStartRadius: 30,
     borderBottomEndRadius: 30,
-    height: Platform.OS === 'ios' ? '38%' : '50%',
+    height: Platform.OS === 'ios' ? '33%' : '40%',
     justifyContent: 'space-around',
     alignItems: 'center',
   },
@@ -369,6 +374,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: 'Cochin',
     textAlign: 'center',
+    color: 'black',
   },
 
   details: {
@@ -378,13 +384,10 @@ const styles = StyleSheet.create({
   element: {
     marginVertical: 10,
   },
-  textHeading: {
-    fontSize: 16,
-    fontWeight: '700',
-  },
   text: {
     padding: 20,
     fontSize: 18,
+    color: 'black',
   },
 });
 

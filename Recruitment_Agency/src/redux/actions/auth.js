@@ -29,7 +29,6 @@ export const Init = () => {
 };
 
 export const signUp = (data, userType) => {
- 
   return async dispatch => {
     try {
       const response = await recruit.post('/register', data, {
@@ -61,15 +60,17 @@ export const signUp = (data, userType) => {
 };
 
 export const signIn = (email, password) => {
+  console.log(email, password);
   return async dispatch => {
     try {
+      console.log('Api Call');
       const response = await recruit.post('/login', {
         email,
         password,
       });
 
       const resData = response.data;
-
+      console.log('Login Data==>', resData);
       try {
         const jsonValue = JSON.stringify({
           user: resData,

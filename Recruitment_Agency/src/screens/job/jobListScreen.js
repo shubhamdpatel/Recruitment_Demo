@@ -5,8 +5,6 @@ import {useSelector, useDispatch} from 'react-redux';
 import FabButton from '../../components/FabButton';
 import JobCard from '../../components/jobCard';
 import * as JobsAction from '../../redux/actions/jobs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Color from '../../constant/Color';
 
 const JobListScreen = ({navigation}) => {
   const user = useSelector(state => state.auth.user);
@@ -55,7 +53,22 @@ const JobListScreen = ({navigation}) => {
     );
   }
 
-  return <JobCard data={jobs} navigation={navigation} />;
+  return (
+    <View style={{flex: 1}}>
+      <JobCard data={jobs} navigation={navigation} />
+      {user?.userType === 'Company' && (
+        <View>
+          <FabButton
+            style={styles.fab}
+            iconName="plus"
+            onPress={() =>
+              navigation.navigate('Job Post', {params: {jobId: ''}})
+            }
+          />
+        </View>
+      )}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -72,6 +85,10 @@ const styles = StyleSheet.create({
   },
   text: {
     marginBottom: '5%',
+  },
+  fab: {
+    position: 'absolute',
+    left: '72%',
   },
 });
 export default JobListScreen;
