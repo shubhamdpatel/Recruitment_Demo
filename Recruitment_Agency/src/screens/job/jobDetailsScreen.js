@@ -58,7 +58,7 @@ const JobDetailsScreen = ({route, navigation}) => {
       {
         text: 'Yes',
         onPress: () => {
-          dispatch(JobsAction.deleteJob(id));
+          dispatch(JobsAction.deleteJob({id, navigation: navigation}));
         },
       },
     ]);

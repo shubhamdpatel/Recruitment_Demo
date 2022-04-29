@@ -69,7 +69,7 @@ export const updateProfile = props => {
   };
 };
 
-export const imageUpload = data => {
+export const fileUpload = data => {
   return async (dispatch, getState) => {
     const userToken = getState().auth.token;
     const userType = getState().auth?.user?.userType;

@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 //Icons
@@ -18,12 +18,17 @@ const CompanyProfileScreen = ({navigation}) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       title: user?.companyName,
+      // RightButton: () => {
+      //   <View>
+      //     <Text style={{color: 'black'}}>Edit</Text>
+      //   </View>;
+      // },
     });
   }, [navigation]);
 
   return (
     <View style={{flex: 1, backgroundColor: Color.app}}>
-      <View style={{height: '87%'}}>
+      <View style={{height: Platform.OS === 'ios' ? '100%' : '100%'}}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.details}>
             <View style={{...styles.element, ...styles.card}}>
@@ -109,9 +114,11 @@ const styles = StyleSheet.create({
   textHeading: {
     fontSize: 16,
     fontWeight: '700',
+    color: 'black',
   },
   text: {
     fontSize: 16,
+    color: 'black',
   },
   editBtn: {
     position: 'absolute',

@@ -1,5 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
 import {useDispatch, useSelector} from 'react-redux';
@@ -79,58 +86,60 @@ const CompanyFormScreen = ({navigation}) => {
             <Text>Company descriptions</Text>
           </View>
 
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.inputName}>Name Of My Company</Text>
-            <FormInput
-              labelValue={companyName}
-              //   error={''}
-              onChangeText={CompanyName => setCompanyName(CompanyName)}
-              mode="outlined"
-              //   placeholderText="Ex. Company Manager"
+          <View>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Text style={styles.inputName}>Name Of My Company</Text>
+              <FormInput
+                labelValue={companyName}
+                //   error={''}
+                onChangeText={CompanyName => setCompanyName(CompanyName)}
+                mode="outlined"
+                //   placeholderText="Ex. Company Manager"
 
-              autoCorrect={false}
-            />
-            <Text style={styles.inputName}>Contact Person</Text>
-            <FormInput
-              labelValue={contactPerson}
-              onChangeText={ContactPerson => setContactPerson(ContactPerson)}
-              mode="outlined"
-              //   error={''}
-              //   placeholderText="Ex. Full-Time | Part Time"
+                autoCorrect={false}
+              />
+              <Text style={styles.inputName}>Contact Person</Text>
+              <FormInput
+                labelValue={contactPerson}
+                onChangeText={ContactPerson => setContactPerson(ContactPerson)}
+                mode="outlined"
+                //   error={''}
+                //   placeholderText="Ex. Full-Time | Part Time"
 
-              autoCorrect={false}
-            />
-            <Text style={styles.inputName}>Emial Id</Text>
-            <FormInput
-              labelValue={email}
-              onChangeText={Email => setEmail(Email)}
-              mode="outlined"
-              disabled
-              //   error={''}
-              //   placeholderText="Ex. Male | Female"
+                autoCorrect={false}
+              />
+              <Text style={styles.inputName}>Emial Id</Text>
+              <FormInput
+                labelValue={email}
+                onChangeText={Email => setEmail(Email)}
+                mode="outlined"
+                disabled
+                //   error={''}
+                //   placeholderText="Ex. Male | Female"
 
-              autoCorrect={false}
-            />
-            <Text style={styles.inputName}>Mobile Number </Text>
-            <FormInput
-              labelValue={mobile}
-              onChangeText={Mobile => setMobile(Mobile)}
-              mode="outlined"
-              //   error={''}
-              //   placeholderText="Ex. Bachlor"
-              autoCorrect={false}
-            />
-            <Text style={styles.inputName}>Website</Text>
-            <FormInput
-              labelValue={website}
-              onChangeText={Website => setWebsite(Website)}
-              mode="outlined"
-              //   error={''}
-              //   placeholderText="Ex. Bachlor"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-          </ScrollView>
+                autoCorrect={false}
+              />
+              <Text style={styles.inputName}>Mobile Number </Text>
+              <FormInput
+                labelValue={mobile}
+                onChangeText={Mobile => setMobile(Mobile)}
+                mode="outlined"
+                //   error={''}
+                //   placeholderText="Ex. Bachlor"
+                autoCorrect={false}
+              />
+              <Text style={styles.inputName}>Website</Text>
+              <FormInput
+                labelValue={website}
+                onChangeText={Website => setWebsite(Website)}
+                mode="outlined"
+                //   error={''}
+                //   placeholderText="Ex. Bachlor"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+            </ScrollView>
+          </View>
 
           <FabButton
             style={styles.fab}
@@ -196,7 +205,10 @@ const CompanyFormScreen = ({navigation}) => {
           <View
             style={{...styles.buttonContainer, flexDirection: 'row-reverse'}}>
             <FabButton
-              style={{...styles.onPrevious, left: 214}}
+              style={{
+                ...styles.onPrevious,
+                left: Platform.OS === 'ios' ? 214 : 180,
+              }}
               color="gray"
               iconName="chevron-left"
               onPress={onPrevious}
@@ -240,7 +252,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
     marginTop: 10,
-    // color: '#051d5f',
+    color: 'black',
   },
   input: {
     width: '50%',
@@ -255,10 +267,12 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   fab: {
-    bottom: -50,
+    bottom: Platform.OS === 'ios' ? -150 : 0,
+    left: Platform.OS === 'ios' ? 290 : 270,
+    position: 'absolute',
   },
   buttonContainer: {
-    marginVertical: 700,
+    marginVertical: Platform.OS === 'ios' ? 700 : 570,
     position: 'absolute',
   },
   onPrevious: {
@@ -269,7 +283,7 @@ const styles = StyleSheet.create({
   submitBtn: {
     left: -190,
     // bottom: -90,
-    width: '50%',
+    width: Platform.OS === 'ios' ? '50%' : '45%',
   },
 });
 export default CompanyFormScreen;

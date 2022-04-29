@@ -66,7 +66,8 @@ export const createJob = props => {
   };
 };
 
-export const deleteJob = id => {
+export const deleteJob = props => {
+  const {id, navigation} = props;
   return async (dispatch, getState) => {
     const userToken = getState().auth.token;
     try {
@@ -76,7 +77,9 @@ export const deleteJob = id => {
         })
         .then(res => {
           if (res.data.success) {
-            Alert.alert('Success !', `${res.data.success}`);
+            // Alert.alert('Success !', `${res.data.success}`);
+            fetchJobs();
+            navigation.goBack();
           } else {
             Alert.alert('Something Wrong !', `${res.data.error}`);
           } // dispatch({type:DELETE_JOB , newPostJob: res.data});

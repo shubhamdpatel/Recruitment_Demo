@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -28,9 +28,10 @@ const ProfileScreen = ({navigation}) => {
 
   const userType = useSelector(state => state.auth.user.userType);
   const user = useSelector(state => state.user.userProfile[0]);
-  const [profile, setProfile] = useState(user?.profileImage || '');
-  const [uploading, setUploading] = useState(false);
-  const [transferred, setTransferred] = useState(0);
+  const image = userType === 'Company' ? user?.companyLogo : user?.profileImage;
+  const [profile, setProfile] = React.useState(image || '');
+  const [uploading, setUploading] = React.useState(false);
+  const [transferred, setTransferred] = React.useState(0);
   const dispatch = useDispatch();
 
   // Fetch Job
@@ -109,7 +110,7 @@ const ProfileScreen = ({navigation}) => {
         const url = await storage().ref(folderPath).getDownloadURL();
 
         await dispatch(
-          userAction.imageUpload(
+          userAction.fileUpload(
             userType === 'Company' ? {companyLogo: url} : {profileImage: url},
           ),
         );

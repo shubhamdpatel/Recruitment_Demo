@@ -5,6 +5,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import FabButton from '../../components/FabButton';
 import JobCard from '../../components/jobCard';
 import * as JobsAction from '../../redux/actions/jobs';
+import {useFocusEffect} from '@react-navigation/native';
 
 const JobListScreen = ({navigation}) => {
   const user = useSelector(state => state.auth.user);
@@ -24,9 +25,16 @@ const JobListScreen = ({navigation}) => {
   };
 
   // Call Fetch Data on Screen Load
-  React.useEffect(() => {
-    fetchPost();
-  }, []);
+
+  // React.useEffect(() => {
+  //   fetchPost();
+  // }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchPost();
+    }, []),
+  );
 
   if (jobs.length === 0) {
     return (
