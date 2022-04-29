@@ -152,7 +152,7 @@ const ResumeScreen = () => {
           marginLeft: 15,
           color: file ? 'green' : '#b31409',
         }}>
-        {file ? 'Your Resume Uploded SuccessFully' : "You't Upload Your Resume"}
+        {file ? 'Your Resume Uploaded SuccessFully' : 'Resume Not Uploaded'}
       </Text>
     </View>
   );
