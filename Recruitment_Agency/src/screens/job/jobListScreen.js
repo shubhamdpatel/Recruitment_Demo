@@ -6,6 +6,8 @@ import FabButton from '../../components/FabButton';
 import JobCard from '../../components/jobCard';
 import * as JobsAction from '../../redux/actions/jobs';
 import {useFocusEffect} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Octicons';
+import Color from '../../constant/Color';
 
 const JobListScreen = ({navigation}) => {
   const user = useSelector(state => state.auth.user);
@@ -43,7 +45,11 @@ const JobListScreen = ({navigation}) => {
           {/* <Ionicons name="add-circle" size={40} color={Color.accent} /> */}
 
           <Text style={styles.heding}>You have not post any jobs</Text>
-          <Text style={styles.text}>Click On, Add jobs</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.text}>Click On </Text>
+            <Icon name="plus-circle" color={Color.primary} size={16} />
+            <Text> Add Jobs</Text>
+          </View>
           {/* <Image
             style={{width: 240, height: 300,position:'absolute',bottom:-50,left:50}}
             source={require('../../assets/LeftArrow1.jpg')}

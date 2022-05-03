@@ -43,8 +43,9 @@ const JobCard = props => {
                 <View style={styles.card1stView}>
                   <Title>{item?.title}</Title>
                   <Title style={{color: '#0080ff', fontSize: 18}}>
-                    Rs 3 - 4 LPA
-                    {/* {item?.maxSalary} - {item?.maxSalary} */}
+                    {/* Rs 3 - 4 LPA */}
+                    Rs {item?.minSalary.substring(0, 2)}k -{' '}
+                    {item?.maxSalary.substring(0, 2)}k
                   </Title>
                 </View>
 

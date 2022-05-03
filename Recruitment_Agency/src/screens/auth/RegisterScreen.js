@@ -118,7 +118,7 @@ const RegisterScreen = ({navigation, route}) => {
               error={emailError}
               clearButtonMode="while-editing"
             />
-            <Text style={styles.errorMessage}>{errorMsg ? errorMsg : ''}</Text>
+            {/* <Text style={styles.errorMessage}>{errorMsg ? errorMsg : ''}</Text> */}
 
             <FormInput
               labelText="Password"
