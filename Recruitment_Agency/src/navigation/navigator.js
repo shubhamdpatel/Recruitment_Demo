@@ -8,7 +8,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {NavigationContainer} from '@react-navigation/native';
 
 import SplashScreen from '../screens/splashScreen';
-import UserSelectScreen from '../screens/userSelectScreen';
+import OnBoardingScreen from '../screens/onBoardingScreen';
 
 import LoginScreen from '../screens/auth/loginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
@@ -47,7 +47,7 @@ const AuthStack = () => {
     <Stack.Navigator>
       <Stack.Screen
         name="User"
-        component={UserSelectScreen}
+        component={OnBoardingScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen

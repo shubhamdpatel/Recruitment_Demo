@@ -4,7 +4,8 @@ import {Avatar, Button} from 'react-native-paper';
 import Color from '../constant/Color';
 import {windowWidth, windowHeight} from '../utils/Dimentions';
 import AppButton from '../components/AppButton';
-const UserSelectScreen = ({navigation}) => {
+
+const OnBoardingScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
@@ -79,4 +80,4 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
 });
-export default UserSelectScreen;
+export default OnBoardingScreen;

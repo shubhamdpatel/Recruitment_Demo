@@ -43,7 +43,7 @@ const registerController = async (req, res) => {
       await user.save();
       await company.save();
       const token = await user.generateAuthToken();
-      res.status(201).send({ user, token, flag: 0 });
+      res.status(201).send({ user, token });
     }
 
     if (userType === "Jober") {
@@ -54,7 +54,7 @@ const registerController = async (req, res) => {
       await user.save();
       await jober.save();
       const token = await user.generateAuthToken();
-      res.status(201).send({ user, token, flag: 0 });
+      res.status(201).send({ user, token });
     }
   } catch (error) {
     if (error.code === 11000) {

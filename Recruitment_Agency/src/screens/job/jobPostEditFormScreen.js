@@ -48,8 +48,42 @@ const JobPostFormScreen = ({navigation, route}) => {
 
   const dispatch = useDispatch();
 
+  const [error, setError] = React.useState({
+    hire: false,
+    jtype: false,
+    jgender: false,
+    jeducation: false,
+    jexperience: false,
+  });
+
   const onNext = () => {
     setNext(false);
+    // // let tempError = {...error};
+    // if (
+    //   title === '' ||
+    //   type === '' ||
+    //   gender === '' ||
+    //   education === '' ||
+    //   experience === ''
+    // ) {
+    //   setError({
+    //     hire: true,
+    //     jtype: true,
+    //     jgender: true,
+    //     jeducation: true,
+    //     jexperience: true,
+    //   });
+    //   // } else if (type === '') {
+    //   //   setError({jtype: true});
+    //   // } else if (gender === '') {
+    //   //   setError({jgender: true});
+    //   // } else if (education === '') {
+    //   //   setError({jeducation: true});
+    //   // } else if (experience === '') {
+    //   //   setError({jexperience: true});
+    // } else {
+    //   setNext(false);
+    // }
   };
 
   const onPrevious = () => {
@@ -94,7 +128,7 @@ const JobPostFormScreen = ({navigation, route}) => {
               <Text style={styles.inputName}>I Want To Hire A</Text>
               <FormInput
                 labelValue={title}
-                error={isError}
+                error={error?.hire}
                 onChangeText={Title => setTitle(Title)}
                 mode="outlined"
                 placeholderText="Ex. Company Manager"
@@ -106,7 +140,7 @@ const JobPostFormScreen = ({navigation, route}) => {
                 labelValue={type}
                 onChangeText={Type => setType(Type)}
                 mode="outlined"
-                error={isError}
+                error={error?.jtype}
                 placeholderText="Ex. Full-Time | Part Time"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -118,7 +152,7 @@ const JobPostFormScreen = ({navigation, route}) => {
                 labelValue={gender}
                 onChangeText={Gender => setGender(Gender)}
                 mode="outlined"
-                error={isError}
+                error={error?.jgender}
                 placeholderText="Ex. Male | Female"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -130,7 +164,7 @@ const JobPostFormScreen = ({navigation, route}) => {
                 labelValue={education}
                 onChangeText={Education => setEducation(Education)}
                 mode="outlined"
-                error={isError}
+                error={error?.jeducation}
                 placeholderText="Ex. Bachlor"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -142,6 +176,7 @@ const JobPostFormScreen = ({navigation, route}) => {
                 labelValue={experience}
                 onChangeText={Experience => setExperience(Experience)}
                 mode="outlined"
+                error={error?.jexperience}
                 placeholderText="Ex. 0-6 Months | 1-2 Years"
                 autoCapitalize="none"
                 autoCorrect={false}

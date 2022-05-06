@@ -1,19 +1,12 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Platform} from 'react-native';
 import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
+import FabButton from '../../components/FabButton';
+import Color from '../../constant/Color';
 import {useDispatch, useSelector} from 'react-redux';
 import * as userAction from '../../redux/actions/user';
-import FabButton from '../../components/FabButton';
 import * as Progress from 'react-native-progress';
-import Color from '../../constant/Color';
 
 const CompanyFormScreen = ({navigation}) => {
   const [Next, setNext] = React.useState(true);
@@ -216,7 +209,7 @@ const CompanyFormScreen = ({navigation}) => {
             <AppButton
               style={styles.submitBtn}
               buttonTitle={'Update'}
-              onPress={() => postSubmit(selectedJob?._id)}
+              onPress={() => postSubmit()}
             />
           </View>
         </View>

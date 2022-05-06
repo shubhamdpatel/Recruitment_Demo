@@ -37,7 +37,7 @@ export const signUp = (data, userType) => {
         },
       });
       const resData = response.data;
-
+      console.log(resData);
       if (resData.error === 'EMAIL_EXISTS') {
         // throw new Error('This email exists alreday');
         Alert.alert('Invalid Login!', 'This email exists alreday');

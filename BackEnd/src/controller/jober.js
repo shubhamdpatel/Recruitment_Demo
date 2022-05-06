@@ -15,6 +15,7 @@ const createJoberController = async (req, res) => {
 };
 
 const joberDetailsController = async (req, res) => {
+  console.log("Jober get data api call!");
   try {
     const jober = await Jober.find({ createdBy: req.user._id });
     res.status(200).send(jober);

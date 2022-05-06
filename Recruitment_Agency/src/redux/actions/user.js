@@ -1,5 +1,6 @@
 import {Alert} from 'react-native';
 import {recruit} from '../axois';
+import authAction from '../actions/auth';
 
 export const FETCH_USER = 'FETCH_USER';
 export const UPDATE_USER = 'UPDATE_USER';
@@ -53,8 +54,7 @@ export const updateProfile = props => {
       const resData = response?.data;
       // Alert.alert('Success!', 'Profile Updated Successfully!');
       await dispatch({type: UPDATE_USER, userData: resData});
-      await fetchUser();
-
+      dispatch(fetchUser());
       {
         userType === 'Company'
           ? navigation.navigate('Company Profile')
@@ -87,7 +87,7 @@ export const fileUpload = data => {
       }
       const resData = response?.data;
       await dispatch({type: UPDATE_USER, userData: resData});
-      await fetchUser();
+      dispatch(fetchUser());
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;
@@ -117,7 +117,7 @@ export const favourite = jobId => {
       }
       const resData = response.data;
       await dispatch({type: UPDATE_USER, userData: resData.jober});
-      await fetchUser();
+      dispatch(fetchUser());
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;

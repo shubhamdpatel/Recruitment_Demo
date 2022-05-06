@@ -14,6 +14,7 @@ const FormInput = ({labelText, labelValue, placeholderText, ...props}) => {
         underlineColor={Color.primary}
         value={labelValue}
         numberOfLines={1}
+        
         placeholder={placeholderText}
         {...props}
         style={styles.input}

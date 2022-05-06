@@ -14,6 +14,7 @@ import * as userAction from '../../redux/actions/user';
 import * as applicatonAction from '../../redux/actions/application';
 import Color from '../../constant/Color';
 import AppButton from '../../components/AppButton';
+import {useFocusEffect} from '@react-navigation/native';
 
 //Icons
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -23,7 +24,7 @@ import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const JobDetailsScreen = ({route, navigation}) => {
-  const [isFavourite, setIsFavourite] = React.useState(false);
+  // const [isFavourite, setIsFavourite] = React.useState(false);
   const [isApplied, setIsApplied] = React.useState(false);
   const jobId = route?.params.params.jobId;
   const dispatch = useDispatch();
@@ -43,12 +44,8 @@ const JobDetailsScreen = ({route, navigation}) => {
     );
     fav = userData.favourites.includes(selectedJob._id);
   }
-
-  React.useEffect(() => {
-    if (fav) {
-      setIsFavourite(fav);
-    }
-  }, []);
+  // console.log(fav);
+  const [isFavourite, setIsFavourite] = React.useState(fav);
 
   const jobDelete = id => {
     Alert.alert('Are you sure?', 'Are sure you want to delete this job?', [
@@ -95,6 +92,11 @@ const JobDetailsScreen = ({route, navigation}) => {
   }, [navigation]);
 
   const addFavourite = async id => {
+    if (isFavourite) {
+      setIsFavourite(false);
+    } else {
+      setIsFavourite(true);
+    }
     await dispatch(userAction.favourite(id));
   };
 
@@ -102,19 +104,17 @@ const JobDetailsScreen = ({route, navigation}) => {
     const data = {jobId: jobid};
     if (isApplied) {
       setIsApplied(false);
-      console.log('call');
     } else {
       setIsApplied(true);
       await dispatch(applicatonAction.applyJob(data));
     }
   };
 
-  React.useEffect(() => {});
-
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
   }
+  
   return (
     // <ScrollView style={{padding: 20}} showsVerticalScrollIndicator={false}>
     <View style={styles.container}>
@@ -123,7 +123,8 @@ const JobDetailsScreen = ({route, navigation}) => {
 
         <View style={styles.view2nd}>
           <Text style={styles.salary}>
-            Rs. {selectedJob?.minSalary} - {selectedJob?.maxSalary}
+            Rs. {selectedJob?.minSalary.substring(0, 2)}k -{' '}
+            {selectedJob?.maxSalary.substring(0, 2)}k
           </Text>
 
           <Text style={styles.openings}>
@@ -139,6 +140,7 @@ const JobDetailsScreen = ({route, navigation}) => {
                   name={isFavourite ? 'heart' : 'heart-outline'}
                   size={35}
                   color="#4F8EF7"
+                  style={{left: Platform.OS === 'android' ? 10 : 0}}
                 />
               </TouchableCmp>
               <Text style={{color: 'black'}}>Favourite</Text>
@@ -273,7 +275,7 @@ const JobDetailsScreen = ({route, navigation}) => {
                 <AppButton
                   buttonTitle={isApplied ? 'Applied Cancel' : 'Apply For Job'}
                   style={{
-                    width: '100%',
+                    ...styles.applyBtn,
                     backgroundColor: isApplied ? 'green' : Color.primary,
                   }}
                   onPress={() => applyHandler(selectedJob?._id)}
@@ -342,6 +344,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     color: 'black',
+  },
+  applyBtn: {
+    width: '100%',
+    height: Platform.OS === 'android' ? '35%' : '37%',
   },
 });
 
