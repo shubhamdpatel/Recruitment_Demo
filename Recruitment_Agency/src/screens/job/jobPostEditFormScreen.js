@@ -14,6 +14,7 @@ const JobPostFormScreen = ({navigation, route}) => {
   const [isError, setIsError] = React.useState(false);
 
   const {jobId} = route.params;
+
   const selectedJob = useSelector(state =>
     state?.jobs?.userPostedJobs?.find(job => job?._id === jobId),
   );
@@ -54,36 +55,51 @@ const JobPostFormScreen = ({navigation, route}) => {
     jgender: false,
     jeducation: false,
     jexperience: false,
+    jminSalary: false,
+    jmaxSalary: false,
+    jopenings: false,
+    jdescription: false,
+    jworkTiming: false,
+    jinterviewTiming: false,
   });
 
   const onNext = () => {
-    setNext(false);
-    // // let tempError = {...error};
-    // if (
-    //   title === '' ||
-    //   type === '' ||
-    //   gender === '' ||
-    //   education === '' ||
-    //   experience === ''
-    // ) {
-    //   setError({
-    //     hire: true,
-    //     jtype: true,
-    //     jgender: true,
-    //     jeducation: true,
-    //     jexperience: true,
-    //   });
-    //   // } else if (type === '') {
-    //   //   setError({jtype: true});
-    //   // } else if (gender === '') {
-    //   //   setError({jgender: true});
-    //   // } else if (education === '') {
-    //   //   setError({jeducation: true});
-    //   // } else if (experience === '') {
-    //   //   setError({jexperience: true});
-    // } else {
-    //   setNext(false);
-    // }
+    if (
+      title === '' &&
+      type === '' &&
+      gender === '' &&
+      education === '' &&
+      experience === ''
+    ) {
+      setError({
+        hire: true,
+        jtype: true,
+        jgender: true,
+        jeducation: true,
+        jexperience: true,
+      });
+      setTimeout(() => {
+        setError({
+          hire: false,
+          jtype: false,
+          jgender: false,
+          jeducation: false,
+          jexperience: false,
+        });
+      }, 1000);
+    } else if (title === '') {
+      setError({hire: true});
+    } else if (type === '') {
+      setError({jtype: true});
+    } else if (gender === '') {
+      setError({jgender: true});
+    } else if (education === '') {
+      setError({jeducation: true});
+    } else if (experience === '') {
+      setError({jexperience: true});
+    } else {
+      setNext(false);
+    }
   };
 
   const onPrevious = () => {
@@ -104,7 +120,45 @@ const JobPostFormScreen = ({navigation, route}) => {
       workTime: workTiming,
       interviewTime: interviewTiming,
     };
-    await dispatch(JobsAction.createJob({id, data, navigation: navigation}));
+    if (
+      minSalary === '' &&
+      maxSalary === '' &&
+      openings === '' &&
+      description === '' &&
+      workTiming === '' &&
+      interviewTiming === ''
+    ) {
+      setError({
+        jminSalary: true,
+        jmaxSalary: true,
+        jopenings: true,
+        jdescription: true,
+        jworkTiming: true,
+        jinterviewTiming: true,
+      });
+      setTimeout(() => {
+        setError({
+          jminSalary: false,
+          jmaxSalary: false,
+          jopenings: false,
+          jdescription: false,
+          jworkTiming: false,
+          jinterviewTiming: false,
+        });
+      }, 1000);
+    } else if (minSalary === '') {
+      setError({jminSalary: true});
+    } else if (maxSalary === '') {
+      setError({jmaxSalary: true});
+    } else if (description === '') {
+      setError({jdescription: true});
+    } else if (workTiming === '') {
+      setError({jworkTiming: true});
+    } else if (interviewTiming === '') {
+      setError({jinterviewTiming: true});
+    } else {
+      await dispatch(JobsAction.createJob({id, data, navigation: navigation}));
+    }
   };
 
   return (
@@ -134,6 +188,11 @@ const JobPostFormScreen = ({navigation, route}) => {
                 placeholderText="Ex. Company Manager"
                 autoCapitalize="none"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    hire: false,
+                  })
+                }
               />
               <Text style={styles.inputName}>Job Type</Text>
               <FormInput
@@ -144,6 +203,11 @@ const JobPostFormScreen = ({navigation, route}) => {
                 placeholderText="Ex. Full-Time | Part Time"
                 autoCapitalize="none"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    jtype: false,
+                  })
+                }
               />
               <Text style={styles.inputName}>
                 Gender Of The Staff should Be
@@ -156,6 +220,11 @@ const JobPostFormScreen = ({navigation, route}) => {
                 placeholderText="Ex. Male | Female"
                 autoCapitalize="none"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    jgender: false,
+                  })
+                }
               />
               <Text style={styles.inputName}>
                 Candidate's Minimum Qulification should Be
@@ -168,6 +237,11 @@ const JobPostFormScreen = ({navigation, route}) => {
                 placeholderText="Ex. Bachlor"
                 autoCapitalize="none"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    jeducation: false,
+                  })
+                }
               />
               <Text style={styles.inputName}>
                 Candidate's Minimum Work Experience Must Be
@@ -180,6 +254,11 @@ const JobPostFormScreen = ({navigation, route}) => {
                 placeholderText="Ex. 0-6 Months | 1-2 Years"
                 autoCapitalize="none"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    jexperience: false,
+                  })
+                }
               />
             </ScrollView>
           </View>
@@ -192,6 +271,7 @@ const JobPostFormScreen = ({navigation, route}) => {
             }}
             iconName="chevron-right"
             onPress={onNext}
+            // disable={true}
           />
         </View>
       ) : (
@@ -217,19 +297,31 @@ const JobPostFormScreen = ({navigation, route}) => {
                 <FormInput
                   labelValue={minSalary}
                   onChangeText={MinSalary => setMinSalary(MinSalary)}
+                  error={error?.jminSalary}
                   mode="outlined"
                   placeholderText="Ex. 10000"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  onFocus={() =>
+                    setError({
+                      jminSalary: false,
+                    })
+                  }
                 />
                 <Text style={styles.to}>to</Text>
                 <FormInput
                   labelValue={maxSalary}
                   onChangeText={MaxSalary => setMaxSalary(MaxSalary)}
+                  error={error?.jmaxSalary}
                   mode="outlined"
                   placeholderText="Ex. 20000"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  onFocus={() =>
+                    setError({
+                      jmaxSalary: false,
+                    })
+                  }
                 />
               </View>
 
@@ -238,10 +330,16 @@ const JobPostFormScreen = ({navigation, route}) => {
                 <FormInput
                   labelValue={openings}
                   onChangeText={Openings => setOpenings(Openings)}
+                  error={error?.jopenings}
                   mode="outlined"
                   placeholderText="Ex. 5"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  onFocus={() =>
+                    setError({
+                      jopenings: false,
+                    })
+                  }
                 />
               </View>
 
@@ -251,20 +349,32 @@ const JobPostFormScreen = ({navigation, route}) => {
               <FormInput
                 labelValue={description}
                 onChangeText={Description => setDescription(Description)}
+                error={error?.jdescription}
                 mode="outlined"
                 placeholderText="Description"
                 multiline
                 autoCapitalize="none"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    jdescription: false,
+                  })
+                }
               />
               <Text style={styles.inputName}>Work Timings</Text>
               <FormInput
                 labelValue={workTiming}
                 onChangeText={WorkTiming => setWorkTiming(WorkTiming)}
+                error={error?.jworkTiming}
                 mode="outlined"
                 placeholderText="09:30am - 06:30pm | Monday - Saturday"
                 autoCapitalize="none"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    jworkTiming: false,
+                  })
+                }
               />
               <Text style={styles.inputName}>
                 Interview Would Be Done Between
@@ -274,10 +384,16 @@ const JobPostFormScreen = ({navigation, route}) => {
                 onChangeText={InterviewTiming =>
                   setInterviewTiming(InterviewTiming)
                 }
+                error={error?.jinterviewTiming}
                 mode="outlined"
                 placeholderText="11:00am - 04:00pm | Monday - Saturday"
                 autoCapitalize="none"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    jinterviewTiming: false,
+                  })
+                }
               />
             </ScrollView>
           </View>

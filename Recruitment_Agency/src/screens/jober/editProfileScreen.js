@@ -53,12 +53,53 @@ const EditProfileScreen = ({navigation, route}) => {
   const [mobile, setMobile] = React.useState(jober?.mobile || '');
   const [myBio, setMyBio] = React.useState(jober?.myBio || '');
 
+  const [error, setError] = React.useState({
+    JjobType: false,
+    JfunctionalArea: false,
+    Jexperience: false,
+    JprefereedCity: false,
+    JexpectedSalary: false,
+    JinstituteName: false,
+    JeducationLevelDegree: false,
+    JfieldOfStudy: false,
+    JfromStudyYear: false,
+    JtoStudyYear: false,
+    JfullName: false,
+    Jmobile: false,
+    JmyBio: false,
+  });
+
   const onNext = () => {
-    setNext(false);
-    setNext2Next(true);
+    if (jobType === '') {
+      setError({JjobType: true});
+    } else if (functionalArea === '') {
+      setError({JfunctionalArea: true});
+    } else if (experience === '') {
+      setError({Jexperience: true});
+    } else if (prefereedCity === '') {
+      setError({JprefereedCity: true});
+    } else if (expectedSalary === '') {
+      setError({JexpectedSalary: true});
+    } else {
+      setNext(false);
+      setNext2Next(true);
+    }
   };
+
   const onNext2Next = () => {
-    setNext2Next(false);
+    if (instituteName === '') {
+      setError({JinstituteName: true});
+    } else if (educationLevelDegree === '') {
+      setError({JeducationLevelDegree: true});
+    } else if (fieldOfStudy === '') {
+      setError({JfieldOfStudy: true});
+    } else if (fromStudyYear === '') {
+      setError({JfromStudyYear: true});
+    } else if (toStudyYear === '') {
+      setError({JtoStudyYear: true});
+    } else {
+      setNext2Next(false);
+    }
   };
 
   const onPrevious2Previous = () => {
@@ -87,7 +128,16 @@ const EditProfileScreen = ({navigation, route}) => {
       mobile,
       myBio,
     };
-    await dispatch(userAction.updateProfile({data, navigation: navigation}));
+
+    if (fullName === '') {
+      setError({JfullName: true});
+    } else if (mobile === '') {
+      setError({Jmobile: true});
+    } else if (myBio === '') {
+      setError({JmyBio: true});
+    } else {
+      await dispatch(userAction.updateProfile({data, navigation: navigation}));
+    }
   };
 
   return (
@@ -114,15 +164,20 @@ const EditProfileScreen = ({navigation, route}) => {
                   labelValue={jobType}
                   onChangeText={Type => setJobType(Type)}
                   mode="outlined"
-                  // error={isError}
                   placeholderText="Ex. Full Time | Part Time"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  error={error?.JjobType}
+                  onFocus={() =>
+                    setError({
+                      JjobType: false,
+                    })
+                  }
                 />
+
                 <Text style={styles.inputName}>Functional Area</Text>
                 <FormInput
                   labelValue={functionalArea}
-                  // error={isError}
                   onChangeText={FunctionalArea =>
                     setFunctionalArea(FunctionalArea)
                   }
@@ -130,36 +185,60 @@ const EditProfileScreen = ({navigation, route}) => {
                   placeholderText="Ex. Company Manager"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  error={error?.JfunctionalArea}
+                  onFocus={() =>
+                    setError({
+                      JfunctionalArea: false,
+                    })
+                  }
                 />
+
                 <Text style={styles.inputName}>Experience</Text>
                 <FormInput
                   labelValue={experience}
-                  // error={isError}
                   onChangeText={Experience => setExperience(Experience)}
                   mode="outlined"
                   placeholderText="Ex. Fresher | 0 - 6 Months | 1 - 3 Years"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  error={error?.Jexperience}
+                  onFocus={() =>
+                    setError({
+                      Jexperience: false,
+                    })
+                  }
                 />
+
                 <Text style={styles.inputName}>Prefereed City</Text>
                 <FormInput
                   labelValue={prefereedCity}
                   onChangeText={City => setPrefereedCity(City)}
                   mode="outlined"
-                  // error={isError}
                   placeholderText="Ex. Surat"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  error={error?.JprefereedCity}
+                  onFocus={() =>
+                    setError({
+                      JprefereedCity: false,
+                    })
+                  }
                 />
+
                 <Text style={styles.inputName}>Expected Salary</Text>
                 <FormInput
                   labelValue={expectedSalary}
                   onChangeText={Salary => setExpectedSalary(Salary)}
                   mode="outlined"
-                  // error={isError}
                   placeholderText="Ex. 4 - 6 LPA"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  error={error?.JexpectedSalary}
+                  onFocus={() =>
+                    setError({
+                      JexpectedSalary: false,
+                    })
+                  }
                 />
               </ScrollView>
             </View>
@@ -198,7 +277,14 @@ const EditProfileScreen = ({navigation, route}) => {
                 multiline
                 autoCapitalize="none"
                 autoCorrect={false}
+                error={error?.JinstituteName}
+                onFocus={() =>
+                  setError({
+                    JinstituteName: false,
+                  })
+                }
               />
+
               <Text style={styles.inputName}>Education Level and Degree</Text>
               <FormInput
                 labelValue={educationLevelDegree}
@@ -207,7 +293,14 @@ const EditProfileScreen = ({navigation, route}) => {
                 placeholderText="Ex. Post-Graduction - MCA"
                 autoCapitalize="none"
                 autoCorrect={false}
+                error={error?.JeducationLevelDegree}
+                onFocus={() =>
+                  setError({
+                    JeducationLevelDegree: false,
+                  })
+                }
               />
+
               <Text style={styles.inputName}>Field Of Study</Text>
               <FormInput
                 labelValue={fieldOfStudy}
@@ -216,7 +309,14 @@ const EditProfileScreen = ({navigation, route}) => {
                 placeholderText="Computer"
                 autoCapitalize="none"
                 autoCorrect={false}
+                error={error?.JfieldOfStudy}
+                onFocus={() =>
+                  setError({
+                    JfieldOfStudy: false,
+                  })
+                }
               />
+
               <Text style={styles.inputName}>Duration</Text>
               <View style={{flexDirection: 'row', width: '30%'}}>
                 <FormInput
@@ -226,7 +326,14 @@ const EditProfileScreen = ({navigation, route}) => {
                   placeholderText="Ex. 2000"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  error={error?.JfromStudyYear}
+                  onFocus={() =>
+                    setError({
+                      JfromStudyYear: false,
+                    })
+                  }
                 />
+
                 <Text style={styles.to}>to</Text>
                 <FormInput
                   labelValue={toStudyYear}
@@ -235,6 +342,12 @@ const EditProfileScreen = ({navigation, route}) => {
                   placeholderText="Ex. 2022"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  error={error?.JtoStudyYear}
+                  onFocus={() =>
+                    setError({
+                      JtoStudyYear: false,
+                    })
+                  }
                 />
               </View>
             </ScrollView>
@@ -281,7 +394,14 @@ const EditProfileScreen = ({navigation, route}) => {
                   placeholderText="First & Last name"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  error={error?.JfullName}
+                  onFocus={() =>
+                    setError({
+                      JfullName: false,
+                    })
+                  }
                 />
+
                 <Text style={styles.inputName}>Mobile</Text>
                 <FormInput
                   labelValue={mobile}
@@ -290,7 +410,14 @@ const EditProfileScreen = ({navigation, route}) => {
                   placeholderText="Mobile"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  error={error?.Jmobile}
+                  onFocus={() =>
+                    setError({
+                      Jmobile: false,
+                    })
+                  }
                 />
+
                 <Text style={styles.inputName}>My Bio </Text>
                 <FormInput
                   labelValue={myBio}
@@ -300,6 +427,12 @@ const EditProfileScreen = ({navigation, route}) => {
                   multiline
                   autoCapitalize="none"
                   autoCorrect={false}
+                  error={error?.JmyBio}
+                  onFocus={() =>
+                    setError({
+                      JmyBio: false,
+                    })
+                  }
                 />
               </ScrollView>
             </View>

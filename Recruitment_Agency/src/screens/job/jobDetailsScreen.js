@@ -14,7 +14,6 @@ import * as userAction from '../../redux/actions/user';
 import * as applicatonAction from '../../redux/actions/application';
 import Color from '../../constant/Color';
 import AppButton from '../../components/AppButton';
-import {useFocusEffect} from '@react-navigation/native';
 
 //Icons
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -24,7 +23,6 @@ import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const JobDetailsScreen = ({route, navigation}) => {
-  // const [isFavourite, setIsFavourite] = React.useState(false);
   const [isApplied, setIsApplied] = React.useState(false);
   const jobId = route?.params.params.jobId;
   const dispatch = useDispatch();
@@ -44,7 +42,7 @@ const JobDetailsScreen = ({route, navigation}) => {
     );
     fav = userData.favourites.includes(selectedJob._id);
   }
-  // console.log(fav);
+
   const [isFavourite, setIsFavourite] = React.useState(fav);
 
   const jobDelete = id => {
@@ -114,25 +112,25 @@ const JobDetailsScreen = ({route, navigation}) => {
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
   }
-  
+
   return (
     // <ScrollView style={{padding: 20}} showsVerticalScrollIndicator={false}>
     <View style={styles.container}>
       <View style={styles.bodyContainer}>
         <Text style={styles.Jobtitle}>{selectedJob?.title}</Text>
 
-        <View style={styles.view2nd}>
+        <View style={{flexDirection: 'row'}}>
           <Text style={styles.salary}>
             Rs. {selectedJob?.minSalary.substring(0, 2)}k -{' '}
             {selectedJob?.maxSalary.substring(0, 2)}k
           </Text>
 
-          <Text style={styles.openings}>
+          <Text style={{...styles.openings, marginLeft: '8%'}}>
             {selectedJob?.noOfOpenings} Openings
           </Text>
 
           {user.userType === 'Jober' && (
-            <View>
+            <View style={{marginLeft: '10%'}}>
               <TouchableCmp
                 style={styles.favourite}
                 onPress={() => addFavourite(selectedJob?._id)}>
@@ -307,10 +305,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '500',
     color: 'black',
-  },
-  view2nd: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   salary: {
     fontSize: 17,

@@ -1,17 +1,18 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
 
+import Loader from '../Loader';
 import FabButton from '../../components/FabButton';
 import JobCard from '../../components/jobCard';
-import * as JobsAction from '../../redux/actions/jobs';
-import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Octicons';
 import Color from '../../constant/Color';
+import * as JobsAction from '../../redux/actions/jobs';
 
 const JobListScreen = ({navigation}) => {
   const user = useSelector(state => state.auth.user);
-
+  const [isLoading, setIsLoding] = React.useState(true);
   // Get data from Store by user type
   let jobs;
 
@@ -26,17 +27,21 @@ const JobListScreen = ({navigation}) => {
     await dispatch(JobsAction.fetchJobs());
   };
 
-  // Call Fetch Data on Screen Load
-
-  // React.useEffect(() => {
-  //   fetchPost();
-  // }, []);
-
   useFocusEffect(
     React.useCallback(() => {
       fetchPost();
     }, []),
   );
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setIsLoding(false);
+    }, 1000);
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   if (jobs.length === 0) {
     return (

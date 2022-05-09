@@ -12,16 +12,16 @@ export default (state = initialstate, action) => {
         availableJobs: action.allJobs,
         userPostedJobs: action.userPostedJobs,
       };
-    case CREATE_JOBS:
-      return {
-        ...state,
-        userPostedJobs: action.newPostJob,
-      };
-    case UPDATE_JOBS:
-      return {
-        ...state,
-        userPostedJobs: action.updateJob,
-      };
+    // case CREATE_JOBS:
+    //   return {
+    //     ...state,
+    //     userPostedJobs: action.newPostJob,
+    //   };
+    // case UPDATE_JOBS:
+    //   return {
+    //     ...state,
+    //     userPostedJobs: update,
+    //   };
   }
   return state;
 };

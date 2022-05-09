@@ -7,7 +7,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 
-import SplashScreen from '../screens/splashScreen';
+import Loader from '../screens/Loader';
 import OnBoardingScreen from '../screens/onBoardingScreen';
 
 import LoginScreen from '../screens/auth/loginScreen';
@@ -110,7 +110,7 @@ const JobCompanyDetailsTab = props => {
   );
 };
 
-const Navigator = ({navigation}) => {
+const Navigator = () => {
   const [isLoading, setIsLoding] = React.useState(true);
   const token = useSelector(state => state.auth.token);
   const user = useSelector(state => state.auth.user);
@@ -121,7 +121,6 @@ const Navigator = ({navigation}) => {
 
   const HomeTab = () => {
     const params = {userId: user?._id};
-    // console.log('params', params);
     return (
       <BottomTab.Navigator>
         <BottomTab.Screen
@@ -398,7 +397,7 @@ const Navigator = ({navigation}) => {
   }, []);
 
   if (isLoading) {
-    return <SplashScreen />;
+    return <Loader />;
   }
 
   return (

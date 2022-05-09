@@ -40,27 +40,59 @@ const CompanyFormScreen = ({navigation}) => {
     company?.website ? company?.website : '',
   );
 
-  const onNext = () => {
-    setNext(false);
-  };
+  const [error, setError] = React.useState({
+    EcompanyName: false,
+    EcontactPerson: false,
+    Emobile: false,
+    Ewebsite: false,
+    Eabout: false,
+    Eaddress: false,
+    Estate: false,
+    Ecountry: false,
+  });
 
+  const onNext = () => {
+    if (companyName === '') {
+      setError({EcompanyName: true});
+    } else if (contactPerson === '') {
+      setError({EcontactPerson: true});
+    } else if (mobile === '') {
+      setError({Emobile: true});
+    } else if (website === '') {
+      setError({Ewebsite: true});
+    } else {
+      setNext(false);
+    }
+  };
   const onPrevious = () => {
     setNext(true);
   };
 
   const dispatch = useDispatch();
+
   const postSubmit = async () => {
     const data = {
       companyName,
       contactPerson,
       mobile,
+      website,
       about,
       address,
       state,
       country,
-      website,
     };
-    await dispatch(userAction.updateProfile({data, navigation: navigation}));
+
+    if (about === '') {
+      setError({Eabout: true});
+    } else if (address === '') {
+      setError({Eaddress: true});
+    } else if (state === '') {
+      setError({Estate: true});
+    } else if (country === '') {
+      setError({Ecountry: true});
+    } else {
+      await dispatch(userAction.updateProfile({data, navigation: navigation}));
+    }
   };
 
   return (
@@ -84,52 +116,71 @@ const CompanyFormScreen = ({navigation}) => {
               <Text style={styles.inputName}>Name Of My Company</Text>
               <FormInput
                 labelValue={companyName}
-                //   error={''}
+                error={error?.EcompanyName}
                 onChangeText={CompanyName => setCompanyName(CompanyName)}
                 mode="outlined"
-                //   placeholderText="Ex. Company Manager"
-
+                placeholderText="Ex. Company Name"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    EcompanyName: false,
+                  })
+                }
               />
+
               <Text style={styles.inputName}>Contact Person</Text>
               <FormInput
                 labelValue={contactPerson}
                 onChangeText={ContactPerson => setContactPerson(ContactPerson)}
                 mode="outlined"
-                //   error={''}
-                //   placeholderText="Ex. Full-Time | Part Time"
-
+                error={error?.EcontactPerson}
+                placeholderText="Ex. Mr./Ms. XYZ"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    EcontactPerson: false,
+                  })
+                }
               />
+
               <Text style={styles.inputName}>Emial Id</Text>
               <FormInput
                 labelValue={email}
                 onChangeText={Email => setEmail(Email)}
                 mode="outlined"
                 disabled
-                //   error={''}
-                //   placeholderText="Ex. Male | Female"
-
                 autoCorrect={false}
               />
+
               <Text style={styles.inputName}>Mobile Number </Text>
               <FormInput
                 labelValue={mobile}
                 onChangeText={Mobile => setMobile(Mobile)}
                 mode="outlined"
-                //   error={''}
-                //   placeholderText="Ex. Bachlor"
+                error={error?.Emobile}
+                // placeholderText="Ex. "
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    Emobile: false,
+                  })
+                }
               />
+
               <Text style={styles.inputName}>Website</Text>
               <FormInput
                 labelValue={website}
                 onChangeText={Website => setWebsite(Website)}
                 mode="outlined"
-                //   error={''}
-                //   placeholderText="Ex. Bachlor"
+                error={error?.Ewebsite}
+                placeholderText="Ex. https//:www.xyz.com"
                 autoCapitalize="none"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    Ewebsite: false,
+                  })
+                }
               />
             </ScrollView>
           </View>
@@ -160,37 +211,62 @@ const CompanyFormScreen = ({navigation}) => {
               <FormInput
                 labelValue={about}
                 onChangeText={About => setAbout(About)}
+                error={error?.Eabout}
                 multiline
                 mode="outlined"
-                //   placeholderText="Ex. 0-6 Months | 1-2 Years"
+                placeholderText="Ex. About Your Company"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    Eabout: false,
+                  })
+                }
               />
+
               <Text style={styles.inputName}>My Company Address</Text>
               <FormInput
                 labelValue={address}
                 onChangeText={Address => setAddress(Address)}
+                error={error?.Eaddress}
                 mode="outlined"
                 multiline
-                //   placeholderText="Ex. 0-6 Months | 1-2 Years"
+                placeholderText="Ex. Address of Your Company"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    Eaddress: false,
+                  })
+                }
               />
 
               <Text style={styles.inputName}>State</Text>
               <FormInput
                 labelValue={state}
                 onChangeText={State => setState(State)}
+                error={error?.Estate}
                 mode="outlined"
-                //   placeholderText="Ex. 0-6 Months | 1-2 Years"
+                placeholderText="Ex. Gujrat"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    Estate: false,
+                  })
+                }
               />
 
               <Text style={styles.inputName}>Country</Text>
               <FormInput
                 labelValue={country}
                 onChangeText={Country => setCountry(Country)}
+                error={error?.Ecountry}
                 mode="outlined"
-                //   placeholderText="Ex. 0-6 Months | 1-2 Years
+                placeholderText="Ex. India"
                 autoCorrect={false}
+                onFocus={() =>
+                  setError({
+                    Ecountry: false,
+                  })
+                }
               />
             </ScrollView>
           </View>
@@ -215,17 +291,6 @@ const CompanyFormScreen = ({navigation}) => {
         </View>
       )}
     </View>
-
-    // <View style={{padding: 20, backgroundColor: Color.app}}>
-    //   <ScrollView showsVerticalScrollIndicator={false}>
-
-    //     <AppButton
-    //       buttonTitle="Update"
-    //       style={{width: '100%'}}
-    //       onPress={postSubmit}
-    //     />
-    //   </ScrollView>
-    // </View>
   );
 };
 

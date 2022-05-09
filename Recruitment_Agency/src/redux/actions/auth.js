@@ -29,6 +29,7 @@ export const Init = () => {
 };
 
 export const signUp = (data, userType) => {
+  console.log(data, userType);
   return async dispatch => {
     try {
       const response = await recruit.post('/register', data, {
@@ -36,8 +37,10 @@ export const signUp = (data, userType) => {
           userType: userType,
         },
       });
+
       const resData = response.data;
-      console.log(resData);
+
+      console.log('Register User Data --->', resData);
       if (resData.error === 'EMAIL_EXISTS') {
         // throw new Error('This email exists alreday');
         Alert.alert('Invalid Login!', 'This email exists alreday');

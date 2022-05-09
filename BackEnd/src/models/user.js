@@ -36,8 +36,6 @@ userSchema.methods.toJSON = function () {
   return usereObject;
 };
 
-
-
 //Generate & save token
 userSchema.methods.generateAuthToken = async function () {
   const user = this;

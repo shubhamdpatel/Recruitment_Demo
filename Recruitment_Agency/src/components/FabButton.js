@@ -4,9 +4,12 @@ import {FAB} from 'react-native-paper';
 import Color from '../constant/Color';
 import Icon from 'react-native-vector-icons/Octicons';
 const FabButton = props => {
-  const {iconName, style, onPress, color} = props;
+  const {iconName, style, onPress, color, disable} = props;
   return (
-    <TouchableOpacity style={[styles.fab, style]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.fab, style]}
+      onPress={onPress}
+      disabled={disable}>
       <Icon name={iconName} color={color ? color : 'white'} size={26} />
     </TouchableOpacity>
     // <FAB style={[styles.fab, style]} icon={iconName} onPress={onPress} />;

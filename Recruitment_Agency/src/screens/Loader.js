@@ -1,7 +1,7 @@
 import React from 'react';
-import {Text, View, StyleSheet, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 
-const splashScreen = () => {
+const Loder = () => {
   return (
     <View style={styles.container}>
       <ActivityIndicator size="large" />
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default splashScreen;
+export default Loder;

@@ -13,7 +13,6 @@ import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
 import {useDispatch} from 'react-redux';
 import Color from '../../constant/Color';
-
 import * as authAction from '../../redux/actions/auth';
 import {Snackbar} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -34,22 +33,38 @@ const RegisterScreen = ({navigation, route}) => {
   const onDismissSnackBar = () => setVisible(false);
 
   const {userType} = route.params;
-  let utype;
-  if (userType === 'Jober') {
-    utype = 'Job Seeker';
-  } else if (userType === 'Company') {
-    utype = 'Employer';
-  }
+
+  // let utype;
+  // if (userType === 'Jober') {
+  //   utype = 'Job Seeker';
+  // } else if (userType === 'Company') {
+  //   utype = 'Employer';
+  // }
   const dispatch = useDispatch();
 
-  const ViewPassword = view => {
+  const ViewPassword = props => {
+    const {view} = props;
     return (
       <TouchableOpacity
         onPress={() => {
-          viewPwd ? setViewPwd(false) : setViewPwd(true);
+          view === 'password'
+            ? viewPwd
+              ? setViewPwd(false)
+              : setViewPwd(true)
+            : viewConfirmPwd
+            ? setViewConfirmPwd(false)
+            : setViewConfirmPwd(true);
         }}>
         <Ionicons
-          name={viewPwd ? 'eye-off-outline' : 'eye-outline'}
+          name={
+            view === 'password'
+              ? viewPwd
+                ? 'eye-off-outline'
+                : 'eye-outline'
+              : viewConfirmPwd
+              ? 'eye-off-outline'
+              : 'eye-outline'
+          }
           size={30}
           color={Color.primary}
           style={{position: 'absolute', right: 0, bottom: 20}}
@@ -133,7 +148,7 @@ const RegisterScreen = ({navigation, route}) => {
               onKeyPressEvent={() => {}}
             />
 
-            <ViewPassword />
+            <ViewPassword view="password" />
             <FormInput
               labelText="Confirm Password"
               labelValue={confirmPassword}
@@ -141,13 +156,13 @@ const RegisterScreen = ({navigation, route}) => {
                 setconfirmPassword(confirmPassword)
               }
               placeholderText="Confirm Password"
-              secureTextEntry={viewPwd}
+              secureTextEntry={viewConfirmPwd}
               error={confirmPwdError}
               // onFocus={() => {
               //   onKeyPressEvent();
               // }}
             />
-            <ViewPassword />
+            <ViewPassword view="confirmPassword" />
           </View>
 
           <AppButton

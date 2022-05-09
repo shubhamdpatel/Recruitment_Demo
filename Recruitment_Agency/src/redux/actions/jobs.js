@@ -42,9 +42,10 @@ export const createJob = props => {
             headers: {Authorization: `Bearer ${userToken}`},
           })
           .then(res => {
-            dispatch({type: CREATE_JOBS, newPostJob: res.data});
-            Alert.alert('Success !', `${res.data.success}`);
-            // navigation.goBack();
+            dispatch(fetchJobs());
+            // dispatch({type: CREATE_JOBS, newPostJob: res.data});
+            // Alert.alert('Success !', `${res.data.success}`);
+            navigation.navigate('Home');
           });
       } else {
         await recruit
@@ -52,10 +53,12 @@ export const createJob = props => {
             headers: {Authorization: `Bearer ${userToken}`},
           })
           .then(res => {
-            dispatch({type: UPDATE_JOBS, updateJob: res.data});
-            Alert.alert('Success !', `${res.data.success}`);
-            // navigation.navigate('Home');
+            const resData = res.data.UpdatedJob;
+            dispatch(fetchJobs());
+            // dispatch({type: UPDATE_JOBS, updateJob: resData});
+            // Alert.alert('Success !', `${res.data.success}`);
           });
+        navigation.navigate('Job Details', {params: {jobId: id}});
       }
     } catch (error) {
       if (error.response.data.error) {

@@ -26,12 +26,12 @@ const LoginScreen = ({navigation, route}) => {
 
   const {userType} = route.params;
 
-  let utype;
-  if (userType === 'Jober') {
-    utype = 'Job Seeker';
-  } else if (userType === 'Company') {
-    utype = 'Employer';
-  }
+  // let utype;
+  // if (userType === 'Jober') {
+  //   utype = 'Job Seeker';
+  // } else if (userType === 'Company') {
+  //   utype = 'Employer';
+  // }
 
   const dispach = useDispatch();
 
@@ -174,4 +174,5 @@ const styles = StyleSheet.create({
     marginLeft: '3%',
   },
 });
+
 export default LoginScreen;
