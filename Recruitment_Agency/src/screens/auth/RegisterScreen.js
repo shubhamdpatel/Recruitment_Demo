@@ -9,13 +9,14 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
 import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
-import {useDispatch} from 'react-redux';
 import Color from '../../constant/Color';
 import * as authAction from '../../redux/actions/auth';
 import {Snackbar} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const RegisterScreen = ({navigation, route}) => {
   const [email, setEmail] = React.useState('');
@@ -112,80 +113,79 @@ const RegisterScreen = ({navigation, route}) => {
     <View style={styles.container}>
       <Image
         style={styles.image}
-        source={require('../../assets/menOnDesk.png')}
+        source={{
+          uri: 'https://firebasestorage.googleapis.com/v0/b/recruitment-agency-e0465.appspot.com/o/images%2Fdefault%2FmenOnDesk.png?alt=media&token=95557100-614f-4ab7-ba67-dcaa9f96a8d9',
+        }}
       />
 
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <Text style={{...styles.text, fontWeight: 'bold'}}>Register</Text>
-        {/* <Text style={{...styles.text, fontSize: 22}}>For {utype} Only</Text> */}
+      <Text style={{...styles.text, fontWeight: 'bold'}}>Register</Text>
+      {/* <Text style={{...styles.text, fontSize: 22}}>For {utype} Only</Text> */}
 
-        <ScrollView>
-          <View style={styles.input}>
-            <FormInput
-              labelText="Email"
-              labelValue={email}
-              onChangeText={emailId => setEmail(emailId)}
-              placeholderText="Email"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-              error={emailError}
-              clearButtonMode="while-editing"
-            />
-            {/* <Text style={styles.errorMessage}>{errorMsg ? errorMsg : ''}</Text> */}
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        <View>
+          <FormInput
+            labelText="Email"
+            labelValue={email}
+            onChangeText={emailId => setEmail(emailId)}
+            placeholderText="Email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            error={emailError}
+            clearButtonMode="while-editing"
+          />
+          {/* <Text style={styles.errorMessage}>{errorMsg ? errorMsg : ''}</Text> */}
 
-            <FormInput
-              labelText="Password"
-              labelValue={password}
-              onChangeText={userPassword => setPassword(userPassword)}
-              placeholderText="Password"
-              secureTextEntry={viewPwd}
-              error={pwdError}
-              onFocus={() => {
-                onFocus();
-              }}
-              onKeyPressEvent={() => {}}
-            />
-
-            <ViewPassword view="password" />
-            <FormInput
-              labelText="Confirm Password"
-              labelValue={confirmPassword}
-              onChangeText={confirmPassword =>
-                setconfirmPassword(confirmPassword)
-              }
-              placeholderText="Confirm Password"
-              secureTextEntry={viewConfirmPwd}
-              error={confirmPwdError}
-              // onFocus={() => {
-              //   onKeyPressEvent();
-              // }}
-            />
-            <ViewPassword view="confirmPassword" />
-          </View>
-
-          <AppButton
-            style={styles.regbtn}
-            buttonTitle="Register"
-            onPress={() => registerUser()}
+          <FormInput
+            labelText="Password"
+            labelValue={password}
+            onChangeText={userPassword => setPassword(userPassword)}
+            placeholderText="Password"
+            secureTextEntry={viewPwd}
+            error={pwdError}
+            onFocus={() => {
+              onFocus();
+            }}
+            onKeyPressEvent={() => {}}
           />
 
-          <View style={{alignItems: 'center', top: 100}}>
-            <Text style={{color: 'black'}}>You have account !</Text>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Login', {
-                  userType,
-                })
-              }>
-              <Text style={{color: 'blue', textDecorationLine: 'underline'}}>
-                Login here !
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          <ViewPassword view="password" />
+          <FormInput
+            labelText="Confirm Password"
+            labelValue={confirmPassword}
+            onChangeText={confirmPassword =>
+              setconfirmPassword(confirmPassword)
+            }
+            placeholderText="Confirm Password"
+            secureTextEntry={viewConfirmPwd}
+            error={confirmPwdError}
+            // onFocus={() => {
+            //   onKeyPressEvent();
+            // }}
+          />
+          <ViewPassword view="confirmPassword" />
+        </View>
+
+        <AppButton
+          style={styles.regbtn}
+          buttonTitle="Register"
+          onPress={() => registerUser()}
+        />
+
+        <View style={{alignItems: 'center', top: 100}}>
+          <Text style={{color: 'black'}}>You have account !</Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Login', {
+                userType,
+              })
+            }>
+            <Text style={{color: 'blue', textDecorationLine: 'underline'}}>
+              Login here !
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAwareScrollView>
 
       <Snackbar
         visible={visible}
@@ -212,9 +212,6 @@ const styles = StyleSheet.create({
     width: '70%',
     height: '40%',
     marginTop: Platform.OS === 'android' ? '-15%' : '0%',
-  },
-  input: {
-    // marginTop: '0%',
   },
   text: {
     fontSize: 28,

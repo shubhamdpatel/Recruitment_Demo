@@ -1,10 +1,11 @@
 import React from 'react';
 import {StyleSheet, Text, View, ScrollView, Platform} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
 import FabButton from '../../components/FabButton';
 import Color from '../../constant/Color';
-import {useDispatch, useSelector} from 'react-redux';
 import * as userAction from '../../redux/actions/user';
 import * as Progress from 'react-native-progress';
 
@@ -64,6 +65,7 @@ const CompanyFormScreen = ({navigation}) => {
       setNext(false);
     }
   };
+
   const onPrevious = () => {
     setNext(true);
   };
@@ -110,9 +112,8 @@ const CompanyFormScreen = ({navigation}) => {
             <Text style={{color: Color.accent}}>Company Details</Text>
             <Text>Company descriptions</Text>
           </View>
-
-          <View>
-            <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{height: '86%'}}>
+            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
               <Text style={styles.inputName}>Name Of My Company</Text>
               <FormInput
                 labelValue={companyName}
@@ -182,7 +183,7 @@ const CompanyFormScreen = ({navigation}) => {
                   })
                 }
               />
-            </ScrollView>
+            </KeyboardAwareScrollView>
           </View>
 
           <FabButton
@@ -206,7 +207,7 @@ const CompanyFormScreen = ({navigation}) => {
           </View>
 
           <View style={{height: '86.5%'}}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
               <Text style={styles.inputName}>About Us</Text>
               <FormInput
                 labelValue={about}
@@ -268,7 +269,7 @@ const CompanyFormScreen = ({navigation}) => {
                   })
                 }
               />
-            </ScrollView>
+            </KeyboardAwareScrollView>
           </View>
 
           <View
@@ -325,7 +326,7 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   fab: {
-    bottom: Platform.OS === 'ios' ? -150 : 0,
+    bottom: Platform.OS === 'ios' ? -50 : -50,
     left: Platform.OS === 'ios' ? 290 : 270,
     position: 'absolute',
   },

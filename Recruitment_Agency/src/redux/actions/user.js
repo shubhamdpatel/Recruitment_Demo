@@ -1,6 +1,5 @@
 import {Alert} from 'react-native';
 import {recruit} from '../axois';
-import authAction from '../actions/auth';
 
 export const FETCH_USER = 'FETCH_USER';
 export const UPDATE_USER = 'UPDATE_USER';

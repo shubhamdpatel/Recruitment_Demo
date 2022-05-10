@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   Platform,
-  ScrollView,
 } from 'react-native';
 import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
@@ -14,6 +13,7 @@ import {useDispatch} from 'react-redux';
 import * as authAction from '../../redux/actions/auth';
 import Color from '../../constant/Color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const LoginScreen = ({navigation, route}) => {
   const [email, setEmail] = React.useState('');
@@ -66,13 +66,15 @@ const LoginScreen = ({navigation, route}) => {
     <View style={styles.container}>
       <Image
         style={styles.image}
-        source={require('../../assets/menOnDesk.png')}
+        source={{
+          uri: 'https://firebasestorage.googleapis.com/v0/b/recruitment-agency-e0465.appspot.com/o/images%2Fdefault%2FmenOnDesk.png?alt=media&token=95557100-614f-4ab7-ba67-dcaa9f96a8d9',
+        }}
       />
 
       <Text style={{...styles.text, fontWeight: 'bold'}}>Login</Text>
       {/* <Text style={{...styles.text, fontSize: 22}}>For {utype} Only</Text> */}
 
-      <ScrollView>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.input}>
           <FormInput
             labelText="Email"
@@ -84,7 +86,6 @@ const LoginScreen = ({navigation, route}) => {
             autoCorrect={false}
             error={emailError}
             clearButtonMode="while-editing"
-            // keyboardAppearance="dark"
           />
           <Text style={styles.errorMessage}>{errorMsg ? errorMsg : ''}</Text>
 
@@ -118,7 +119,7 @@ const LoginScreen = ({navigation, route}) => {
           buttonTitle="Login"
           onPress={() => loginHandler()}
         />
-      </ScrollView>
+      </KeyboardAwareScrollView>
 
       <View style={styles.createAC}>
         <Text style={{color: 'black'}}>You Don't Have An Account ?</Text>

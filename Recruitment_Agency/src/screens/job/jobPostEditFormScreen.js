@@ -1,13 +1,13 @@
 import React from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import AppButton from '../../components/AppButton';
 import FormInput from '../../components/FormInput';
-import {useDispatch, useSelector} from 'react-redux';
-import * as JobsAction from '../../redux/actions/jobs';
-import {ScrollView} from 'react-native-gesture-handler';
 import FabButton from '../../components/FabButton';
-import * as Progress from 'react-native-progress';
 import Color from '../../constant/Color';
+import * as Progress from 'react-native-progress';
+import * as JobsAction from '../../redux/actions/jobs';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const JobPostFormScreen = ({navigation, route}) => {
   const [Next, setNext] = React.useState(true);
@@ -178,7 +178,7 @@ const JobPostFormScreen = ({navigation, route}) => {
           </View>
 
           <View style={{height: Platform.OS === 'android' ? '88%' : '90%'}}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
               <Text style={styles.inputName}>I Want To Hire A</Text>
               <FormInput
                 labelValue={title}
@@ -260,7 +260,7 @@ const JobPostFormScreen = ({navigation, route}) => {
                   })
                 }
               />
-            </ScrollView>
+            </KeyboardAwareScrollView>
           </View>
 
           <FabButton
@@ -289,7 +289,7 @@ const JobPostFormScreen = ({navigation, route}) => {
           </View>
 
           <View style={{height: '86.5%'}}>
-            <ScrollView>
+            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
               <Text style={styles.inputName}>
                 I Will Pay A Monthly Salary Of
               </Text>
@@ -395,7 +395,7 @@ const JobPostFormScreen = ({navigation, route}) => {
                   })
                 }
               />
-            </ScrollView>
+            </KeyboardAwareScrollView>
           </View>
 
           <View

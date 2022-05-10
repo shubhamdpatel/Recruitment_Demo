@@ -65,12 +65,12 @@ const updateController = async (req, res) => {
     const jober = await Jober.findOne({
       createdBy: req.user._id,
     });
-
     if (!jober) {
       return res.status(404).send({ error: "You Do Not Enter The Detials" });
     }
 
     updates.forEach((update) => (jober[update] = req.body[update]));
+    jober.favourites = undefined;
     await jober.save();
 
     res.send({
@@ -79,6 +79,7 @@ const updateController = async (req, res) => {
     });
   } catch (error) {
     res.status(400).send({ erorr: error });
+    console.log(error);
   }
 };
 
