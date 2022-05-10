@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, Button} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AppButton from '../../components/AppButton';
 import FormInput from '../../components/FormInput';
@@ -8,11 +8,12 @@ import Color from '../../constant/Color';
 import * as Progress from 'react-native-progress';
 import * as JobsAction from '../../redux/actions/jobs';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import DatePicker from 'react-native-date-picker';
 
 const JobPostFormScreen = ({navigation, route}) => {
   const [Next, setNext] = React.useState(true);
-  const [isError, setIsError] = React.useState(false);
-
+  const [date, setDate] = React.useState(new Date());
+  const [open, setOpen] = React.useState(false);
   const {jobId} = route.params;
 
   const selectedJob = useSelector(state =>
@@ -176,9 +177,22 @@ const JobPostFormScreen = ({navigation, route}) => {
             <Text style={{color: Color.accent}}>Job Details</Text>
             <Text>Job descriptions</Text>
           </View>
-
           <View style={{height: Platform.OS === 'android' ? '88%' : '90%'}}>
             <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+              {/* <Button title="Open" onPress={() => setOpen(true)} />
+              <Text>selected: {date.toLocaleString()}</Text>
+              <DatePicker
+                modal
+                open={open}
+                date={date}
+                onConfirm={date => {
+                  setOpen(false);
+                  setDate(date);
+                }}
+                onCancel={() => {
+                  setOpen(false);
+                }}
+              /> */}
               <Text style={styles.inputName}>I Want To Hire A</Text>
               <FormInput
                 labelValue={title}
