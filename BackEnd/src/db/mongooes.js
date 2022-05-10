@@ -1,12 +1,15 @@
-const mongooes = require('mongoose');
+const mongooes = require("mongoose");
 
 mongooes
-  .connect('mongodb://127.0.0.1:27017/recruitment-agency-api', {
-    useNewUrlParser: true,
-  })
+  .connect(
+    "mongodb+srv://shubhampatel:Shubham369@cluster0.0eusd.mongodb.net/recruitment_agency?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+    }
+  )
   .then(() => {
-    console.log('Connection SuccessFul');
+    console.log("Atlas Connection SuccessFul");
   })
-  .catch(e => {
+  .catch((e) => {
     console.log(e);
   });
