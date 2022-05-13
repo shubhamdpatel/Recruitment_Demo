@@ -7,10 +7,12 @@ import * as appliesAction from '../../redux/actions/application';
 import FA from 'react-native-vector-icons/FontAwesome';
 import JobCard from '../../components/jobCard';
 import Color from '../../constant/Color';
+import Loader from '../Loader';
 
 const ApplicationScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const jobs = useSelector(state => state.application.userApplication);
+  const [isLoading, setIsLoding] = React.useState(true);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -18,7 +20,15 @@ const ApplicationScreen = ({navigation}) => {
     }, []),
   );
 
-  // console.log(applies);
+  React.useEffect(() => {
+    setTimeout(() => {
+      setIsLoding(false);
+    }, 1000);
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   if (jobs.length === 0) {
     return (
@@ -51,9 +61,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: '5%',
     marginTop: '5%',
+    color: 'black',
   },
   text: {
     marginBottom: '5%',
+    color: 'black',
   },
   btn: {
     height: '6%',

@@ -263,7 +263,7 @@ const JobDetailsScreen = ({route, navigation}) => {
                 <View style={{flexDirection: 'row'}}>
                   <MCI name="message-reply-text" size={30} color="#4F8EF7" />
                   <View style={{marginHorizontal: 10}}>
-                    <Text style={{fontSize: 14}}>
+                    <Text style={{fontSize: 14, color: 'gray'}}>
                       Don't pay any money to HR if not mentioned in job details
                     </Text>
                   </View>

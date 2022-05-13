@@ -144,10 +144,11 @@ const EditProfileScreen = ({navigation, route}) => {
               progress={0.3}
               width={Platform.OS === 'ios' ? 390 : 350}
             />
+
             <View style={styles.stepName}>
               <Text style={{color: Color.accent}}>Job Preference</Text>
-              <Text>Highest Education</Text>
-              <Text>My Bio</Text>
+              <Text style={{color: 'black'}}>Highest Education</Text>
+              <Text style={{color: 'black'}}>My Bio</Text>
             </View>
           </View>
 
@@ -253,9 +254,9 @@ const EditProfileScreen = ({navigation, route}) => {
               width={Platform.OS === 'ios' ? 390 : 350}
             />
             <View style={styles.stepName}>
-              <Text>Job Preference</Text>
+              <Text style={{color: 'black'}}>Job Preference</Text>
               <Text style={{color: Color.accent}}>Highest Education</Text>
-              <Text>My Bio</Text>
+              <Text style={{color: 'black'}}>My Bio</Text>
             </View>
           </View>
 
@@ -367,9 +368,10 @@ const EditProfileScreen = ({navigation, route}) => {
               progress={1}
               width={Platform.OS === 'ios' ? 390 : 350}
             />
+
             <View style={styles.stepName}>
-              <Text>Job Preference</Text>
-              <Text>Highest Education</Text>
+              <Text style={{color: 'black'}}>Job Preference</Text>
+              <Text style={{color: 'black'}}>Highest Education</Text>
               <Text style={{color: Color.accent}}>My Bio</Text>
             </View>
           </View>

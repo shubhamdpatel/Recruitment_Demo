@@ -175,8 +175,9 @@ const JobPostFormScreen = ({navigation, route}) => {
 
           <View style={styles.stepName}>
             <Text style={{color: Color.accent}}>Job Details</Text>
-            <Text>Job descriptions</Text>
+            <Text style={{color: 'black'}}>Job descriptions</Text>
           </View>
+
           <View style={{height: Platform.OS === 'android' ? '88%' : '90%'}}>
             <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
               {/* <Button title="Open" onPress={() => setOpen(true)} />
@@ -298,7 +299,7 @@ const JobPostFormScreen = ({navigation, route}) => {
           </View>
 
           <View style={styles.stepName}>
-            <Text>Job Details</Text>
+            <Text style={{color: 'black'}}>Job Details</Text>
             <Text style={{color: Color.accent}}>Job descriptions</Text>
           </View>
 

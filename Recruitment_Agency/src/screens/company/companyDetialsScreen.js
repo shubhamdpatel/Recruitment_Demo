@@ -4,13 +4,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as companyAction from '../../redux/actions/company';
 import {Avatar} from 'react-native-paper';
 import Color from '../../constant/Color';
-
+import Loader from '../Loader';
 //Icons
 import MC from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CompanyDetialsScreen = ({route}) => {
+  const [isLoading, setIsLoding] = React.useState(true);
   const companyImage =
     'https://firebasestorage.googleapis.com/v0/b/recruitment-agency-e0465.appspot.com/o/images%2Fdefault%2Fcompany.png?alt=media&token=e5db119f-31d2-4449-9d1b-4f3a9549a2ab';
   const dispatch = useDispatch();
@@ -26,6 +27,16 @@ const CompanyDetialsScreen = ({route}) => {
     fetchCompany();
   }, []);
 
+  React.useEffect(() => {
+    setTimeout(() => {
+      setIsLoding(false);
+    }, 1000);
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+  
   return (
     <View style={{flex: 1, backgroundColor: Color.app}}>
       <View style={styles.imageCard}>
@@ -120,6 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: 'Cochin',
     textAlign: 'center',
+    color: 'black',
   },
   details: {
     flex: 1,
@@ -131,9 +143,11 @@ const styles = StyleSheet.create({
   textHeading: {
     fontSize: 16,
     fontWeight: '700',
+    color: 'black',
   },
   text: {
     fontSize: 16,
+    color: 'black',
   },
 });
 

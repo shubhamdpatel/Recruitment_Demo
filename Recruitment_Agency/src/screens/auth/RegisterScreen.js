@@ -35,12 +35,12 @@ const RegisterScreen = ({navigation, route}) => {
 
   const {userType} = route.params;
 
-  // let utype;
-  // if (userType === 'Jober') {
-  //   utype = 'Job Seeker';
-  // } else if (userType === 'Company') {
-  //   utype = 'Employer';
-  // }
+  let utype;
+  if (userType === 'Jober') {
+    utype = 'Job Seeker';
+  } else if (userType === 'Company') {
+    utype = 'Employer';
+  }
   const dispatch = useDispatch();
 
   const ViewPassword = props => {
@@ -119,7 +119,7 @@ const RegisterScreen = ({navigation, route}) => {
       />
 
       <Text style={{...styles.text, fontWeight: 'bold'}}>Register</Text>
-      {/* <Text style={{...styles.text, fontSize: 22}}>For {utype} Only</Text> */}
+      <Text style={{...styles.text, fontSize: 22}}>For {utype} Only</Text>
 
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <View>

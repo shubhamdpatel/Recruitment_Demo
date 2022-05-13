@@ -110,8 +110,9 @@ const CompanyFormScreen = ({navigation}) => {
 
           <View style={styles.stepName}>
             <Text style={{color: Color.accent}}>Company Details</Text>
-            <Text>Company descriptions</Text>
+            <Text style={{color: 'black'}}>Company descriptions</Text>
           </View>
+
           <View style={{height: '86%'}}>
             <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
               <Text style={styles.inputName}>Name Of My Company</Text>
@@ -202,7 +203,7 @@ const CompanyFormScreen = ({navigation}) => {
           </View>
 
           <View style={styles.stepName}>
-            <Text>Company Details</Text>
+            <Text style={{color: 'black'}}>Company Details</Text>
             <Text style={{color: Color.accent}}>Company descriptions</Text>
           </View>
 

@@ -13,7 +13,7 @@ const FavouriteScreen = ({navigation}) => {
 
   if (favData.length === 0) {
     return (
-      <View style={styles.container}> 
+      <View style={styles.container}>
         <Ionicons name="heart" size={40} color="#c21a0e" />
         <Text style={styles.heding}>
           You have not marked any jobs favourite
@@ -43,9 +43,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: '5%',
     marginTop: '5%',
+    color: 'black',
   },
   text: {
     marginBottom: '5%',
+    color: 'black',
   },
   btn: {
     height: '6%',

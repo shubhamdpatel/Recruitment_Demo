@@ -8,12 +8,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppButton from '../../components/AppButton';
 import Color from '../../constant/Color';
-import {useEffect} from 'react';
-import * as userAction from '../../redux/actions/user';
+import Loader from '../Loader';
 
 const CompanyProfileScreen = ({navigation}) => {
   const user = useSelector(state => state.user.userProfile[0]);
-  const dispatch = useDispatch();
+  const [isLoading, setIsLoding] = React.useState(true);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -25,6 +24,16 @@ const CompanyProfileScreen = ({navigation}) => {
       // },
     });
   }, [navigation]);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setIsLoding(false);
+    }, 1000);
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <View style={{flex: 1, backgroundColor: Color.app}}>

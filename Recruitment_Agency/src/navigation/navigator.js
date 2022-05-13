@@ -269,32 +269,32 @@ const Navigator = () => {
               backgroundColor: Color.primary,
             },
             headerTintColor: Color.white,
-            headerRight: () => (
-              <View style={{flexDirection: 'row'}}>
-                <Icon
-                  style={{marginHorizontal: 20}}
-                  name="search"
-                  size={30}
-                  color="white"
-                  onPress={() => Alert.alert('Not Work')}
-                  // onPress={({notification}) => navigation.navigate('Job Post')}
-                />
-                <MI
-                  name="notifications-none"
-                  size={32}
-                  color="white"
-                  onPress={() => Alert.alert('Not Work')}
-                  // onPress={({notification}) => navigation.navigate('Job Post')}
-                />
-                {/* <MCI
-                  name="bell-badge-outline"
-                  size={30}
-                  color="white"
-                  onPress={() => Alert.alert('Not Work')}
-                  // onPress={() => prop.navigation.navigate('Job Post')}
-                /> */}
-              </View>
-            ),
+            // headerRight: () => (
+            //   <View style={{flexDirection: 'row'}}>
+            //     <Icon
+            //       style={{marginHorizontal: 20}}
+            //       name="search"
+            //       size={30}
+            //       color="white"
+            //       onPress={() => Alert.alert('Not Work')}
+            //       // onPress={({notification}) => navigation.navigate('Job Post')}
+            //     />
+            //     <MI
+            //       name="notifications-none"
+            //       size={32}
+            //       color="white"
+            //       onPress={() => Alert.alert('Not Work')}
+            //       // onPress={({notification}) => navigation.navigate('Job Post')}
+            //     />
+            //     {/* <MCI
+            //       name="bell-badge-outline"
+            //       size={30}
+            //       color="white"
+            //       onPress={() => Alert.alert('Not Work')}
+            //       // onPress={() => prop.navigation.navigate('Job Post')}
+            //     /> */}
+            //   </View>
+            // ),
           }}
         />
         <Stack.Screen
