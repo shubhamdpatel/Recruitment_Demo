@@ -1,6 +1,6 @@
 import {recruit} from '../axois';
-import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-simple-toast';
 
 export const AUTHENTICATION = 'AUTHENTICATION';
 export const LOGOUT = 'LOGOUT';
@@ -29,7 +29,6 @@ export const Init = () => {
 };
 
 export const signUp = (data, userType) => {
-  console.log(data, userType);
   return async dispatch => {
     try {
       const response = await recruit.post('/register', data, {
@@ -40,17 +39,14 @@ export const signUp = (data, userType) => {
 
       const resData = response.data;
 
-      console.log('Register User Data --->', resData);
       if (resData.error === 'EMAIL_EXISTS') {
-        // throw new Error('This email exists alreday');
-        Alert.alert('Invalid Login!', 'This email exists alreday');
+        Toast.show('This email exists alreday');
       }
 
       try {
         const jsonValue = JSON.stringify({
           user: resData,
         });
-
         await AsyncStorage.setItem('user', jsonValue);
         await dispatch(authentication(resData.token, resData.user));
       } catch (error) {
@@ -63,17 +59,15 @@ export const signUp = (data, userType) => {
 };
 
 export const signIn = (email, password) => {
-  console.log(email, password);
   return async dispatch => {
     try {
-      console.log('Api Call');
       const response = await recruit.post('/login', {
         email,
         password,
       });
 
       const resData = response.data;
-      console.log('Login Data==>', resData);
+      // return resData;
       try {
         const jsonValue = JSON.stringify({
           user: resData,
@@ -87,7 +81,7 @@ export const signIn = (email, password) => {
     } catch (error) {
       if (error.response.data.error) {
         const errorMsg = error.response.data.error;
-        Alert.alert('Invalid Login!', `${errorMsg}`);
+        Toast.show(`${errorMsg}`);
       }
     }
   };

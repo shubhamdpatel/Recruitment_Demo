@@ -5,42 +5,35 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  ScrollView,
-  KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
 import Color from '../../constant/Color';
-import * as authAction from '../../redux/actions/auth';
-import {Snackbar} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import * as authAction from '../../redux/actions/auth';
+import CheckBox from '@react-native-community/checkbox';
+import Toast from 'react-native-simple-toast';
 
 const RegisterScreen = ({navigation, route}) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setconfirmPassword] = React.useState('');
-  const [visible, setVisible] = React.useState(false);
-  const [errorMsg, setErrorMsg] = React.useState('');
+  const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
 
   const [emailError, setEmailError] = React.useState(false);
   const [pwdError, setPwdError] = React.useState(false);
   const [confirmPwdError, setconfirmPwdError] = React.useState(false);
   const [viewPwd, setViewPwd] = React.useState(true);
   const [viewConfirmPwd, setViewConfirmPwd] = React.useState(true);
+  const [emailErrorMsg, setEmailErrorMsg] = React.useState('');
+  const [pwdErrorMsg, setPwdErrorMsg] = React.useState(false);
+  const [confiormPwdErrorMsg, setConfirmPwdErrorMsg] = React.useState(false);
+  const [isCheck, setIsCheck] = React.useState(false);
 
-  const onDismissSnackBar = () => setVisible(false);
-
-  const {userType} = route.params;
-
-  let utype;
-  if (userType === 'Jober') {
-    utype = 'Job Seeker';
-  } else if (userType === 'Company') {
-    utype = 'Employer';
-  }
   const dispatch = useDispatch();
 
   const ViewPassword = props => {
@@ -81,10 +74,25 @@ const RegisterScreen = ({navigation, route}) => {
   const onFocus = () => {
     if (!result) {
       setEmailError(true);
-      setErrorMsg('Invalid email !');
+      setEmailErrorMsg('Invalid email !');
     } else {
       setEmailError(false);
-      setErrorMsg('');
+      setEmailErrorMsg('');
+    }
+  };
+
+  const onChangePassword = (password, input) => {
+    if (password.length >= 7) {
+      input === 'password'
+        ? setPassword(password)
+        : setconfirmPassword(password);
+      input === 'password' ? setPwdError(false) : setconfirmPwdError(false);
+      input === 'password' ? setPwdErrorMsg('') : setConfirmPwdErrorMsg('');
+    } else {
+      input === 'password' ? setPwdError(true) : setconfirmPwdError(true);
+      input === 'password'
+        ? setPwdErrorMsg('Password should be 7 character!')
+        : setConfirmPwdErrorMsg('Password should be 7 character!');
     }
   };
 
@@ -100,11 +108,20 @@ const RegisterScreen = ({navigation, route}) => {
       }, 1000);
     } else {
       const data = {email, password};
+      let userType;
       if (password === confirmPassword) {
-        await dispatch(authAction.signUp(data, userType));
+        if (toggleCheckBox) {
+          userType = 'Jober';
+        } else {
+          userType = 'Company';
+        }
+        if (pwdError === false || confirmPwdError === false) {
+          setIsCheck(true);
+          await dispatch(authAction.signUp(data, userType));
+          setIsCheck(false);
+        }
       } else {
-        setErrorMsg('Passowrd Not Match!');
-        setVisible(true);
+        Toast.show('Passowrd Not Match!');
       }
     }
   };
@@ -119,7 +136,6 @@ const RegisterScreen = ({navigation, route}) => {
       />
 
       <Text style={{...styles.text, fontWeight: 'bold'}}>Register</Text>
-      <Text style={{...styles.text, fontSize: 22}}>For {utype} Only</Text>
 
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <View>
@@ -134,70 +150,71 @@ const RegisterScreen = ({navigation, route}) => {
             error={emailError}
             clearButtonMode="while-editing"
           />
-          {/* <Text style={styles.errorMessage}>{errorMsg ? errorMsg : ''}</Text> */}
+          <Text style={styles.errorMessage}>
+            {emailErrorMsg ? emailErrorMsg : ''}
+          </Text>
 
           <FormInput
             labelText="Password"
             labelValue={password}
-            onChangeText={userPassword => setPassword(userPassword)}
+            onChangeText={userPassword =>
+              onChangePassword(userPassword, 'password')
+            }
             placeholderText="Password"
             secureTextEntry={viewPwd}
             error={pwdError}
             onFocus={() => {
               onFocus();
             }}
-            onKeyPressEvent={() => {}}
           />
-
           <ViewPassword view="password" />
+          <Text style={styles.errorMessage}>
+            {pwdErrorMsg ? pwdErrorMsg : ''}
+          </Text>
+
           <FormInput
             labelText="Confirm Password"
             labelValue={confirmPassword}
             onChangeText={confirmPassword =>
-              setconfirmPassword(confirmPassword)
+              onChangePassword(confirmPassword, 'Cpassword')
             }
             placeholderText="Confirm Password"
             secureTextEntry={viewConfirmPwd}
             error={confirmPwdError}
-            // onFocus={() => {
-            //   onKeyPressEvent();
-            // }}
           />
           <ViewPassword view="confirmPassword" />
+          <Text style={styles.errorMessage}>
+            {confiormPwdErrorMsg ? confiormPwdErrorMsg : ''}
+          </Text>
+
+          <View style={styles.checkbox}>
+            <CheckBox
+              disabled={false}
+              value={toggleCheckBox}
+              boxType="square"
+              style={{height: 20}}
+              boxStyle={{height: 20}}
+              onValueChange={newValue => setToggleCheckBox(newValue)}
+            />
+            <Text style={{fontSize: 15}}>I am Job Seeker</Text>
+          </View>
         </View>
 
         <AppButton
           style={styles.regbtn}
-          buttonTitle="Register"
+          buttonTitle={
+            isCheck ? <ActivityIndicator color="white" /> : 'Register'
+          }
           onPress={() => registerUser()}
         />
-
-        <View style={{alignItems: 'center', top: 100}}>
-          <Text style={{color: 'black'}}>You have account !</Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Login', {
-                userType,
-              })
-            }>
-            <Text style={{color: 'blue', textDecorationLine: 'underline'}}>
-              Login here !
-            </Text>
-          </TouchableOpacity>
-        </View>
       </KeyboardAwareScrollView>
 
-      <Snackbar
-        visible={visible}
-        onDismiss={onDismissSnackBar}
-        action={{
-          label: 'Undo',
-          onPress: () => {
-            // Do something
-          },
-        }}>
-        {errorMsg}
-      </Snackbar>
+      <View style={{alignItems: 'center'}}>
+        <Text style={{color: 'black'}}>You have account !</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Text style={{color: 'blue'}}>Login here !</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -223,11 +240,13 @@ const styles = StyleSheet.create({
     width: Platform.OS === 'ios' ? '35%' : '33%',
     height: Platform.OS === 'ios' ? '15%' : '15%',
     marginLeft: Platform.OS === 'ios' ? '65%' : '65%',
-    marginTop: '10%',
+    marginTop: '5%',
   },
   errorMessage: {
     color: 'red',
     marginLeft: '3%',
   },
+  checkbox: {flexDirection: 'row', margin: '2%'},
 });
+
 export default RegisterScreen;

@@ -32,17 +32,12 @@ const JobDetailsScreen = ({route, navigation}) => {
   let selectedJob;
   let fav;
 
-  if (user.userType === 'Company') {
-    selectedJob = useSelector(state =>
-      state.jobs.userPostedJobs.find(job => job?._id === jobId),
-    );
-  } else {
-    selectedJob = useSelector(state =>
-      state.jobs.availableJobs.find(job => job?._id === jobId),
-    );
-    fav = userData.favourites.includes(selectedJob._id);
+  selectedJob = useSelector(state =>
+    state.jobs.availableJobs.find(job => job?._id === jobId),
+  );
+  if (user.userType === 'Jober') {
+    fav = userData?.favourites.includes(selectedJob._id);
   }
-
   const [isFavourite, setIsFavourite] = React.useState(fav);
 
   const jobDelete = id => {

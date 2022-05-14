@@ -45,11 +45,11 @@ const TopTab = createMaterialTopTabNavigator();
 const AuthStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {/* <Stack.Screen
         name="User"
         component={OnBoardingScreen}
         options={{headerShown: false}}
-      />
+      /> */}
       <Stack.Screen
         name="Login"
         component={LoginScreen}
@@ -58,7 +58,11 @@ const AuthStack = () => {
       <Stack.Screen
         name="Register"
         component={RegisterScreen}
-        options={{headerShown: false}}
+        options={{
+          title: '',
+          headerBackTitle: '',
+          headerTransparent: true,
+        }}
       />
     </Stack.Navigator>
   );

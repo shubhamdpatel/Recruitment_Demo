@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import FormInput from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
@@ -14,38 +15,52 @@ import * as authAction from '../../redux/actions/auth';
 import Color from '../../constant/Color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Loader from '../Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({navigation, route}) => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-
+  const [email, setEmail] = React.useState('shubham@gmail.com');
+  const [password, setPassword] = React.useState('123456789');
   const [emailError, setEmailError] = React.useState(false);
-  const [viewPwd, setViewPwd] = React.useState(true);
   const [pwdError, setPwdError] = React.useState(false);
-  const [errorMsg, setErrorMsg] = React.useState(false);
-
-  const {userType} = route.params;
-
-  let utype;
-  if (userType === 'Jober') {
-    utype = 'Job Seeker';
-  } else if (userType === 'Company') {
-    utype = 'Employer';
-  }
-
-  const dispach = useDispatch();
+  const [emailErrorMsg, setEmailErrorMsg] = React.useState(false);
+  const [pwdErrorMsg, setPwdErrorMsg] = React.useState(false);
+  const [viewPwd, setViewPwd] = React.useState(true);
+  const [isLoading, setIsLoding] = React.useState(true);
+  const [isCheck, setIsCheck] = React.useState(false);
+  const dispatch = useDispatch();
 
   const pattern =
     /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
   const result = pattern.test(email);
 
-  const onKeyPressEvent = () => {
+  React.useEffect(() => {
+    setTimeout(() => {
+      setIsLoding(false);
+    }, 1000);
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+  const onFocus = () => {
     if (!result) {
       setEmailError(true);
-      setErrorMsg('Invalid email !');
+      setEmailErrorMsg('Invalid email !');
     } else {
       setEmailError(false);
-      setErrorMsg('');
+      setEmailErrorMsg('');
+    }
+  };
+
+  const onChangePassword = password => {
+    if (password.length >= 7) {
+      setPassword(password);
+      setPwdError(false);
+      setPwdErrorMsg('');
+    } else {
+      setPwdError(true);
+      setPwdErrorMsg('Password should be 7 character!');
     }
   };
 
@@ -58,7 +73,22 @@ const LoginScreen = ({navigation, route}) => {
         setPwdError(false);
       }, 1000);
     } else {
-      await dispach(authAction.signIn(email, password));
+      if (pwdError === false) {
+        setIsCheck(true);
+        const resData = await dispatch(authAction.signIn(email, password));
+        setIsCheck(false);
+
+        // try {
+        //   const jsonValue = JSON.stringify({
+        //     user: resData,
+        //   });
+
+        //   await AsyncStorage.setItem('user', jsonValue);
+        //   dispatch(authAction.authentication(resData.token, resData.user));
+        // } catch (error) {
+        //   console.log('Data Not Save In Async-Storage', error);
+        // }
+      }
     }
   };
 
@@ -72,8 +102,6 @@ const LoginScreen = ({navigation, route}) => {
       />
 
       <Text style={{...styles.text, fontWeight: 'bold'}}>Login</Text>
-      <Text style={{...styles.text, fontSize: 22}}>For {utype} Only</Text>
-
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.input}>
           <FormInput
@@ -87,18 +115,21 @@ const LoginScreen = ({navigation, route}) => {
             error={emailError}
             clearButtonMode="while-editing"
           />
-          <Text style={styles.errorMessage}>{errorMsg ? errorMsg : ''}</Text>
+          <Text style={styles.errorMessage}>
+            {emailErrorMsg ? emailErrorMsg : ''}
+          </Text>
 
           <FormInput
             labelText="Password"
             labelValue={password}
-            onChangeText={userPassword => setPassword(userPassword)}
+            onChangeText={userPassword => onChangePassword(userPassword)}
             placeholderText="Enter the password"
             secureTextEntry={viewPwd}
             error={pwdError}
             onFocus={() => {
-              onKeyPressEvent();
+              onFocus();
             }}
+            onKeyPress={() => {}}
           />
 
           <TouchableOpacity
@@ -112,26 +143,22 @@ const LoginScreen = ({navigation, route}) => {
               style={{position: 'absolute', right: 0, bottom: 20}}
             />
           </TouchableOpacity>
+          <Text style={styles.errorMessage}>
+            {pwdErrorMsg ? pwdErrorMsg : ''}
+          </Text>
         </View>
 
         <AppButton
           style={styles.loginbtn}
-          buttonTitle="Login"
+          buttonTitle={isCheck ? <ActivityIndicator color="white" /> : 'Login'}
           onPress={() => loginHandler()}
         />
       </KeyboardAwareScrollView>
 
       <View style={styles.createAC}>
         <Text style={{color: 'black'}}>You Don't Have An Account ?</Text>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('Register', {
-              userType,
-            })
-          }>
-          <Text style={{color: Color.primary, textDecorationLine: 'underline'}}>
-            Create Account
-          </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <Text style={{color: Color.primary}}>Create Account</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -152,7 +179,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: Color.primary,
     width: '100%',
-    // marginRight: '70%',
     marginBottom: '2%',
   },
   input: {
@@ -168,7 +194,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: '10%',
+    marginBottom: '5%',
   },
   errorMessage: {
     color: 'red',

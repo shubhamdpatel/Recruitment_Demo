@@ -1,28 +1,41 @@
 import React from 'react';
+import * as Progress from 'react-native-progress';
+import * as JobsAction from '../../redux/actions/jobs';
 import {Platform, StyleSheet, Text, View, Button} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AppButton from '../../components/AppButton';
 import FormInput from '../../components/FormInput';
 import FabButton from '../../components/FabButton';
 import Color from '../../constant/Color';
-import * as Progress from 'react-native-progress';
-import * as JobsAction from '../../redux/actions/jobs';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import DatePicker from 'react-native-date-picker';
+import RadioButtonRN from 'radio-buttons-react-native';
+import CheckBox from '@react-native-community/checkbox';
 
 const JobPostFormScreen = ({navigation, route}) => {
+  const {jobId} = route.params;
   const [Next, setNext] = React.useState(true);
   const [date, setDate] = React.useState(new Date());
   const [open, setOpen] = React.useState(false);
-  const {jobId} = route.params;
-
+  const [gender, setGender] = React.useState([]);
   const selectedJob = useSelector(state =>
-    state?.jobs?.userPostedJobs?.find(job => job?._id === jobId),
+    state?.jobs?.availableJobs?.find(job => job?._id === jobId),
+  );
+
+  const [isMaleCheck, setIsMaleCheck] = React.useState(
+    selectedJob?.gender[0] === 'Male' || selectedJob?.gender[1] === 'Male'
+      ? true
+      : true,
+  );
+  const [isFemaleCheck, setIsFemaleCheck] = React.useState(
+    selectedJob?.gender[1] === 'Female' || selectedJob?.gender[0] === 'Female'
+      ? true
+      : false,
   );
 
   const [title, setTitle] = React.useState(selectedJob?.title ?? '');
   const [type, setType] = React.useState(selectedJob?.type ?? '');
-  const [gender, setGender] = React.useState(selectedJob?.gender ?? '');
+
   const [education, setEducation] = React.useState(
     selectedJob?.education ?? '',
   );
@@ -50,6 +63,31 @@ const JobPostFormScreen = ({navigation, route}) => {
 
   const dispatch = useDispatch();
 
+  React.useEffect(() => {
+    if (isMaleCheck) {
+      setGender([...gender, 'Male']);
+    } else {
+      const index = gender.indexOf('Male');
+      if (index !== -1) {
+        gender.splice(index, 1);
+        setGender([...gender]);
+      }
+    }
+  }, [isMaleCheck]);
+
+  React.useEffect(() => {
+    if (isFemaleCheck) {
+      setGender([...gender, 'Female']);
+      console.log('after female', gender);
+    } else {
+      const index = gender.indexOf('Female');
+      if (index !== -1) {
+        gender.splice(index, 1);
+        setGender([...gender]);
+      }
+    }
+  }, [isFemaleCheck, setGender]);
+
   const [error, setError] = React.useState({
     hire: false,
     jtype: false,
@@ -64,11 +102,13 @@ const JobPostFormScreen = ({navigation, route}) => {
     jinterviewTiming: false,
   });
 
+  const jobTypeData = [{label: 'Full-Time'}, {label: 'Part-Time'}];
+
   const onNext = () => {
     if (
       title === '' &&
-      type === '' &&
-      gender === '' &&
+      // type === '' &&
+      // gender === '' &&
       education === '' &&
       experience === ''
     ) {
@@ -90,10 +130,10 @@ const JobPostFormScreen = ({navigation, route}) => {
       }, 1000);
     } else if (title === '') {
       setError({hire: true});
-    } else if (type === '') {
-      setError({jtype: true});
-    } else if (gender === '') {
-      setError({jgender: true});
+      // } else if (type === '') {
+      //   setError({jtype: true});
+      // } else if (gender === '') {
+      //   setError({jgender: true});
     } else if (education === '') {
       setError({jeducation: true});
     } else if (experience === '') {
@@ -121,6 +161,7 @@ const JobPostFormScreen = ({navigation, route}) => {
       workTime: workTiming,
       interviewTime: interviewTiming,
     };
+
     if (
       minSalary === '' &&
       maxSalary === '' &&
@@ -162,6 +203,7 @@ const JobPostFormScreen = ({navigation, route}) => {
     }
   };
 
+  console.log(gender);
   return (
     <View style={styles.container}>
       {Next ? (
@@ -186,6 +228,7 @@ const JobPostFormScreen = ({navigation, route}) => {
                 modal
                 open={open}
                 date={date}
+                mode="time"
                 onConfirm={date => {
                   setOpen(false);
                   setDate(date);
@@ -210,37 +253,67 @@ const JobPostFormScreen = ({navigation, route}) => {
                 }
               />
               <Text style={styles.inputName}>Job Type</Text>
-              <FormInput
-                labelValue={type}
-                onChangeText={Type => setType(Type)}
-                mode="outlined"
-                error={error?.jtype}
-                placeholderText="Ex. Full-Time | Part Time"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onFocus={() =>
-                  setError({
-                    jtype: false,
-                  })
-                }
+              <RadioButtonRN
+                data={jobTypeData}
+                selectedBtn={Type => setType(Type.label)}
+                box={false}
+                activeColor="#1d7ac2"
+                deactiveColor="gray"
+                textStyle={{fontSize: 17, color: 'black'}}
+                initial={type === '' ? 1 : type === 'Full-Time' ? 1 : 2}
               />
+
               <Text style={styles.inputName}>
                 Gender Of The Staff should Be
               </Text>
-              <FormInput
-                labelValue={gender}
-                onChangeText={Gender => setGender(Gender)}
-                mode="outlined"
-                error={error?.jgender}
-                placeholderText="Ex. Male | Female"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onFocus={() =>
-                  setError({
-                    jgender: false,
-                  })
+
+              <View style={styles.genderContainer}>
+                <View style={styles.checkbox}>
+                  <CheckBox
+                    disabled={false}
+                    value={isMaleCheck}
+                    boxType="square"
+                    style={{height: 23}}
+                    onValueChange={newValue => setIsMaleCheck(newValue)}
+                  />
+                  <Text
+                    style={{
+                      ...styles.inputName,
+                      ...styles.gender,
+                    }}>
+                    Male
+                  </Text>
+                </View>
+
+                <View style={styles.checkbox}>
+                  <CheckBox
+                    disabled={false}
+                    value={isFemaleCheck}
+                    boxType="square"
+                    style={{height: 23}}
+                    onValueChange={newValue => setIsFemaleCheck(newValue)}
+                  />
+                  <Text
+                    style={{
+                      ...styles.inputName,
+                      ...styles.gender,
+                    }}>
+                    Female
+                  </Text>
+                </View>
+              </View>
+
+              {/* <RadioButtonRN
+                data={genderData}
+                selectedBtn={Gender => setGender(Gender)}
+                box={false}
+                deactiveColor={Color.accent}
+                textStyle={{fontSize: 16}}
+                initial={
+                  1
                 }
-              />
+              /> */}
+
               <Text style={styles.inputName}>
                 Candidate's Minimum Qulification should Be
               </Text>
@@ -314,7 +387,7 @@ const JobPostFormScreen = ({navigation, route}) => {
                   onChangeText={MinSalary => setMinSalary(MinSalary)}
                   error={error?.jminSalary}
                   mode="outlined"
-                  placeholderText="Ex. 10000"
+                  placeholderText="Ex. 10000 k"
                   autoCapitalize="none"
                   autoCorrect={false}
                   onFocus={() =>
@@ -329,7 +402,7 @@ const JobPostFormScreen = ({navigation, route}) => {
                   onChangeText={MaxSalary => setMaxSalary(MaxSalary)}
                   error={error?.jmaxSalary}
                   mode="outlined"
-                  placeholderText="Ex. 20000"
+                  placeholderText="Ex. 20000 k"
                   autoCapitalize="none"
                   autoCorrect={false}
                   onFocus={() =>
@@ -390,6 +463,9 @@ const JobPostFormScreen = ({navigation, route}) => {
                     jworkTiming: false,
                   })
                 }
+                // onPress={() => {
+                //   setOpen(true);
+                // }}
               />
               <Text style={styles.inputName}>
                 Interview Would Be Done Between
@@ -458,6 +534,12 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '50%',
+  },
+  genderContainer: {paddingLeft: '5%', marginTop: 10},
+  checkbox: {flexDirection: 'row'},
+  gender: {
+    marginLeft: '3%',
+    marginTop: '0%',
   },
   to: {
     marginTop: '20%',

@@ -2,7 +2,7 @@ import {CREATE_JOBS, GET_JOBS_DETAILS, UPDATE_JOBS} from '../actions/jobs';
 
 const initialstate = {
   availableJobs: [],
-  userPostedJobs: [],
+  DataFlag: true,
 };
 
 export default (state = initialstate, action) => {
@@ -10,7 +10,10 @@ export default (state = initialstate, action) => {
     case GET_JOBS_DETAILS:
       return {
         availableJobs: action.allJobs,
-        userPostedJobs: action.userPostedJobs,
+        DataFlag:
+          action.allJobs.length === 0 || action.allJobs.length < 10
+            ? false
+            : true,
       };
     // case CREATE_JOBS:
     //   return {
