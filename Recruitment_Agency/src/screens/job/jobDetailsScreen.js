@@ -32,11 +32,15 @@ const JobDetailsScreen = ({route, navigation}) => {
   let selectedJob;
   let fav;
 
-  selectedJob = useSelector(state =>
-    state.jobs.availableJobs.find(job => job?._id === jobId),
-  );
   if (user.userType === 'Jober') {
+    selectedJob = useSelector(state =>
+      state.jobs.availableJobs.find(job => job?._id === jobId),
+    );
     fav = userData?.favourites.includes(selectedJob._id);
+  } else {
+    selectedJob = useSelector(state =>
+      state.jobs.availableJobs.find(job => job?._id === jobId),
+    );
   }
   const [isFavourite, setIsFavourite] = React.useState(fav);
 
@@ -170,7 +174,11 @@ const JobDetailsScreen = ({route, navigation}) => {
                 <FontAwesome name="transgender" size={30} color="#4F8EF7" />
                 <View style={{marginHorizontal: 10}}>
                   <Text style={styles.textHeading}>Gender</Text>
-                  <Text style={styles.text}>{selectedJob?.gender}</Text>
+                  <Text style={styles.text}>
+                    {selectedJob?.gender === 'Both'
+                      ? 'Male, Female'
+                      : selectedJob?.gender}
+                  </Text>
                 </View>
               </View>
 
@@ -198,9 +206,7 @@ const JobDetailsScreen = ({route, navigation}) => {
                 <Ionicons name="reader-outline" size={30} color="#4F8EF7" />
                 <View style={{marginHorizontal: 10}}>
                   <Text style={styles.textHeading}>Job Info</Text>
-                  <Text style={{...styles.text, marginHorizontal: 20}}>
-                    {selectedJob?.description}
-                  </Text>
+                  <Text style={styles.text}>{selectedJob?.description}</Text>
                 </View>
               </View>
             </View>

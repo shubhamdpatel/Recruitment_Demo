@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Progress from 'react-native-progress';
 import * as JobsAction from '../../redux/actions/jobs';
-import {Platform, StyleSheet, Text, View, Button} from 'react-native';
+import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AppButton from '../../components/AppButton';
@@ -9,39 +9,50 @@ import FormInput from '../../components/FormInput';
 import FabButton from '../../components/FabButton';
 import Color from '../../constant/Color';
 import DatePicker from 'react-native-date-picker';
-import RadioButtonRN from 'radio-buttons-react-native';
-import CheckBox from '@react-native-community/checkbox';
+import SelectBox from '../../components/selectBox';
+import {Dropdown} from 'react-native-element-dropdown';
+
+const data = [
+  {label: 'React Native Developer', value: '1'},
+  {label: 'Angular Developer', value: '2'},
+  {label: 'React Developer', value: '3'},
+  {label: 'Paython Developer', value: '4'},
+  {label: 'Graphics Designer', value: '5'},
+  {label: 'Ui/Ux Developer', value: '6'},
+  {label: 'Laravel Developer', value: '7'},
+  {label: 'Company Manager', value: '8'},
+  {label: 'Android Developer', value: '9'},
+  {label: 'Node js Developer', value: '10'},
+];
+const allJobsType = ['Full-Time', 'Part-Time'];
+const genders = ['Male', 'Female', 'Both'];
+const qulification = [
+  '<10th pass',
+  '10th pass or above',
+  '12th pass or above',
+  'Gradute',
+  'Master',
+];
+const experiences = ['0-6 Months', '1 to 2 Years', 'More than 2 years'];
 
 const JobPostFormScreen = ({navigation, route}) => {
   const {jobId} = route.params;
   const [Next, setNext] = React.useState(true);
   const [date, setDate] = React.useState(new Date());
   const [open, setOpen] = React.useState(false);
-  const [gender, setGender] = React.useState([]);
+  const [isFocus, setIsFocus] = React.useState(false);
+
   const selectedJob = useSelector(state =>
     state?.jobs?.availableJobs?.find(job => job?._id === jobId),
   );
-
-  const [isMaleCheck, setIsMaleCheck] = React.useState(
-    selectedJob?.gender[0] === 'Male' || selectedJob?.gender[1] === 'Male'
-      ? true
-      : true,
+  const [title, setTitle] = React.useState(selectedJob?.title || '');
+  const [selectedJobType, setSelectedJobType] = React.useState(
+    selectedJob?.type || '',
   );
-  const [isFemaleCheck, setIsFemaleCheck] = React.useState(
-    selectedJob?.gender[1] === 'Female' || selectedJob?.gender[0] === 'Female'
-      ? true
-      : false,
+  const [selectedGender, setSelectedGender] = React.useState(
+    selectedJob?.gender || '',
   );
 
-  const [title, setTitle] = React.useState(selectedJob?.title ?? '');
-  const [type, setType] = React.useState(selectedJob?.type ?? '');
-
-  const [education, setEducation] = React.useState(
-    selectedJob?.education ?? '',
-  );
-  const [experience, setExperience] = React.useState(
-    selectedJob?.experience ?? '',
-  );
   const [minSalary, setMinSalary] = React.useState(
     selectedJob?.minSalary ?? '',
   );
@@ -51,49 +62,26 @@ const JobPostFormScreen = ({navigation, route}) => {
   const [openings, setOpenings] = React.useState(
     selectedJob?.noOfOpenings ?? '',
   );
+  const [selectedQulification, setSelectedQulification] = React.useState(
+    selectedJob?.education || '',
+  );
+  const [selectedExperience, setSelectedExperience] = React.useState(
+    selectedJob?.experience || '',
+  );
   const [description, setDescription] = React.useState(
     selectedJob?.description ?? '',
   );
   const [workTiming, setWorkTiming] = React.useState(
-    selectedJob?.workTime ?? '',
+    selectedJob?.workTime ?? '09:30am - 06:30pm | Monday - Saturday',
   );
   const [interviewTiming, setInterviewTiming] = React.useState(
-    selectedJob?.interviewTime ?? '',
+    selectedJob?.interviewTime ?? '11:00am - 04:00pm | Monday - Friday',
   );
 
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
-    if (isMaleCheck) {
-      setGender([...gender, 'Male']);
-    } else {
-      const index = gender.indexOf('Male');
-      if (index !== -1) {
-        gender.splice(index, 1);
-        setGender([...gender]);
-      }
-    }
-  }, [isMaleCheck]);
-
-  React.useEffect(() => {
-    if (isFemaleCheck) {
-      setGender([...gender, 'Female']);
-      console.log('after female', gender);
-    } else {
-      const index = gender.indexOf('Female');
-      if (index !== -1) {
-        gender.splice(index, 1);
-        setGender([...gender]);
-      }
-    }
-  }, [isFemaleCheck, setGender]);
-
   const [error, setError] = React.useState({
     hire: false,
-    jtype: false,
-    jgender: false,
-    jeducation: false,
-    jexperience: false,
     jminSalary: false,
     jmaxSalary: false,
     jopenings: false,
@@ -102,42 +90,15 @@ const JobPostFormScreen = ({navigation, route}) => {
     jinterviewTiming: false,
   });
 
-  const jobTypeData = [{label: 'Full-Time'}, {label: 'Part-Time'}];
-
   const onNext = () => {
-    if (
-      title === '' &&
-      // type === '' &&
-      // gender === '' &&
-      education === '' &&
-      experience === ''
-    ) {
-      setError({
-        hire: true,
-        jtype: true,
-        jgender: true,
-        jeducation: true,
-        jexperience: true,
-      });
-      setTimeout(() => {
-        setError({
-          hire: false,
-          jtype: false,
-          jgender: false,
-          jeducation: false,
-          jexperience: false,
-        });
-      }, 1000);
-    } else if (title === '') {
+    if (!title) {
       setError({hire: true});
-      // } else if (type === '') {
-      //   setError({jtype: true});
-      // } else if (gender === '') {
-      //   setError({jgender: true});
-    } else if (education === '') {
-      setError({jeducation: true});
-    } else if (experience === '') {
-      setError({jexperience: true});
+    } else if (minSalary === '') {
+      setError({jminSalary: true});
+    } else if (maxSalary === '') {
+      setError({jmaxSalary: true});
+    } else if (openings === '') {
+      setError({jopenings: true});
     } else {
       setNext(false);
     }
@@ -150,49 +111,19 @@ const JobPostFormScreen = ({navigation, route}) => {
   const postSubmit = async id => {
     const data = {
       title,
-      type,
-      gender,
-      education,
+      type: selectedJobType,
+      gender: selectedGender,
+      education: selectedQulification,
       minSalary,
       maxSalary,
       noOfOpenings: openings,
-      experience,
+      experience: selectedExperience,
       description,
       workTime: workTiming,
       interviewTime: interviewTiming,
     };
 
-    if (
-      minSalary === '' &&
-      maxSalary === '' &&
-      openings === '' &&
-      description === '' &&
-      workTiming === '' &&
-      interviewTiming === ''
-    ) {
-      setError({
-        jminSalary: true,
-        jmaxSalary: true,
-        jopenings: true,
-        jdescription: true,
-        jworkTiming: true,
-        jinterviewTiming: true,
-      });
-      setTimeout(() => {
-        setError({
-          jminSalary: false,
-          jmaxSalary: false,
-          jopenings: false,
-          jdescription: false,
-          jworkTiming: false,
-          jinterviewTiming: false,
-        });
-      }, 1000);
-    } else if (minSalary === '') {
-      setError({jminSalary: true});
-    } else if (maxSalary === '') {
-      setError({jmaxSalary: true});
-    } else if (description === '') {
+    if (description === '') {
       setError({jdescription: true});
     } else if (workTiming === '') {
       setError({jworkTiming: true});
@@ -203,7 +134,6 @@ const JobPostFormScreen = ({navigation, route}) => {
     }
   };
 
-  console.log(gender);
   return (
     <View style={styles.container}>
       {Next ? (
@@ -220,164 +150,62 @@ const JobPostFormScreen = ({navigation, route}) => {
             <Text style={{color: 'black'}}>Job descriptions</Text>
           </View>
 
-          <View style={{height: Platform.OS === 'android' ? '88%' : '90%'}}>
+          <View>
             <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-              {/* <Button title="Open" onPress={() => setOpen(true)} />
-              <Text>selected: {date.toLocaleString()}</Text>
-              <DatePicker
-                modal
-                open={open}
-                date={date}
-                mode="time"
-                onConfirm={date => {
-                  setOpen(false);
-                  setDate(date);
-                }}
-                onCancel={() => {
-                  setOpen(false);
-                }}
-              /> */}
               <Text style={styles.inputName}>I Want To Hire A</Text>
-              <FormInput
-                labelValue={title}
-                error={error?.hire}
-                onChangeText={Title => setTitle(Title)}
-                mode="outlined"
-                placeholderText="Ex. Company Manager"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onFocus={() =>
+              <Dropdown
+                style={[
+                  styles.dropdown,
+                  {borderColor: error.hire ? '#c20404' : 'gray'},
+                  isFocus && {borderColor: 'blue'},
+                ]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                data={data}
+                search
+                maxHeight={300}
+                labelField="label"
+                valueField="label"
+                value={title}
+                placeholder={!isFocus ? 'Select' : '...'}
+                searchPlaceholder="Search..."
+                onFocus={() => {
+                  setIsFocus(true);
                   setError({
                     hire: false,
-                  })
-                }
+                  });
+                }}
+                onBlur={() => setIsFocus(false)}
+                onChange={item => {
+                  setTitle(item.label);
+                  setIsFocus(false);
+                }}
               />
+
               <Text style={styles.inputName}>Job Type</Text>
-              <RadioButtonRN
-                data={jobTypeData}
-                selectedBtn={Type => setType(Type.label)}
-                box={false}
-                activeColor="#1d7ac2"
-                deactiveColor="gray"
-                textStyle={{fontSize: 17, color: 'black'}}
-                initial={type === '' ? 1 : type === 'Full-Time' ? 1 : 2}
+              <SelectBox
+                data={allJobsType}
+                selectValue={
+                  selectedJob ? allJobsType.indexOf(selectedJob?.type) : 0
+                }
+                onSelectedItem={item => {
+                  setSelectedJobType(item);
+                }}
               />
 
               <Text style={styles.inputName}>
                 Gender Of The Staff should Be
               </Text>
-
-              <View style={styles.genderContainer}>
-                <View style={styles.checkbox}>
-                  <CheckBox
-                    disabled={false}
-                    value={isMaleCheck}
-                    boxType="square"
-                    style={{height: 23}}
-                    onValueChange={newValue => setIsMaleCheck(newValue)}
-                  />
-                  <Text
-                    style={{
-                      ...styles.inputName,
-                      ...styles.gender,
-                    }}>
-                    Male
-                  </Text>
-                </View>
-
-                <View style={styles.checkbox}>
-                  <CheckBox
-                    disabled={false}
-                    value={isFemaleCheck}
-                    boxType="square"
-                    style={{height: 23}}
-                    onValueChange={newValue => setIsFemaleCheck(newValue)}
-                  />
-                  <Text
-                    style={{
-                      ...styles.inputName,
-                      ...styles.gender,
-                    }}>
-                    Female
-                  </Text>
-                </View>
-              </View>
-
-              {/* <RadioButtonRN
-                data={genderData}
-                selectedBtn={Gender => setGender(Gender)}
-                box={false}
-                deactiveColor={Color.accent}
-                textStyle={{fontSize: 16}}
-                initial={
-                  1
+              <SelectBox
+                data={genders}
+                selectValue={
+                  selectedJob ? genders.indexOf(selectedJob?.gender) : 0
                 }
-              /> */}
-
-              <Text style={styles.inputName}>
-                Candidate's Minimum Qulification should Be
-              </Text>
-              <FormInput
-                labelValue={education}
-                onChangeText={Education => setEducation(Education)}
-                mode="outlined"
-                error={error?.jeducation}
-                placeholderText="Ex. Bachlor"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onFocus={() =>
-                  setError({
-                    jeducation: false,
-                  })
-                }
+                onSelectedItem={item => {
+                  setSelectedGender(item);
+                }}
               />
-              <Text style={styles.inputName}>
-                Candidate's Minimum Work Experience Must Be
-              </Text>
-              <FormInput
-                labelValue={experience}
-                onChangeText={Experience => setExperience(Experience)}
-                mode="outlined"
-                error={error?.jexperience}
-                placeholderText="Ex. 0-6 Months | 1-2 Years"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onFocus={() =>
-                  setError({
-                    jexperience: false,
-                  })
-                }
-              />
-            </KeyboardAwareScrollView>
-          </View>
-
-          <FabButton
-            style={{
-              ...styles.fab,
-              left: Platform.OS === 'ios' ? '75%' : '78%',
-              bottom: Platform.OS === 'ios' ? '0%' : '-5%',
-            }}
-            iconName="chevron-right"
-            onPress={onNext}
-            // disable={true}
-          />
-        </View>
-      ) : (
-        <View>
-          <View style={{marginBottom: 10}}>
-            <Progress.Bar
-              progress={1}
-              width={Platform.OS === 'ios' ? 390 : 350}
-            />
-          </View>
-
-          <View style={styles.stepName}>
-            <Text style={{color: 'black'}}>Job Details</Text>
-            <Text style={{color: Color.accent}}>Job descriptions</Text>
-          </View>
-
-          <View style={{height: '86.5%'}}>
-            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
               <Text style={styles.inputName}>
                 I Will Pay A Monthly Salary Of
               </Text>
@@ -387,8 +215,9 @@ const JobPostFormScreen = ({navigation, route}) => {
                   onChangeText={MinSalary => setMinSalary(MinSalary)}
                   error={error?.jminSalary}
                   mode="outlined"
-                  placeholderText="Ex. 10000 k"
+                  placeholderText="Ex. 10000"
                   autoCapitalize="none"
+                  keyboardType="number-pad"
                   autoCorrect={false}
                   onFocus={() =>
                     setError({
@@ -396,14 +225,16 @@ const JobPostFormScreen = ({navigation, route}) => {
                     })
                   }
                 />
+
                 <Text style={styles.to}>to</Text>
                 <FormInput
                   labelValue={maxSalary}
                   onChangeText={MaxSalary => setMaxSalary(MaxSalary)}
                   error={error?.jmaxSalary}
                   mode="outlined"
-                  placeholderText="Ex. 20000 k"
+                  placeholderText="Ex. 20000"
                   autoCapitalize="none"
+                  keyboardType="number-pad"
                   autoCorrect={false}
                   onFocus={() =>
                     setError({
@@ -422,6 +253,7 @@ const JobPostFormScreen = ({navigation, route}) => {
                   mode="outlined"
                   placeholderText="Ex. 5"
                   autoCapitalize="none"
+                  keyboardType="number-pad"
                   autoCorrect={false}
                   onFocus={() =>
                     setError({
@@ -430,6 +262,60 @@ const JobPostFormScreen = ({navigation, route}) => {
                   }
                 />
               </View>
+            </KeyboardAwareScrollView>
+
+            <FabButton
+              style={{
+                ...styles.fab,
+                left: Platform.OS === 'ios' ? '75%' : '78%',
+                bottom: Platform.OS === 'ios' ? '0%' : '-5%',
+              }}
+              iconName="chevron-right"
+              onPress={onNext}
+            />
+          </View>
+        </View>
+      ) : (
+        <View>
+          <View style={{marginBottom: 10}}>
+            <Progress.Bar
+              progress={1}
+              width={Platform.OS === 'ios' ? 390 : 350}
+            />
+          </View>
+
+          <View style={styles.stepName}>
+            <Text style={{color: 'black'}}>Job Details</Text>
+            <Text style={{color: Color.accent}}>Job descriptions</Text>
+          </View>
+
+          <View style={{height: '86.5%'}}>
+            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+              <Text style={styles.inputName}>
+                Candidate's Minimum Qulification should Be
+              </Text>
+              <SelectBox
+                data={qulification}
+                selectValue={
+                  selectedJob ? qulification.indexOf(selectedJob?.education) : 3
+                }
+                onSelectedItem={item => {
+                  setSelectedQulification(item);
+                }}
+              />
+
+              <Text style={styles.inputName}>
+                Candidate's Minimum Work Experience Must Be
+              </Text>
+              <SelectBox
+                data={experiences}
+                selectValue={
+                  selectedJob ? experiences.indexOf(selectedJob?.experience) : 0
+                }
+                onSelectedItem={item => {
+                  setSelectedExperience(item);
+                }}
+              />
 
               <Text style={styles.inputName}>
                 Describe The Job Role For The Staff
@@ -449,6 +335,7 @@ const JobPostFormScreen = ({navigation, route}) => {
                   })
                 }
               />
+
               <Text style={styles.inputName}>Work Timings</Text>
               <FormInput
                 labelValue={workTiming}
@@ -515,10 +402,37 @@ const JobPostFormScreen = ({navigation, route}) => {
 export default JobPostFormScreen;
 
 const styles = StyleSheet.create({
+  dropdown: {
+    height: 60,
+    borderWidth: 0.5,
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    backgroundColor: 'white',
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 17,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
   container: {
     flex: 1,
     padding: 20,
     backgroundColor: Color.app,
+    marginTop: '20%',
   },
   stepName: {
     flexDirection: 'row',
@@ -527,19 +441,24 @@ const styles = StyleSheet.create({
     marginHorizontal: 50,
   },
   inputName: {
-    fontSize: 18,
+    fontSize: 17,
     marginBottom: 10,
-    marginTop: 10,
+    marginTop: 25,
     color: 'black',
+    fontWeight: '600',
   },
   input: {
     width: '50%',
   },
-  genderContainer: {paddingLeft: '5%', marginTop: 10},
-  checkbox: {flexDirection: 'row'},
-  gender: {
-    marginLeft: '3%',
-    marginTop: '0%',
+  ovel: {
+    borderWidth: 1,
+    minWidth: 100,
+    height: 50,
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
+    margin: 5,
   },
   to: {
     marginTop: '20%',
@@ -552,7 +471,7 @@ const styles = StyleSheet.create({
   },
   fab: {
     bottom: -50,
-    position: 'absolute',
+    // position: 'absolute',
   },
   buttonContainer: {
     marginVertical: Platform.OS === 'ios' ? 700 : 565,

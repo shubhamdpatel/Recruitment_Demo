@@ -308,6 +308,7 @@ const Navigator = () => {
             title: '',
             headerBackTitleVisible: false,
             leftButton: 'back',
+            headerTransparent: true,
           }}
         />
         <Stack.Screen

@@ -112,7 +112,7 @@ const JobListScreen = ({navigation}) => {
 
                 <View style={styles.card2ndView}>
                   {/* <Text style={styles.text}>{item?.experience}</Text> */}
-                  <Text style={styles.text}>0-6 Month</Text>
+                  <Text style={styles.text}>{item?.experience}</Text>
                   <Text style={styles.text}>{item?.education}</Text>
                 </View>
 
