@@ -8,6 +8,23 @@ import FabButton from '../../components/FabButton';
 import Color from '../../constant/Color';
 import * as userAction from '../../redux/actions/user';
 import * as Progress from 'react-native-progress';
+import SelectBox from '../../components/selectBox';
+import {Dropdown} from 'react-native-element-dropdown';
+
+const allJobsType = ['Full-Time', 'Part-Time'];
+const experiences = ['0-6 Months', '1 to 2 Years', 'More than 2 years'];
+const data = [
+  {label: 'React Native Developer', value: '1'},
+  {label: 'Angular Developer', value: '2'},
+  {label: 'React Developer', value: '3'},
+  {label: 'Paython Developer', value: '4'},
+  {label: 'Graphics Designer', value: '5'},
+  {label: 'Ui/Ux Developer', value: '6'},
+  {label: 'Laravel Developer', value: '7'},
+  {label: 'Company Manager', value: '8'},
+  {label: 'Android Developer', value: '9'},
+  {label: 'Node js Developer', value: '10'},
+];
 
 const EditProfileScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -15,13 +32,17 @@ const EditProfileScreen = ({navigation, route}) => {
 
   const [Next, setNext] = React.useState(true);
   const [next2Next, setNext2Next] = React.useState(false);
+  const [isFocus, setIsFocus] = React.useState(false);
 
-  const [jobType, setJobType] = React.useState(jober?.jobType || '');
+  const [selectedJobType, setSelectedJobType] = React.useState(
+    jober?.jobType || '',
+  );
   const [functionalArea, setFunctionalArea] = React.useState(
     jober?.functionalArea || '',
   );
-  const [experience, setExperience] = React.useState(jober?.experience || '');
-
+  const [selectedExperience, setSelectedExperience] = React.useState(
+    jober?.experience || '',
+  );
   const [prefereedCity, setPrefereedCity] = React.useState(
     jober?.prefereedCity || '',
   );
@@ -64,12 +85,8 @@ const EditProfileScreen = ({navigation, route}) => {
   });
 
   const onNext = () => {
-    if (jobType === '') {
-      setError({JjobType: true});
-    } else if (functionalArea === '') {
+    if (functionalArea === '') {
       setError({JfunctionalArea: true});
-    } else if (experience === '') {
-      setError({Jexperience: true});
     } else if (prefereedCity === '') {
       setError({JprefereedCity: true});
     } else if (expectedSalary === '') {
@@ -109,9 +126,9 @@ const EditProfileScreen = ({navigation, route}) => {
   const updateHandler = async () => {
     debugger;
     const data = {
-      jobType,
+      jobType: selectedJobType,
       functionalArea,
-      experience,
+      experience: selectedExperience,
       prefereedCity,
       expectedSalary,
       instituteName,
@@ -154,54 +171,57 @@ const EditProfileScreen = ({navigation, route}) => {
 
           <View style={{height: Platform.OS === 'android' ? '85%' : '90%'}}>
             <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-              <Text style={styles.inputName}>Job Type</Text>
-              <FormInput
-                labelValue={jobType}
-                onChangeText={Type => setJobType(Type)}
-                mode="outlined"
-                placeholderText="Ex. Full Time | Part Time"
-                autoCapitalize="none"
-                autoCorrect={false}
-                error={error?.JjobType}
-                onFocus={() =>
-                  setError({
-                    JjobType: false,
-                  })
-                }
-              />
-
               <Text style={styles.inputName}>Functional Area</Text>
-              <FormInput
-                labelValue={functionalArea}
-                onChangeText={FunctionalArea =>
-                  setFunctionalArea(FunctionalArea)
-                }
-                mode="outlined"
-                placeholderText="Ex. Company Manager"
-                autoCapitalize="none"
-                autoCorrect={false}
-                error={error?.JfunctionalArea}
-                onFocus={() =>
+              <Dropdown
+                style={[
+                  styles.dropdown,
+                  {borderColor: error.JfunctionalArea ? '#c20404' : 'gray'},
+                  isFocus && {borderColor: 'blue'},
+                ]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                data={data}
+                search
+                maxHeight={300}
+                labelField="label"
+                valueField="label"
+                value={functionalArea}
+                placeholder={!isFocus ? 'Select' : '...'}
+                searchPlaceholder="Search..."
+                onFocus={() => {
+                  setIsFocus(true);
                   setError({
                     JfunctionalArea: false,
-                  })
+                  });
+                }}
+                onBlur={() => setIsFocus(false)}
+                onChange={item => {
+                  setFunctionalArea(item.label);
+                  setIsFocus(false);
+                }}
+              />
+
+              <Text style={styles.inputName}>Job Type</Text>
+              <SelectBox
+                data={allJobsType}
+                selectValue={
+                  jober?.jobType ? allJobsType.indexOf(jober?.jobType) : 0
                 }
+                onSelectedItem={item => {
+                  setSelectedJobType(item);
+                }}
               />
 
               <Text style={styles.inputName}>Experience</Text>
-              <FormInput
-                labelValue={experience}
-                onChangeText={Experience => setExperience(Experience)}
-                mode="outlined"
-                placeholderText="Ex. Fresher | 0 - 6 Months | 1 - 3 Years"
-                autoCapitalize="none"
-                autoCorrect={false}
-                error={error?.Jexperience}
-                onFocus={() =>
-                  setError({
-                    Jexperience: false,
-                  })
+              <SelectBox
+                data={experiences}
+                selectValue={
+                  jober?.experience ? experiences.indexOf(jober?.experience) : 0
                 }
+                onSelectedItem={item => {
+                  setSelectedExperience(item);
+                }}
               />
 
               <Text style={styles.inputName}>Prefereed City</Text>
@@ -320,6 +340,7 @@ const EditProfileScreen = ({navigation, route}) => {
                   placeholderText="Ex. 2000"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  keyboardType="number-pad"
                   error={error?.JfromStudyYear}
                   onFocus={() =>
                     setError({
@@ -327,6 +348,7 @@ const EditProfileScreen = ({navigation, route}) => {
                     })
                   }
                 />
+                
 
                 <Text style={styles.to}>to</Text>
                 <FormInput
@@ -335,6 +357,7 @@ const EditProfileScreen = ({navigation, route}) => {
                   mode="outlined"
                   placeholderText="Ex. 2022"
                   autoCapitalize="none"
+                  keyboardType="number-pad"
                   autoCorrect={false}
                   error={error?.JtoStudyYear}
                   onFocus={() =>
@@ -471,6 +494,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10,
     color: 'black',
+    fontWeight: '600',
   },
   input: {
     width: '50%',
@@ -503,5 +527,32 @@ const styles = StyleSheet.create({
     bottom: -90,
     width: Platform.OS === 'ios' ? '45%' : '45%',
     height: Platform.OS === 'ios' ? '50%' : '45%',
+  },
+
+  dropdown: {
+    height: 60,
+    borderWidth: 0.5,
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    backgroundColor: 'white',
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 17,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });
