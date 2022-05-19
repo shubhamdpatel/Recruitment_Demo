@@ -12,8 +12,11 @@ import Loader from '../Loader';
 const ApplicationScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const jobs = useSelector(state => state.application.userApplication);
+  const userType = useSelector(state => state.auth.user.userType);
+
   const [isLoading, setIsLoding] = React.useState(true);
 
+  // console.log(jobs);
   useFocusEffect(
     React.useCallback(() => {
       dispatch(appliesAction.fetchUserApplication());
@@ -34,17 +37,20 @@ const ApplicationScreen = ({navigation}) => {
     return (
       <View style={styles.container}>
         <FA name="send" size={40} color={Color.accent} />
-        <Text style={styles.heding}>You do not apply any jobs</Text>
-        <Text style={styles.text}>Apply jobs from your list</Text>
-        {/* <AppButton
-          buttonTitle="Look For jobs"
-          style={styles.btn}
-          onPress={() => navigation.goBack()}
-        /> */}
+        {userType === 'Jober' ? (
+          <View>
+            <Text style={styles.heding}>You do not apply any jobs</Text>
+            <Text style={styles.text}>Apply jobs from your list</Text>
+          </View>
+        ) : (
+          <View>
+            <Text style={styles.heding}>Not a single application.</Text>
+          </View>
+        )}
       </View>
     );
   }
-  return <JobCard data={jobs} navigation={navigation} />;
+  return <JobCard data={jobs} navigation={navigation} apply={true} />;
 };
 
 export default ApplicationScreen;

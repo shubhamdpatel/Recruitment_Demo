@@ -23,8 +23,9 @@ import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const JobDetailsScreen = ({route, navigation}) => {
-  const [isApplied, setIsApplied] = React.useState(false);
   const jobId = route?.params.params.jobId;
+  const apply = route?.params.params.apply;
+  const [isApplied, setIsApplied] = React.useState(apply ? true : false);
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const userData = useSelector(state => state.user.userProfile[0]);
@@ -36,7 +37,7 @@ const JobDetailsScreen = ({route, navigation}) => {
     selectedJob = useSelector(state =>
       state.jobs.availableJobs.find(job => job?._id === jobId),
     );
-    fav = userData?.favourites.includes(selectedJob._id);
+    fav = userData?.favourites.includes(selectedJob?._id);
   } else {
     selectedJob = useSelector(state =>
       state.jobs.availableJobs.find(job => job?._id === jobId),
@@ -248,7 +249,7 @@ const JobDetailsScreen = ({route, navigation}) => {
               <Feather name="phone" size={30} color="#4F8EF7" />
               <View style={{marginHorizontal: 10}}>
                 <Text style={styles.textHeading}>Contact Person</Text>
-                <Text style={styles.text}>{userData?.contactPerson}</Text>
+                <Text style={styles.text}>{userData?.contactPerson || '...'}</Text>
               </View>
             </View>
           </View>
@@ -272,7 +273,7 @@ const JobDetailsScreen = ({route, navigation}) => {
               </View>
               <View style={{paddingBottom: 100}}>
                 <AppButton
-                  buttonTitle={isApplied ? 'Applied Cancel' : 'Apply For Job'}
+                  buttonTitle={isApplied ? 'Applied' : 'Apply For Job'}
                   style={{
                     ...styles.applyBtn,
                     backgroundColor: isApplied ? 'green' : Color.primary,

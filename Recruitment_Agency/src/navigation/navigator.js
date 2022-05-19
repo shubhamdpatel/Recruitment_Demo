@@ -68,52 +68,6 @@ const AuthStack = () => {
   );
 };
 
-const JobCompanyDetailsTab = props => {
-  const params = props.route.params;
-  return (
-    <TopTab.Navigator>
-      <TopTab.Screen
-        name="Job Details"
-        component={JobDetailsScreen}
-        initialParams={params}
-        options={{
-          tabBarInactiveTintColor: Color.white,
-          tabBarActiveTintColor: Color.white,
-          tabBarStyle: {
-            backgroundColor: Color.primary,
-          },
-          tabBarLabelStyle: {
-            fontWeight: 'bold',
-            fontSize: 14,
-          },
-          tabBarIndicatorStyle: {
-            backgroundColor: Color.white,
-          },
-        }}
-      />
-      <TopTab.Screen
-        name="Company Details"
-        component={CompanyDetialsScreen}
-        initialParams={params}
-        options={{
-          tabBarInactiveTintColor: Color.white,
-          tabBarActiveTintColor: Color.white,
-          tabBarStyle: {
-            backgroundColor: Color.primary,
-          },
-          tabBarLabelStyle: {
-            fontWeight: 'bold',
-            fontSize: 14,
-          },
-          tabBarIndicatorStyle: {
-            backgroundColor: Color.white,
-          },
-        }}
-      />
-    </TopTab.Navigator>
-  );
-};
-
 const Navigator = () => {
   const [isLoading, setIsLoding] = React.useState(true);
   const token = useSelector(state => state.auth.token);
@@ -150,31 +104,30 @@ const Navigator = () => {
             },
           }}
         />
-        {user.userType === 'Jober' && (
-          <BottomTab.Screen
-            name="Applies"
-            component={ApplicationScreen}
-            options={{
-              headerShown: false,
-              tabBarActiveTintColor: Color.primary,
-              tabBarLabel: 'Applies',
-              tabBarLabelStyle: {
-                flex: 1,
-                fontSize: 14,
-                fontWeight: '600',
-              },
-              tabBarIcon: tabInfo => {
-                return (
-                  <FA
-                    name="send"
-                    size={18}
-                    color={tabInfo.focused ? Color.primary : '#8e8e93'}
-                  />
-                );
-              },
-            }}
-          />
-        )}
+
+        <BottomTab.Screen
+          name="Applies"
+          component={ApplicationScreen}
+          options={{
+            headerShown: false,
+            tabBarActiveTintColor: Color.primary,
+            tabBarLabel: user.usertype === 'Jober' ? 'Applies' : 'Application',
+            tabBarLabelStyle: {
+              flex: 1,
+              fontSize: 14,
+              fontWeight: '600',
+            },
+            tabBarIcon: tabInfo => {
+              return (
+                <FA
+                  name="send"
+                  size={18}
+                  color={tabInfo.focused ? Color.primary : '#8e8e93'}
+                />
+              );
+            },
+          }}
+        />
 
         {/* {user.userType === 'Jober' && (
           <BottomTab.Screen
@@ -260,7 +213,73 @@ const Navigator = () => {
       </BottomTab.Navigator>
     );
   };
-
+  const JobCompanyDetailsTab = props => {
+    const params = props.route.params;
+    return (
+      <TopTab.Navigator>
+        <TopTab.Screen
+          name="Job Details"
+          component={JobDetailsScreen}
+          initialParams={params}
+          options={{
+            tabBarInactiveTintColor: Color.white,
+            tabBarActiveTintColor: Color.white,
+            tabBarStyle: {
+              backgroundColor: Color.primary,
+            },
+            tabBarLabelStyle: {
+              fontWeight: 'bold',
+              fontSize: 14,
+            },
+            tabBarIndicatorStyle: {
+              backgroundColor: Color.white,
+            },
+          }}
+        />
+        {user.userType === 'Jober' ? (
+          <TopTab.Screen
+            name="Company Details"
+            component={CompanyDetialsScreen}
+            initialParams={params}
+            options={{
+              tabBarInactiveTintColor: Color.white,
+              tabBarActiveTintColor: Color.white,
+              tabBarStyle: {
+                backgroundColor: Color.primary,
+              },
+              tabBarLabelStyle: {
+                fontWeight: 'bold',
+                fontSize: 14,
+              },
+              tabBarIndicatorStyle: {
+                backgroundColor: Color.white,
+              },
+            }}
+          />
+        ) : (
+          <TopTab.Screen
+            name="Jober Details"
+            component={JoberDetialsScreen}
+            initialParams={params}
+            options={{
+              tabBarInactiveTintColor: Color.white,
+              tabBarActiveTintColor: Color.white,
+              tabBarStyle: {
+                backgroundColor: Color.primary,
+              },
+              tabBarLabelStyle: {
+                fontWeight: 'bold',
+                fontSize: 14,
+              },
+              tabBarIndicatorStyle: {
+                backgroundColor: Color.white,
+              },
+            }}
+          />
+        )}
+      </TopTab.Navigator>
+    );
+  };
   const MyStack = () => {
     return (
       <Stack.Navigator>

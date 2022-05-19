@@ -5,6 +5,8 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  TouchableNativeFeedback,
+  Platform,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
@@ -69,7 +71,7 @@ const JobListScreen = ({navigation}) => {
         <View style={styles.container}>
           <Text style={styles.heding}>You have not post any jobs</Text>
           <View style={{flexDirection: 'row'}}>
-            <Text style={styles.text}>Click On </Text>
+            <Text style={styles.text1}>Click On </Text>
             <Icon name="plus-circle" color={Color.primary} size={16} />
             <Text> Add Jobs</Text>
           </View>

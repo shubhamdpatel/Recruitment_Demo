@@ -13,7 +13,7 @@ import {useSelector} from 'react-redux';
 
 const JobCard = props => {
   const user = useSelector(state => state.auth.user);
-  const {data, navigation} = props;
+  const {data, navigation, apply} = props;
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
@@ -24,9 +24,11 @@ const JobCard = props => {
     {
       user?.userType === 'Jober'
         ? navigation.navigate('JC Details', {
-            params: {jobId: id, cid},
+            params: {jobId: id, cid, apply: apply ? apply : ''},
           })
-        : navigation.navigate('Job Details', {params: {jobId: id, cid}});
+        : navigation.navigate('JC Details', {
+            params: {jobId: id, cid},
+          });
     }
   };
 
