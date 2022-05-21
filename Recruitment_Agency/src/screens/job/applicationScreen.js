@@ -16,7 +16,6 @@ const ApplicationScreen = ({navigation}) => {
 
   const [isLoading, setIsLoding] = React.useState(true);
 
-  // console.log(jobs);
   useFocusEffect(
     React.useCallback(() => {
       dispatch(appliesAction.fetchUserApplication());

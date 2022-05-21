@@ -24,6 +24,7 @@ import ResumeScreen from '../screens/jober/resumeScreen';
 import CompanyDetialsScreen from '../screens/company/companyDetialsScreen';
 import CompanyFormScreen from '../screens/company/companyPostEditFormScreen';
 import CompanyProfileScreen from '../screens/company/companyProfileScreen';
+import ApplicationJoberList from '../screens/company/applicationJoberList';
 
 import NotificationScreen from '../screens/notificationScreen';
 import FavouriteScreen from '../screens/jober/favouriteScreen';
@@ -111,7 +112,8 @@ const Navigator = () => {
           options={{
             headerShown: false,
             tabBarActiveTintColor: Color.primary,
-            tabBarLabel: user.usertype === 'Jober' ? 'Applies' : 'Application',
+            tabBarLabel:
+              user.usertype !== 'Company' ? 'Application' : 'Applies',
             tabBarLabelStyle: {
               flex: 1,
               fontSize: 14,
@@ -213,6 +215,7 @@ const Navigator = () => {
       </BottomTab.Navigator>
     );
   };
+
   const JobCompanyDetailsTab = props => {
     const params = props.route.params;
     return (
@@ -258,8 +261,8 @@ const Navigator = () => {
           />
         ) : (
           <TopTab.Screen
-            name="Jober Details"
-            component={JoberDetialsScreen}
+            name="Applicant List"
+            component={ApplicationJoberList}
             initialParams={params}
             options={{
               tabBarInactiveTintColor: Color.white,
@@ -280,6 +283,7 @@ const Navigator = () => {
       </TopTab.Navigator>
     );
   };
+
   const MyStack = () => {
     return (
       <Stack.Navigator>
@@ -377,33 +381,31 @@ const Navigator = () => {
           }}
         />
 
-        {user?.userType === 'Jober' ? (
-          <Stack.Screen
-            name="JC Details"
-            component={JobCompanyDetailsTab}
-            options={{
-              title: 'RECRUIT',
-              headerStyle: {
-                backgroundColor: Color.primary,
-              },
-              headerTintColor: Color.white,
-              headerBackTitleVisible: false,
-            }}
-          />
-        ) : (
-          <Stack.Screen
-            name="Job Details"
-            component={JobDetailsScreen}
-            options={{
-              title: 'RECRUIT',
-              headerStyle: {
-                backgroundColor: Color.primary,
-              },
-              headerTintColor: Color.white,
-              headerBackTitleVisible: false,
-            }}
-          />
-        )}
+        <Stack.Screen
+          name="JC Details"
+          component={JobCompanyDetailsTab}
+          options={{
+            title: 'RECRUIT',
+            headerStyle: {
+              backgroundColor: Color.primary,
+            },
+            headerTintColor: Color.white,
+            headerBackTitleVisible: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="Job Details"
+          component={JobDetailsScreen}
+          options={{
+            title: 'RECRUIT',
+            headerStyle: {
+              backgroundColor: Color.primary,
+            },
+            headerTintColor: Color.white,
+            headerBackTitleVisible: false,
+          }}
+        />
       </Stack.Navigator>
     );
   };

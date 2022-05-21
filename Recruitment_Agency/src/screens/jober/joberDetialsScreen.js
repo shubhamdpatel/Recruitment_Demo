@@ -9,14 +9,29 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AppButton from '../../components/AppButton';
 import * as userAction from '../../redux/actions/user';
 
-const JoberDetialsScreen = ({navigation}) => {
-  const user = useSelector(state => state.user.userProfile[0]);
+const JoberDetialsScreen = ({route, navigation}) => {
+  const userType = useSelector(state => state.auth.user.userType);
+  const joberId = route?.params?.params?.joberId;
+  let user;
+  if (userType === 'Jober') {
+    user = useSelector(state => state.user.userProfile[0]);
+  } else {
+    const applicats = useSelector(state => state.application.applicants);
+    user = applicats.find(data => data._id === joberId);
+  }
+
   const dispatch = useDispatch();
 
   // Fetch Data on Screen Load
   React.useEffect(() => {
     dispatch(userAction.fetchUser());
   }, [dispatch]);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      title: user?.fullName,
+    });
+  }, [navigation]);
 
   return (
     <View style={{flex: 1, padding: '4%', backgroundColor: '#edebeb'}}>
@@ -25,7 +40,7 @@ const JoberDetialsScreen = ({navigation}) => {
           <View style={{...styles.element, ...styles.underline}}>
             <View style={{flexDirection: 'row', marginBottom: '5%'}}>
               <Ionicons name="person-circle" size={40} color="#4F8EF7" />
-              <Text style={{...styles.textHeading, top: 10}}>About Me</Text>
+              <Text style={{...styles.textHeading, top: 10}}>About</Text>
             </View>
             <Text style={{...styles.text, marginBottom: 10}}>
               {user?.myBio || '.....'}
@@ -90,11 +105,15 @@ const JoberDetialsScreen = ({navigation}) => {
           </View>
         </ScrollView>
       </View>
-      <AppButton
-        style={styles.editBtn}
-        buttonTitle="Edit"
-        onPress={() => navigation.navigate('Jober Form')}
-      />
+      {userType === 'Jober' ? (
+        <AppButton
+          style={styles.editBtn}
+          buttonTitle="Edit"
+          onPress={() => navigation.navigate('Jober Form')}
+        />
+      ) : (
+        <Text></Text>
+      )}
     </View>
   );
 };

@@ -98,8 +98,8 @@ const JobDetailsScreen = ({route, navigation}) => {
     await dispatch(userAction.favourite(id));
   };
 
-  const applyHandler = async jobid => {
-    const data = {jobId: jobid};
+  const applyHandler = async (jobid, createdBy) => {
+    const data = {jobId: jobid, cid: createdBy};
     if (isApplied) {
       setIsApplied(false);
     } else {
@@ -249,7 +249,9 @@ const JobDetailsScreen = ({route, navigation}) => {
               <Feather name="phone" size={30} color="#4F8EF7" />
               <View style={{marginHorizontal: 10}}>
                 <Text style={styles.textHeading}>Contact Person</Text>
-                <Text style={styles.text}>{userData?.contactPerson || '...'}</Text>
+                <Text style={styles.text}>
+                  {userData?.contactPerson || '...'}
+                </Text>
               </View>
             </View>
           </View>
@@ -278,7 +280,9 @@ const JobDetailsScreen = ({route, navigation}) => {
                     ...styles.applyBtn,
                     backgroundColor: isApplied ? 'green' : Color.primary,
                   }}
-                  onPress={() => applyHandler(selectedJob?._id)}
+                  onPress={() =>
+                    applyHandler(selectedJob?._id, selectedJob?.createdBy)
+                  }
                 />
               </View>
             </View>

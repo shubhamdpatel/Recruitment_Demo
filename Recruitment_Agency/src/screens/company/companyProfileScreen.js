@@ -17,11 +17,6 @@ const CompanyProfileScreen = ({navigation}) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       title: user?.companyName,
-      // RightButton: () => {
-      //   <View>
-      //     <Text style={{color: 'black'}}>Edit</Text>
-      //   </View>;
-      // },
     });
   }, [navigation]);
 
@@ -103,6 +98,7 @@ const CompanyProfileScreen = ({navigation}) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   card: {
     shadowColor: 'black',

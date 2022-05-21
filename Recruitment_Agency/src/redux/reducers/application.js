@@ -1,7 +1,7 @@
-import {USER_APPLICATION} from '../actions/application';
+import {USER_APPLICATION, FETCH_APPLICANTS} from '../actions/application';
 
 const initialstate = {
-  allApploication: [],
+  applicants: [],
   userApplication: [],
 };
 
@@ -11,6 +11,11 @@ export default (state = initialstate, action) => {
       return {
         ...state,
         userApplication: action.applies,
+      };
+    case FETCH_APPLICANTS:
+      return {
+        ...state,
+        applicants: action.applicants,
       };
   }
   return state;

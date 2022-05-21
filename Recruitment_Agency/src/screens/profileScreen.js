@@ -20,6 +20,8 @@ import * as authAction from '../redux/actions/auth';
 import * as Progress from 'react-native-progress';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import storage from '@react-native-firebase/storage';
+import Loader from '../screens/Loader';
+
 const ProfileScreen = ({navigation}) => {
   const companyImage =
     'https://firebasestorage.googleapis.com/v0/b/recruitment-agency-e0465.appspot.com/o/images%2Fdefault%2Fcompany.png?alt=media&token=e5db119f-31d2-4449-9d1b-4f3a9549a2ab';
@@ -32,16 +34,14 @@ const ProfileScreen = ({navigation}) => {
   const [profile, setProfile] = React.useState(image || '');
   const [uploading, setUploading] = React.useState(false);
   const [transferred, setTransferred] = React.useState(0);
+  const [isLoading, setIsLoding] = React.useState(true);
+
   const dispatch = useDispatch();
 
   // Fetch Job
   const fetchUser = async () => {
     await dispatch(userAction.fetchUser());
   };
-
-  React.useEffect(() => {
-    fetchUser();
-  }, [dispatch]);
 
   // Delete Account
   const accountDelete = () => {
@@ -180,6 +180,16 @@ const ProfileScreen = ({navigation}) => {
   sheetRef = React.useRef();
   fall = new Animated.Value(1);
 
+  React.useEffect(() => {
+    fetchUser();
+    setTimeout(() => {
+      setIsLoding(false);
+    }, 1000);
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <View style={{backgroundColor: Color.app}}>
       <BottomSheet
