@@ -137,7 +137,7 @@ const LoginScreen = ({navigation, route}) => {
               viewPwd ? setViewPwd(false) : setViewPwd(true);
             }}>
             <Ionicons
-              name={viewPwd ? 'eye-off-outline' : 'eye-outline'}
+              name={viewPwd ? 'eye-outline' : 'eye-off-outline'}
               size={30}
               color={Color.primary}
               style={{position: 'absolute', right: 0, bottom: 20}}

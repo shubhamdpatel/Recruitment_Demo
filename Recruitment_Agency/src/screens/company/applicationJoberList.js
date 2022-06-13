@@ -49,9 +49,9 @@ const ApplicationJoberList = ({route, navigation}) => {
               <Card.Content>
                 <View style={styles.card1stView}>
                   <Title>{item?.fullName}</Title>
-                  <Title style={{color: '#0080ff', fontSize: 18}}>
+                  {/* <Title style={{color: '#0080ff', fontSize: 18}}>
                     {item?.expectedSalary}
-                  </Title>
+                  </Title> */}
                 </View>
 
                 <View style={styles.card2ndView}>

@@ -348,7 +348,6 @@ const EditProfileScreen = ({navigation, route}) => {
                     })
                   }
                 />
-                
 
                 <Text style={styles.to}>to</Text>
                 <FormInput
@@ -547,12 +546,15 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
+    color: 'black',
   },
   selectedTextStyle: {
     fontSize: 17,
+    color: 'black',
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    color: 'black',
   },
 });

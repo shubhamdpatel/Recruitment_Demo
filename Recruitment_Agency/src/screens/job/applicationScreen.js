@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   text: {
     marginBottom: '5%',
     color: 'black',
+    textAlign: 'center',
   },
   btn: {
     height: '6%',

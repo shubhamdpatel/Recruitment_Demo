@@ -193,10 +193,10 @@ const RegisterScreen = ({navigation, route}) => {
               value={toggleCheckBox}
               boxType="square"
               style={{height: 20}}
-              boxStyle={{height: 20}}
+              boxStyle={{height: 20, color: 'black'}}
               onValueChange={newValue => setToggleCheckBox(newValue)}
             />
-            <Text style={{fontSize: 15}}>I am Job Seeker</Text>
+            <Text style={{fontSize: 15, color: 'black'}}>I am Job Seeker</Text>
           </View>
         </View>
 

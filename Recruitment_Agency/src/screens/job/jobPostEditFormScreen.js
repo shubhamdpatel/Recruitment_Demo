@@ -420,13 +420,16 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
+    color: 'black',
   },
   selectedTextStyle: {
     fontSize: 17,
+    color: 'black',
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    color: 'black',
   },
   container: {
     flex: 1,
