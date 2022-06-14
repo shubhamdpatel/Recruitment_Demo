@@ -7,25 +7,20 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import React from 'react';
-// import Card from '../../components/profileCard';
 import DocumentPicker, {types} from 'react-native-document-picker';
 import {useSelector, useDispatch} from 'react-redux';
 import storage from '@react-native-firebase/storage';
-import * as Progress from 'react-native-progress';
 import {Card, Title} from 'react-native-paper';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as userAction from '../../redux/actions/user';
-import {color} from 'react-native-reanimated';
 
 const ResumeScreen = () => {
   const user = useSelector(state => state.user.userProfile[0]);
   const userType = useSelector(state => state.auth.user.userType);
   const [file, setFile] = React.useState(user?.resume ?? '');
   const [uploading, setUploading] = React.useState(false);
-  const [transferred, setTransferred] = React.useState(0);
-
+  // const [transferred, setTransferred] = React.useState(0);
   const dispatch = useDispatch();
 
   const chooseFile = async () => {
@@ -59,18 +54,17 @@ const ResumeScreen = () => {
       const uploadUri =
         Platform.OS === 'ios' ? fileUri.replace('file://', '') : fileUri;
 
-      setUploading(true);
-      setTransferred(0);
-
       try {
+        setUploading(true);
+        // setTransferred(0);
         const fileReference = storage().ref(folderPath);
         const task = fileReference.putFile(uploadUri);
+
         // set progress state
-        task.on('state_changed', snapshot => {
-          setTransferred(
-            Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000,
-          );
-        });
+        // task.on('state_changed', snapshot => {
+        //   transferred.current =
+        //     Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        // });
 
         task.then(async () => {
           const url = await storage().ref(folderPath).getDownloadURL();
@@ -90,11 +84,11 @@ const ResumeScreen = () => {
           }
 
           await dispatch(userAction.fetchUser());
+          setUploading(false);
         });
       } catch (e) {
         console.error(e);
       }
-      setUploading(false);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         // User cancelled the picker, exit any dialogs
@@ -137,7 +131,7 @@ const ResumeScreen = () => {
                 </Title>
 
                 {uploading ? (
-                  <Text>{transferred} %</Text>
+                  <ActivityIndicator size="small" />
                 ) : (
                   <Icon name={name} color={color} size={30} />
                 )}

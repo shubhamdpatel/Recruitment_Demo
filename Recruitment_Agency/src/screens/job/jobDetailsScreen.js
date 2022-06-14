@@ -23,12 +23,14 @@ import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const JobDetailsScreen = ({route, navigation}) => {
-  const jobId = route?.params.params.jobId;
+  const jobId = route?.params.params?.jobId;
   const apply = route?.params.params.apply;
   const [isApplied, setIsApplied] = React.useState(apply ? true : false);
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const userData = useSelector(state => state.user.userProfile[0]);
+
+  // console.log(jobId);
 
   let selectedJob;
   let fav;
@@ -43,6 +45,9 @@ const JobDetailsScreen = ({route, navigation}) => {
       state.jobs.availableJobs.find(job => job?._id === jobId),
     );
   }
+
+  // console.log(selectedJob);
+
   const [isFavourite, setIsFavourite] = React.useState(fav);
 
   const jobDelete = id => {

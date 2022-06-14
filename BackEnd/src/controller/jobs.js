@@ -26,8 +26,12 @@ const CreateJobController = async (req, res) => {
 };
 
 const GetAllJobsController = async (req, res) => {
+  console.log("Get All Jobs Api Call");
   try {
-    const job = await Job.find({});
+    const job = await Job.find({})
+      .skip(req.query.skip || 0)
+      .limit(req.query.limit || 0);
+
     res.status(200).send(job);
   } catch (error) {
     res.status(500).send({ error: "Something wents wrong.", error });
@@ -36,13 +40,11 @@ const GetAllJobsController = async (req, res) => {
 
 const GetJobsByCompanyController = async (req, res) => {
   console.log("Get Job By Company Api call");
-  // const company = await Company.findOne({ createdBy: req.user._id });
-  //   console.log('Company--->', company);
-  //   console.log('Company--->Id', company._id);
   try {
-    // const jobs = await Job.find({ cid: company._id });
-    const jobs = await Job.find({ createdBy: req.user._id });
-    // console.log(job);
+    const jobs = await Job.find({ createdBy: req.user._id })
+      .skip(req.query.skip || 0)
+      .limit(req.query.limit || 0);
+
     if (jobs == "") return res.status(404).send({ error: "NO_JOBS_FOUND" });
     // res.send({ Company: company, Posted_Job: jobs });
     res.status(200).send(jobs);

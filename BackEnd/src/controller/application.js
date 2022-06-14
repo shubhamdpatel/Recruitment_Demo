@@ -13,6 +13,7 @@ const applyController = async (req, res) => {
     } else {
       const apply = new Application({
         jobId: req.body.jobId,
+        CompanyId: req.body.cid,
         joberId: req.user._id,
       });
       apply.save();
@@ -34,4 +35,19 @@ const fetchApplicationByUser = async (req, res) => {
     console.log(error);
   }
 };
-module.exports = { applyController, fetchApplicationByUser };
+
+const fetchApplicationByCompany = async (req, res) => {
+  console.log("Comapny Application Fetch Api Call");
+  try {
+    const application = await Application.find({ CompanyId: req.user._id });
+    res.status(200).send(application);
+  } catch (error) {
+    res.status(400).send({ error });
+    console.log(error);
+  }
+};
+module.exports = {
+  applyController,
+  fetchApplicationByUser,
+  fetchApplicationByCompany,
+};

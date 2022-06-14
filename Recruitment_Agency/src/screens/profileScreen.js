@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Color from '../constant/Color';
-import {Avatar} from 'react-native-paper';
+import {ActivityIndicator, Avatar} from 'react-native-paper';
 import ProfileCard from '../components/profileCard';
 import ImagePicker from 'react-native-image-crop-picker';
 import Animated from 'react-native-reanimated';
@@ -33,7 +33,7 @@ const ProfileScreen = ({navigation}) => {
   const image = userType === 'Company' ? user?.companyLogo : user?.profileImage;
   const [profile, setProfile] = React.useState(image || '');
   const [uploading, setUploading] = React.useState(false);
-  const [transferred, setTransferred] = React.useState(0);
+  // const [transferred, setTransferred] = React.useState(0);
   const [isLoading, setIsLoding] = React.useState(true);
 
   const dispatch = useDispatch();
@@ -93,18 +93,17 @@ const ProfileScreen = ({navigation}) => {
 
     sheetRef.current.snapTo(1);
 
-    setUploading(true);
-    setTransferred(0);
-
     try {
+      setUploading(true);
+      // setTransferred(0);
       const imageReference = storage().ref(folderPath);
       const task = imageReference.putFile(uploadUri);
       // set progress state
-      task.on('state_changed', snapshot => {
-        setTransferred(
-          Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000,
-        );
-      });
+      // task.on('state_changed', snapshot => {
+      //   setTransferred(
+      //     Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000,
+      //   );
+      // });
 
       task.then(async () => {
         const url = await storage().ref(folderPath).getDownloadURL();
@@ -115,11 +114,11 @@ const ProfileScreen = ({navigation}) => {
           ),
         );
         await dispatch(userAction.fetchUser());
+        setUploading(false);
       });
     } catch (e) {
       console.error(e);
     }
-    setUploading(false);
   };
 
   // Image Choose
@@ -207,37 +206,34 @@ const ProfileScreen = ({navigation}) => {
           opacity: Animated.add(0.1, Animated.multiply(fall, 1.0)),
         }}>
         <View style={styles.imageCard}>
-          {uploading ? (
-            <Progress.Bar progress={transferred} width={100} />
-          ) : (
-            <View>
-              {userType === 'Company' ? (
-                <Avatar.Image
-                  size={180}
-                  source={{
-                    uri: profile ? user?.companyLogo : companyImage,
-                  }}
-                />
-              ) : (
-                <Avatar.Image
-                  size={180}
-                  style={{backgroundColor: '#d9d9d9'}}
-                  source={{
-                    uri: user?.profileImage ? user?.profileImage : userImage,
-                  }}
-                />
-              )}
-              <TouchableOpacity
-                style={styles.imageIcon}
-                onPress={() => sheetRef.current.snapTo(0)}>
-                <MCI
-                  name="camera-plus-outline"
-                  size={30}
-                  color={Color.accent}
-                />
-              </TouchableOpacity>
-            </View>
-          )}
+          <View>
+            {userType === 'Company' ? (
+              <Avatar.Image
+                size={180}
+                source={{
+                  uri: profile ? user?.companyLogo : companyImage,
+                }}
+              />
+            ) : (
+              <Avatar.Image
+                size={180}
+                style={{backgroundColor: '#d9d9d9'}}
+                source={{
+                  uri: user?.profileImage ? user?.profileImage : userImage,
+                }}
+              />
+            )}
+            {uploading ? (
+              <ActivityIndicator style={styles.loader} />
+            ) : (
+              <Text></Text>
+            )}
+            <TouchableOpacity
+              style={styles.imageIcon}
+              onPress={() => sheetRef.current.snapTo(0)}>
+              <MCI name="camera-plus-outline" size={30} color={Color.accent} />
+            </TouchableOpacity>
+          </View>
 
           {userType === 'Company' ? (
             <Text style={styles.name}>
@@ -380,6 +376,9 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.5,
     shadowOffset: {width: 2, height: 3},
+  },
+  loader: {
+    bottom: 90,
   },
   name: {
     fontSize: 24,

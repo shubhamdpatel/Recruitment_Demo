@@ -1,16 +1,16 @@
 import React from 'react';
 import * as Progress from 'react-native-progress';
 import * as JobsAction from '../../redux/actions/jobs';
-import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AppButton from '../../components/AppButton';
 import FormInput from '../../components/FormInput';
 import FabButton from '../../components/FabButton';
 import Color from '../../constant/Color';
-import DatePicker from 'react-native-date-picker';
 import SelectBox from '../../components/selectBox';
 import {Dropdown} from 'react-native-element-dropdown';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const data = [
   {label: 'React Native Developer', value: '1'},
@@ -80,6 +80,9 @@ const JobPostFormScreen = ({navigation, route}) => {
 
   const dispatch = useDispatch();
 
+  const [gttSalary, setGttSalary] = React.useState(
+    selectedJob?.maxSalary ? true : false,
+  );
   const [error, setError] = React.useState({
     hire: false,
     jminSalary: false,
@@ -90,6 +93,13 @@ const JobPostFormScreen = ({navigation, route}) => {
     jinterviewTiming: false,
   });
 
+  const onCheckSalary = () => {
+    if (minSalary < maxSalary) {
+      setGttSalary(true);
+    } else {
+      setGttSalary(false);
+    }
+  };
   const onNext = () => {
     if (!title) {
       setError({hire: true});
@@ -241,6 +251,14 @@ const JobPostFormScreen = ({navigation, route}) => {
                       jmaxSalary: false,
                     })
                   }
+                  onBlur={() => onCheckSalary()}
+                />
+
+                <Icon
+                  name="checkmark-done-circle"
+                  style={{marginTop: '15%', marginLeft: '5%'}}
+                  size={35}
+                  color={gttSalary ? 'green' : 'gray'}
                 />
               </View>
 
@@ -255,6 +273,7 @@ const JobPostFormScreen = ({navigation, route}) => {
                   autoCapitalize="none"
                   keyboardType="number-pad"
                   autoCorrect={false}
+                  maxLength={2}
                   onFocus={() =>
                     setError({
                       jopenings: false,

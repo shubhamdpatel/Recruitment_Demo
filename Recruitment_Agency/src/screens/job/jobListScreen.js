@@ -19,7 +19,7 @@ import * as JobsAction from '../../redux/actions/jobs';
 import {Card, Title, Paragraph, Text} from 'react-native-paper';
 
 const JobListScreen = ({navigation}) => {
-  const user = useSelector(state => state.auth.user);
+  const userType = useSelector(state => state.auth.user.userType);
   const [isLoading, setIsLoding] = React.useState(true);
   const jobs = useSelector(state => state.jobs);
   const dispatch = useDispatch();
@@ -57,7 +57,7 @@ const JobListScreen = ({navigation}) => {
 
   const selectJobHandeler = (id, cid) => {
     {
-      user?.userType === 'Jober'
+      userType === 'Jober'
         ? navigation.navigate('JC Details', {
             params: {jobId: id, cid},
           })
@@ -65,7 +65,73 @@ const JobListScreen = ({navigation}) => {
     }
   };
 
-  if (allJobs.length === 0) {
+  let TouchableCmp = TouchableOpacity;
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchableCmp = TouchableNativeFeedback;
+  }
+
+  if (allJobs.length !== 0) {
+    return (
+      <View style={{flex: 1}}>
+        <FlatList
+          data={allJobs}
+          keyExtractor={(index, item) => Math.random()}
+          showsVerticalScrollIndicator={false}
+          renderItem={({item}) => (
+            <TouchableCmp
+              onPress={() => selectJobHandeler(item?._id, item?.cid)}>
+              <Card style={styles.card}>
+                <Card.Content>
+                  <View style={styles.card1stView}>
+                    <Title>{item?.title}</Title>
+                    <Title style={{color: '#0080ff', fontSize: 18}}>
+                      {/* Rs 3 - 4 LPA */}
+                      Rs {item?.minSalary.substring(0, 2)}k -{' '}
+                      {item?.maxSalary.substring(0, 2)}k
+                    </Title>
+                  </View>
+
+                  <View style={styles.card2ndView}>
+                    {/* <Text style={styles.text}>{item?.experience}</Text> */}
+                    <Text style={styles.text}>{item?.experience}</Text>
+                    <Text style={styles.text}>{item?.education}</Text>
+                  </View>
+
+                  <Paragraph>
+                    {item?.description.slice(0, 50)}
+                    {item?.description.length > 50 ? <Text>...</Text> : ''}
+                  </Paragraph>
+                </Card.Content>
+              </Card>
+            </TouchableCmp>
+          )}
+          onEndReached={() => {
+            const data = isSkip + limit;
+            console.log(isSkip);
+            setIsSkip(data);
+            dispatch(JobsAction.fetchJobs({skip: data, limit}));
+          }}
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={
+            jobs.DataFlag && (
+              <ActivityIndicator size="large" color={Color.primary} />
+            )
+          }
+        />
+        {userType === 'Company' && (
+          <View>
+            <FabButton
+              style={styles.fab}
+              iconName="plus"
+              onPress={() =>
+                navigation.navigate('Job Post', {params: {jobId: ''}})
+              }
+            />
+          </View>
+        )}
+      </View>
+    );
+  } else {
     return (
       <View style={{flex: 1}}>
         <View style={styles.container}>
@@ -87,71 +153,6 @@ const JobListScreen = ({navigation}) => {
       </View>
     );
   }
-
-  let TouchableCmp = TouchableOpacity;
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-  }
-
-  return (
-    <View style={{flex: 1}}>
-      <FlatList
-        data={allJobs}
-        keyExtractor={(index, item) => Math.random()}
-        showsVerticalScrollIndicator={false}
-        renderItem={({item}) => (
-          <TouchableCmp onPress={() => selectJobHandeler(item?._id, item?.cid)}>
-            <Card style={styles.card}>
-              <Card.Content>
-                <View style={styles.card1stView}>
-                  <Title>{item?.title}</Title>
-                  <Title style={{color: '#0080ff', fontSize: 18}}>
-                    {/* Rs 3 - 4 LPA */}
-                    Rs {item?.minSalary.substring(0, 2)}k -{' '}
-                    {item?.maxSalary.substring(0, 2)}k
-                  </Title>
-                </View>
-
-                <View style={styles.card2ndView}>
-                  {/* <Text style={styles.text}>{item?.experience}</Text> */}
-                  <Text style={styles.text}>{item?.experience}</Text>
-                  <Text style={styles.text}>{item?.education}</Text>
-                </View>
-
-                <Paragraph>
-                  {item?.description.slice(0, 50)}
-                  {item?.description.length > 50 ? <Text>...</Text> : ''}
-                </Paragraph>
-              </Card.Content>
-            </Card>
-          </TouchableCmp>
-        )}
-        onEndReached={() => {
-          const data = isSkip + limit;
-          console.log(isSkip);
-          setIsSkip(data);
-          dispatch(JobsAction.fetchJobs({skip: data, limit}));
-        }}
-        onEndReachedThreshold={0.1}
-        ListFooterComponent={
-          jobs.DataFlag && (
-            <ActivityIndicator size="large" color={Color.primary} />
-          )
-        }
-      />
-      {user?.userType === 'Company' && (
-        <View>
-          <FabButton
-            style={styles.fab}
-            iconName="plus"
-            onPress={() =>
-              navigation.navigate('Job Post', {params: {jobId: ''}})
-            }
-          />
-        </View>
-      )}
-    </View>
-  );
 };
 
 const styles = StyleSheet.create({
